@@ -1,0 +1,100 @@
+#!/usr/bin/env node
+
+import parseArgs from 'minimist'
+import path from 'path'
+import { existsSync } from 'fs';
+import Magnet from '../magnet';
+import {ExpressEngine} from '../magnet';
+import chokidar from 'chokidar';
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help',
+    p: 'port',
+    e: 'env'
+  },
+  boolean: ['h'],
+  default: {
+    p: 3000
+  }
+});
+
+if (argv.help) {
+  console.log(`
+    Description
+      Starts the application in production mode.
+    Usage
+      $ magnet start <dir> -p <port> -e <environment file path>
+    If no directory is provided, the current directory will be assumed.
+    Options
+      --port, -p      A port number on which to start the application
+      --env, -e       Environemnt config file path
+      --help, -h      Displays this message
+  `)
+  process.exit(0)
+}
+
+const appDirectory = process.cwd();
+const { NODE_ENV } = process.env;
+const envPath = `${appDirectory}/environments/${NODE_ENV}.js`;
+const port = argv.port;
+const engine = new ExpressEngine();
+let env = {};
+
+try {
+  env = require(path.join(appDirectory, envPath)).default;
+} catch(e) {
+  env = {
+    magnet: {
+      port: port,
+      host: 'localhost'
+    }
+  };
+}
+
+const magnetConfig = {
+  appEnvironment: env,
+  appDirectory: appDirectory,
+  serverEngine: engine,
+}
+
+const watcher = chokidar.watch(`${appDirectory}/**/*`, {
+  ignored: /[\/\\]\./,
+  persistent: true
+});
+
+const magnet = new Magnet(magnetConfig);
+
+if (existsSync(path.join(appDirectory, 'start.js'))) {
+  const startFn = require(path.join(appDirectory, 'start.js'));
+  magnet.setStartLifecycle(startFn);
+}
+
+if (existsSync(path.join(appDirectory, 'stop.js'))) {
+  const stopFn = require(path.join(appDirectory, 'stop.js'));
+  magnet.setStopLifecycle(stopFn);
+}
+
+// Stop SIGNTERM
+// process.on('SIGTERM', () => {
+//   watcher.close();
+//   magnet.stop();
+// });
+
+// // listen for INT signal e.g. Ctrl-C
+// process.on('SIGINT', () => {
+//   watcher.close();
+//   magnet.stop();
+// });
+
+magnet.setupApplication()
+      .then(magnet.start);
+
+watcher
+  .on('change', (path) => {
+    magnet.stop();
+    magnet.setupApplication()
+      .then(magnet.start);
+  });

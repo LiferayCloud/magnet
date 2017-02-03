@@ -1,0 +1,19 @@
+{
+  "extends": ["eslint:recommended", "google"],
+  "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module"
+  },
+  "globals": {
+    "expect": false,
+  },
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+  "rules": {
+    "no-process-env": 0,
+    "no-console": 0
+  }
+}

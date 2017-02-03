@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+import { join } from 'path';
+import pkg from '../../package.json';
+
+const defaultCommand = 'start';
+const commands = new Set([
+  defaultCommand
+]);
+
+let cmd = process.argv[2];
+let args;
+
+if (new Set(['--version', '-v']).has(cmd)) {
+  console.log(`magnet.js v${pkg.version}`);
+  process.exit(0);
+}
+
+if (new Set(['--help', '-h']).has(cmd)) {
+  console.log(`
+    Usage
+      $ magnet <command>
+
+    Available commands
+      ${Array.from(commands).join(', ')}
+
+    For more information run a command with the --help flag
+      $ magnet start --help
+  `);
+  process.exit(0);
+}
+
+if (commands.has(cmd)) {
+  args = process.argv.slice(3);
+} else {
+  cmd = defaultCommand;
+  args = process.argv.slice(2);
+}
+
+const bin = join(__dirname, 'magnet-' + cmd);
+
+require(bin);
