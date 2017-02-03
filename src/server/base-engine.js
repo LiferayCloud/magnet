@@ -1,5 +1,5 @@
 /**
- * Engine interface.
+ * Base Engine.
  */
 class BaseEngine {
 
