@@ -15,8 +15,7 @@ describe('ServerEngineFactory', function() {
   it('should thrown an error if the specified type is not implemented', () => {
     expect(function() {
         const engine = new ServerEngineFactory('notImplemented');
-        engine.create()
+        engine.create();
     }).to.throw('Engine not implemented.');
   });
-
 });
