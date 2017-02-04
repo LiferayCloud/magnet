@@ -25,20 +25,30 @@ describe('magnet', function() {
 
     // - External Start and Stop
     if (existsSync(path.join(appDirectory, 'start.js'))) {
-      const startFn = require(path.join(appDirectory, 'start.js'));
+      let startFn = require(path.join(appDirectory, 'start.js'));
+
+      if (startFn.default) {
+        startFn = startFn.default;
+      }
+
       magnet.setStartLifecycle(startFn);
     }
 
     if (existsSync(path.join(appDirectory, 'stop.js'))) {
-      const stopFn = require(path.join(appDirectory, 'stop.js'));
+      let stopFn = require(path.join(appDirectory, 'stop.js'));
+
+      if (stopFn.default) {
+        stopFn = stopFn.default;
+      }
+
       magnet.setStopLifecycle(stopFn);
     }
 
     magnet.setupApplication()
-          // .then(magnet.start);
-          .then(() => {
-            // magnet.start(instance);
-            // console.log(instance.getEngine().controllers.one.toString());
-          });
+      // .then(magnet.start);
+      .then(() => {
+        // magnet.start(instance);
+        // console.log(instance.getEngine().controllers.one.toString());
+      });
 	});
 });
