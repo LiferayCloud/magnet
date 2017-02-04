@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import path from 'path';
 import Wizard from 'express-wizard';
 import ExpressEngine from './server/express-engine';
-
+import {assertDefAndNotNull} from './assertions';
 import Server from './server/server';
 
 /**
@@ -17,12 +17,17 @@ class Magnet {
 
   /**
    * Constructor.
-   * @param  {Object} optConfig
+   * @param  {Object} config
    */
-  constructor(optConfig) {
-    this.setDirectory(optConfig.appDirectory);
-    this.setServerEngine(optConfig.serverEngine);
-    this.loadEnvironment_(optConfig.appEnvironment);
+  constructor(config) {
+    assertDefAndNotNull(config, 'The config param is required.');
+    assertDefAndNotNull(config.appDirectory, 'Specify app directory.');
+    assertDefAndNotNull(config.serverEngine, 'Specify server engine.');
+    assertDefAndNotNull(config.appEnvironment, 'Specify app environment.');
+
+    this.setDirectory(config.appDirectory);
+    this.setServerEngine(config.serverEngine);
+    this.loadEnvironment_(config.appEnvironment);
     this.setPort(this.getEnvironment().server.port);
     this.setHost(this.getEnvironment().server.host);
     this.setTestBehavior(this.getEnvironment().server.isTest);
