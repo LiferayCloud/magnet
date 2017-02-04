@@ -8,6 +8,7 @@ import path from 'path';
 import Wizard from 'express-wizard';
 import ExpressEngine from './server/express-engine';
 import {assertDefAndNotNull} from './assertions';
+import {errorMiddleware} from './middleware/general-errors';
 import Server from './server/server';
 
 /**
@@ -202,18 +203,7 @@ class Magnet {
    */
   loadGeneralErrorMiddleware_() {
     logger.info('[APP]', 'Configuring error handler');
-
-    this.getServerEngine().getEngine().use((err, req, res, next) => {
-      res.status(err.status || 500);
-      res.json({
-        message: err.message,
-        error: (this.getServerEngine()
-                    .getEngine()
-                    .get('env') === 'development' ? err : {}),
-      });
-      next(err);
-    });
-
+    errorMiddleware(this.getServerEngine().getEngine());
     return this;
   }
 

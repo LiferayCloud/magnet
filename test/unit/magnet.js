@@ -4,7 +4,7 @@ import {existsSync} from 'fs';
 import path from 'path';
 
 describe('magnet', function() {
-	it('should do what...', async () => {
+	it('sandbox', async () => {
     // - External Env Var
     // Start using default file export
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
