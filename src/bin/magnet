@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 
 import { join } from 'path';
 import pkg from '../../package.json';
+import {spawn} from 'cross-spawn';
 
 const defaultCommand = 'start';
 const commands = new Set([
@@ -39,4 +40,9 @@ if (commands.has(cmd)) {
 
 const bin = join(__dirname, 'magnet-' + cmd);
 
-require(bin);
+var proc = spawn(bin, args, { stdio: 'inherit' })
+proc.on('close', (code) => process.exit(code))
+proc.on('error', (err) => {
+  console.error(err) // eslint-disable-line no-console
+  process.exit(1)
+})
