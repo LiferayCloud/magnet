@@ -40,9 +40,11 @@ if (commands.has(cmd)) {
 
 const bin = join(__dirname, 'magnet-' + cmd);
 
-var proc = spawn(bin, args, { stdio: 'inherit' })
-proc.on('close', (code) => process.exit(code))
+const proc = spawn(bin, args, { stdio: 'inherit' });
+
+proc.on('close', (code) => process.exit(code));
+
 proc.on('error', (err) => {
   console.error(err) // eslint-disable-line no-console
   process.exit(1)
-})
+});
