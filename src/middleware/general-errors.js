@@ -1,15 +1,15 @@
 /**
- * Error middleware
- * @param  {Object} engine
+ * Error middleware.
+ * @param  {String} environment
  * @return {Function}
  */
-export function errorMiddleware(engine) {
-  return engine.use((err, req, res, next) => {
+export function errorMiddleware(environment) {
+  return (err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
       message: err.message,
-      error: (engine.get('env') === 'development' ? err : {}),
+      error: (environment === 'development' ? err : {}),
     });
     next(err);
-  });
+  };
 }
