@@ -203,7 +203,9 @@ class Magnet {
    */
   loadGeneralErrorMiddleware_() {
     logger.info('[APP]', 'Configuring error handler');
-    errorMiddleware(this.getServerEngine().getEngine());
+    const engine = this.getServerEngine().getEngine();
+    engine.use(errorMiddleware(engine.get('env')));
+
     return this;
   }
 
@@ -216,6 +218,7 @@ class Magnet {
       .getServerEngine()
       .getEngine()
       .use(morgan('common'));
+
     return this;
   }
 
@@ -228,6 +231,7 @@ class Magnet {
       .getServerEngine()
       .getEngine()
       .use(helmet());
+
     return this;
   }
 
@@ -240,6 +244,7 @@ class Magnet {
       .getServerEngine()
       .getEngine()
       .use('/static', express.static(path.join(this.getDirectory(), 'static')));
+
     return this;
   }
 
@@ -302,7 +307,6 @@ class Magnet {
       .getServer()
       .close(() => {
         logger.info('[SERVER]', 'Closed out remaining connections.');
-        // process.exit();
       });
   }
 
