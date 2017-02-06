@@ -13,7 +13,6 @@ class ExpressEngine extends BaseEngine {
     super();
     this.setEngine(express());
   }
-
 }
 
 export default ExpressEngine;

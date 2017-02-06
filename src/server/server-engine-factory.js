@@ -23,7 +23,6 @@ class ServerEngineFactory {
       throw new Error('Engine not implemented.');
     }
   }
-
 }
 
 export default ServerEngineFactory;
