@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony
+#!/usr/bin/env node
 
 import parseArgs from 'minimist'
 import path from 'path'
