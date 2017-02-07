@@ -42,9 +42,7 @@ class Magnet {
     const engine = this.getServerEngine()
                        .getEngine();
 
-    this.server_ = new Server(engine);
-
-    this.server_.listen(this.getPort(), this.getHost());
+    this.setHttpServer(engine);
 
     return this;
   }
@@ -119,6 +117,17 @@ class Magnet {
    */
   getTestBehavior() {
     return this.isTest_;
+  }
+
+  /**
+   * Listens to port and host for http server.
+   * @return {Magnet}
+   */
+  listen() {
+    this.getServer()
+        .listen(this.getPort(), this.getHost());
+
+    return this;
   }
 
   /**
@@ -340,6 +349,14 @@ class Magnet {
    */
   setHost(host) {
     this.host_ = host;
+  }
+
+  /**
+   * Set Http server.
+   * @param {Object} engine
+   */
+  setHttpServer(engine) {
+    this.server_ = new Server(engine);
   }
 
   /**

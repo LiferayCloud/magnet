@@ -50,8 +50,8 @@ const backendConfig = config_({
     libraryTarget: 'commonjs2'
   },
   node: {
-    __dirname: true,
-    __filename: true
+    __dirname: false,
+    __filename: false
   },
   externals: [
     function(context, request, callback) {
