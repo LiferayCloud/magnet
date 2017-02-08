@@ -8,11 +8,15 @@ describe('magnet', function() {
     // - External Env Var
     // Start using default file export
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-    const {NODE_ENV} = process.env;
     const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
 
-    const envPath = `${appDirectory}/environments/${NODE_ENV}.js`;
-    const env = require(envPath).default;
+    const env = {
+      magnet: {
+        port: 8888,
+        host: 'localhost',
+      },
+    };
+
     const engine = new ExpressEngine();
 
     const magnetConfig = {
@@ -46,8 +50,9 @@ describe('magnet', function() {
 
     magnet.setupApplication()
       // .then(magnet.start);
-      .then(() => {
-        // magnet.start(instance);
+      .then((instance) => {
+        // console.log(instance);
+        // magnet.start(instance).listen();
         // console.log(instance.getEngine().controllers.one.toString());
       });
 	});
