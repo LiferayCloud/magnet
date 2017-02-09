@@ -48,6 +48,14 @@ class Magnet {
   }
 
   /**
+   * Get app environment
+   * @return {Object}
+   */
+  getAppEnvironment() {
+    return this.getEnvironment().appEnvironment;
+  }
+
+  /**
    * Get directory.
    * @return {String} application directory.
    */
@@ -138,16 +146,33 @@ class Magnet {
   async loadApplication_() {
     logger.info('[APP]', 'Loading middlewares, models and routes');
 
-    const wizard = new Wizard(this.getEnvironment().express.wizard);
+    try {
+      let wizard = new Wizard(this.getEnvironment().express.wizard);
 
-    await wizard
-      .inject('**/*.js')
-      .exclude('node_modules/**')
-      .exclude('start.js')
-      .exclude('stop.js')
-      .exclude('dist/**')
-      .exclude('build/**')
-      .into(this.getServerEngine().getEngine(), this);
+      if (this.getEnvironment().injectionFiles.length > 0) {
+        this.getEnvironment().injectionFiles.forEach((stack) => {
+          wizard = wizard.inject(stack);
+        });
+      } else {
+        wizard = wizard.inject('**/*.js');
+      }
+
+      if (this.getEnvironment().exclusionFiles.length > 0) {
+        this.getEnvironment().exclusionFiles.forEach((stack) => {
+          wizard = wizard.exclude(stack);
+        });
+      } else {
+        wizard = wizard.exclude('node_modules/**')
+        .exclude('start.js')
+        .exclude('stop.js')
+        .exclude('dist/**')
+        .exclude('build/**');
+      }
+
+      await wizard.into(this.getServerEngine().getEngine(), this);
+    } catch(e) {
+      logger.error(e);
+    }
 
     return this;
   }
@@ -286,14 +311,18 @@ class Magnet {
    * @return {Magnet}
    */
   async setupApplication() {
-    this.loadEngineDependencies_()
+    try {
+      this.loadEngineDependencies_()
         .maybeCallStartHook_();
 
-    await this.loadApplication_();
+      await this.loadApplication_();
 
-    this.loadGeneralErrorMiddleware_();
+      this.loadGeneralErrorMiddleware_();
 
-    return this;
+      return this;
+    } catch(e) {
+      logger.error(e);
+    }
   }
 
   /**

@@ -35,7 +35,7 @@
     "compression": "^1.6.2",
     "cross-spawn": "^5.0.1",
     "express": "^4.13.0",
-    "express-wizard": "^0.0.20",
+    "express-wizard": "^0.2.2",
     "helmet": "^3.3.0",
     "lodash": "^4.17.4",
     "lx-valid": "^1.2.4",

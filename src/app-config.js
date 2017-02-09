@@ -12,6 +12,13 @@ function buildAppConfig(defaultConfig, appConfig, appDirectory) {
   defaultConfig.server.host = appConfig.magnet.host || 'localhost';
   defaultConfig.server.testBehavior = appConfig.magnet.TestBehavior || false;
   defaultConfig.express.wizard.cwd = appDirectory || '/';
+  defaultConfig.injectionFiles = appConfig.magnet.injectionFiles || [];
+  defaultConfig.exclusionFiles = appConfig.magnet.exclusionFiles || [];
+
+  // TODO: find better way to copy an object without reference.
+  let tempAppConfig = Object.assign({appConfig}, {});
+  delete tempAppConfig.magnet;
+  defaultConfig.appEnvironment = tempAppConfig;
 
   return defaultConfig;
 }
@@ -32,16 +39,9 @@ const defaultConfig = {
       logger: logger,
     },
   },
-  app: {
-    model: {
-      schema: {
-        unknownProperties: 'delete',
-      },
-      update: {
-        returnChanges: true,
-      },
-    },
-  },
+  injectionFiles: [],
+  exclusionFiles: [],
+  appEnvironment: {},
 };
 
 export {buildAppConfig, defaultConfig};
