@@ -3,6 +3,7 @@
   "plugins": [
     "syntax-async-functions",
     "transform-async-to-generator",
+    "transform-promise-to-bluebird",
     "transform-runtime"
   ]
 }
