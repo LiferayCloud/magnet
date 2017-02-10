@@ -12,7 +12,8 @@
     "test:coverage:travis": "./node_modules/.bin/gulp test:coverage:travis",
     "generate-changelog": "github-changes --owner wedeploy --repository magnet -a --only-pulls --use-commit-body",
     "preversion": "npm test",
-    "version": "npm run generate-changelog && git add CHANGELOG.md"
+    "version": "npm run generate-changelog && git add CHANGELOG.md",
+    "prepublish": "npm run build"
   },
   "author": "Ivan Santos <ivan.santos@liferay.com>",
   "license": "BSD-3-Clause",
