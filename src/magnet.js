@@ -35,19 +35,6 @@ class Magnet {
   }
 
   /**
-   * Start HTTP server.
-   * @return {Magnet}
-   */
-  createHttpServer_() {
-    const engine = this.getServerEngine()
-                       .getEngine();
-
-    this.setHttpServer(engine);
-
-    return this;
-  }
-
-  /**
    * Get app environment
    * @return {Object}
    */
@@ -128,17 +115,6 @@ class Magnet {
   }
 
   /**
-   * Listens to port and host for http server.
-   * @return {Magnet}
-   */
-  listen() {
-    this.getServer()
-        .listen(this.getPort(), this.getHost());
-
-    return this;
-  }
-
-  /**
    * Loads app directories into the engine.
    * @param  {Magnet} instance
    * @return {Magnet}
@@ -171,7 +147,7 @@ class Magnet {
 
       await wizard.into(this.getServerEngine().getEngine(), this);
     } catch(e) {
-      logger.error(e);
+      logger.error('eita', e);
     }
 
     return this;
@@ -232,7 +208,7 @@ class Magnet {
   }
 
   /**
-   * Setup general error middeware.
+   * Setup general error middleware.
    * @return {Magnet}
    */
   loadGeneralErrorMiddleware_() {
@@ -328,10 +304,24 @@ class Magnet {
   /**
    * Starts application.
    * @param {Magnet} instance
-   * @return {Magnet}
    */
-  start(instance) {
-    return instance.createHttpServer_();
+  async start(instance) {
+    const engine = instance.getServerEngine()
+                          .getEngine();
+
+    instance.setServer(engine);
+
+    await new Promise((resolve, reject) => {
+      // This code catches EADDRINUSE error if the port is already in use
+      instance.getServer()
+          .getHttpServer()
+          .on('error', reject);
+      instance.getServer()
+          .getHttpServer()
+          .on('listening', () => resolve());
+      instance.getServer()
+          .listen(instance.getPort(), instance.getHost());
+    });
   }
 
   /**
@@ -384,7 +374,7 @@ class Magnet {
    * Set Http server.
    * @param {Object} engine
    */
-  setHttpServer(engine) {
+  setServer(engine) {
     this.server_ = new Server(engine);
   }
 

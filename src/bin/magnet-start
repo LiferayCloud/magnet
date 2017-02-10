@@ -65,7 +65,7 @@ const magnetConfig = {
   appEnvironment: magnetEnv,
   appDirectory: rootDir,
   serverEngine: engine,
-}
+};
 
 let magnet = new Magnet(magnetConfig);
 
@@ -106,7 +106,7 @@ if (existsSync(path.join(rootDir, 'stop.js'))) {
 
 magnet.setupApplication()
       .then((instance) => {
-        magnet.start(instance).listen()
+        magnet.start(instance);
       });
 
 const watcher = chokidar.watch(`${rootDir}/**/*`, {
@@ -129,7 +129,7 @@ const refreshFiles = _.debounce(() => {
       magnet = new Magnet(newMagnetConfig);
       magnet.setupApplication()
             .then((instance) => {
-              magnet.start(instance).listen()
+              magnet.start(instance);
             });
       resolve();
     });

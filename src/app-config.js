@@ -10,13 +10,13 @@ import logger from 'winston';
 function buildAppConfig(defaultConfig, appConfig, appDirectory) {
   defaultConfig.server.port = appConfig.magnet.port || 80;
   defaultConfig.server.host = appConfig.magnet.host || 'localhost';
-  defaultConfig.server.testBehavior = appConfig.magnet.TestBehavior || false;
+  defaultConfig.server.isTest = appConfig.magnet.isTest || false;
   defaultConfig.express.wizard.cwd = appDirectory || '/';
   defaultConfig.injectionFiles = appConfig.magnet.injectionFiles || [];
   defaultConfig.exclusionFiles = appConfig.magnet.exclusionFiles || [];
 
   // TODO: find better way to copy an object without reference.
-  let tempAppConfig = Object.assign({appConfig}, {});
+  let tempAppConfig = Object.assign(appConfig, {});
   delete tempAppConfig.magnet;
   defaultConfig.appEnvironment = tempAppConfig;
 

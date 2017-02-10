@@ -27,7 +27,7 @@ class Server {
    * Gets the http server.
    * @return {[type]} [description]
    */
-  getServer() {
+  getHttpServer() {
     return this.server_;
   }
 
@@ -39,7 +39,7 @@ class Server {
    * @return {Server}
    */
   listen(port = 3000, host = 'localhost') {
-    this.getServer().listen(port, host, () => {
+    this.getHttpServer().listen(port, host, () => {
       logger.info('[SERVER]', `Address: http://${host}:${port}`);
     });
 
@@ -52,7 +52,7 @@ class Server {
    * @return {boolean}
    */
   close(cb) {
-    return this.getServer().close(cb);
+    return this.getHttpServer().close(cb);
   }
 }
 
