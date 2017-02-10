@@ -1,6 +1,6 @@
 {
   "name": "magnet",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "The API framework for nodejs.",
   "main": "build/magnet.js",
   "scripts": {
