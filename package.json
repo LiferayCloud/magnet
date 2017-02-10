@@ -10,7 +10,7 @@
     "test": "./node_modules/.bin/gulp coverage",
     "test:watch": "./node_modules/.bin/gulp test:watch",
     "test:coverage:travis": "./node_modules/.bin/gulp test:coverage:travis",
-    "generate-changelog": "github-changes --owner pragmaticivan --repository wizard --use-commit-body",
+    "generate-changelog": "github-changes --owner wedeploy --repository magnet --only-pulls --use-commit-body",
     "preversion": "npm test",
     "version": "npm run generate-changelog && git add CHANGELOG.md"
   },
