@@ -1,5 +1,4 @@
-export default (app) => {
-  // root v1
+module.exports = function(app) {
   app.get('/v1', (req, res) => {
     res.json({foo: 'bar'});
   });
@@ -8,4 +7,6 @@ export default (app) => {
   app.get('/', (req, res) => {
     res.json({foo: 'bar'});
   });
+
+  return this;
 };
