@@ -151,7 +151,7 @@ gulp.task('watch-bin', () => {
 gulp.task('watch', ['watch-backend', 'watch-bin', 'lint']);
 
 gulp.task('test:watch', () => {
-  gulp.watch(watchFiles, ['coverage']);
+  gulp.watch(watchFiles, ['test']);
 });
 
 gulp.task('test', test);
