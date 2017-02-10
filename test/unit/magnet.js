@@ -1,19 +1,19 @@
 import Magnet from '../../src/magnet';
 import ExpressEngine from '../../src/server/express-engine';
 import Server from '../../src/server/server';
-import {existsSync} from 'fs';
-import path from 'path';
+// import {existsSync} from 'fs';
+// import path from 'path';
 import wiston from 'winston';
 
 
-describe('Magnet', function () {
-  describe('#getAppEnvironment', function () {
-    it('should return an empty object if nothin is defined after magnet object', function () {
+describe('Magnet', function() {
+  describe('#getAppEnvironment', function() {
+    it('should return an empty object if nothing is defined on enviroment', function() {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
-        }
+          host: 'localhost',
+        },
       };
 
       const engine = new ExpressEngine();
@@ -27,13 +27,13 @@ describe('Magnet', function () {
       let magnet = new Magnet(magnetConfig);
 
       expect(magnet.getAppEnvironment()).to.deep.equal({});
-
     });
-    it('should return atribbutes and exclude the object magnet', function () {
+
+    it('should return atribbutes and exclude the object magnet', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
+          host: 'localhost',
         },
         foo: 'bar',
       };
@@ -52,12 +52,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getDirectory', function () {
-    it('should return the same directory provided on the constructor', function () {
+  describe('#getDirectory', function() {
+    it('should return the same directory provided on the constructor', function() {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
+          host: 'localhost',
         },
       };
 
@@ -75,12 +75,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getServerEngine', function () {
-    it('should return the current server engine', function () {
+  describe('#getServerEngine', function() {
+    it('should return the current server engine', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
+          host: 'localhost',
         },
       };
 
@@ -98,12 +98,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getEnvironment', function () {
-    it('should return the current environment', function () {
+  describe('#getEnvironment', function() {
+    it('should return the current environment', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
+          host: 'localhost',
         },
       };
 
@@ -117,35 +117,35 @@ describe('Magnet', function () {
 
       let magnet = new Magnet(magnetConfig);
 
-      const expected =  {
+      const expected = {
                           server: {
                             isTest: false,
                             port: 5000,
-                            host: 'localhost'
+                            host: 'localhost',
                           },
                           express: {
-                            bodyParser: { extended: true },
+                            bodyParser: {extended: true},
                             wizard: {
                               verbose: true,
                               cwd: '/foo',
                               logger: wiston,
-                            }
+                            },
                           },
                           injectionFiles: [],
                           exclusionFiles: [],
-                          appEnvironment: {}
+                          appEnvironment: {},
                         };
 
       expect(magnet.getEnvironment()).to.deep.equal(expected);
     });
   });
 
-  describe('#getHost', function () {
-    it('should get the current host', function () {
+  describe('#getHost', function() {
+    it('should get the current host', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -163,12 +163,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getPort', function () {
-    it('should get the current port', function () {
+  describe('#getPort', function() {
+    it('should get the current port', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -186,12 +186,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getServer', function () {
-    it('should get the current server instance', function () {
+  describe('#getServer', function() {
+    it('should get the current server instance', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -214,12 +214,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getStartLifecycle', function () {
-    it('should get the start lifecycle ', function () {
+  describe('#getStartLifecycle', function() {
+    it('should get the start lifecycle ', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -243,12 +243,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getStopLifecycle', function () {
-    it('should get the stop lifecycle ', function () {
+  describe('#getStopLifecycle', function() {
+    it('should get the stop lifecycle ', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -272,13 +272,13 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#getTestBehavior', function () {
-    it('should get the test behavior equal to true when specified on app environment', function () {
+  describe('#getTestBehavior', function() {
+    it('should get the test behavior equal to true when specified on app environment', function() {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
           host: 'testhost',
-          isTest: true
+          isTest: true,
         },
       };
 
@@ -295,11 +295,11 @@ describe('Magnet', function () {
       expect(magnet.getTestBehavior()).to.equal(true);
     });
 
-    it('should get the test behavior equal to false if not specified', function () {
+    it('should get the test behavior equal to false if not specified', function() {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -317,12 +317,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#setupApplication', function () {
+  describe('#setupApplication', function() {
     it('should inject dependencies of all the files', async () => {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'localhost'
+          host: 'localhost',
         },
       };
 
@@ -341,12 +341,12 @@ describe('Magnet', function () {
       expect(internalEngine.controllers.one).to.be.an.instanceof(Function);
     });
 
-    it('should inject dependencies selected files if specified on injectionFiles app config ', async () => {
+    it('should inject dependencies selected files if specified on injectionFiles app config ', async () => {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
           host: 'localhost',
-          injectionFiles: ['models/**/*.js']
+          injectionFiles: ['models/**/*.js'],
         },
       };
 
@@ -366,12 +366,12 @@ describe('Magnet', function () {
       expect(internalEngine.controllers).to.be.undefined;
     });
 
-    it('should exclude dependencies selected files if specified on exclusionFiles app config ', async () => {
+    it('should exclude dependencies selected files if specified on exclusionFiles app config ', async () => {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
           port: 5000,
           host: 'localhost',
-          exclusionFiles: ['models/**/*.js']
+          exclusionFiles: ['models/**/*.js'],
         },
       };
 
@@ -392,20 +392,20 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#start', function () {
+  describe('#start', function() {
 
   });
 
-  describe('#stop', function () {
+  describe('#stop', function() {
 
   });
 
-  describe('#setDirectory', function () {
-    it('should set app directory', function () {
+  describe('#setDirectory', function() {
+    it('should set app directory', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -424,12 +424,12 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#setEnvironment', function () {
-    it('should setEnvironment', function () {
+  describe('#setEnvironment', function() {
+    it('should setEnvironment', function() {
       const magnetEnv = {
         magnet: {
           port: 5000,
-          host: 'testhost'
+          host: 'testhost',
         },
       };
 
@@ -448,50 +448,34 @@ describe('Magnet', function () {
     });
   });
 
-  describe('#setServerEngine', function () {
+  describe('#setServerEngine', function() {
 
   });
 
-  describe('#setHost', function () {
+  describe('#setHost', function() {
 
   });
 
-  describe('#setServer', function () {
+  describe('#setServer', function() {
 
   });
 
-  describe('#setPort', function () {
+  describe('#setPort', function() {
 
   });
 
-  describe('#setStartLifecycle', function () {
+  describe('#setStartLifecycle', function() {
 
   });
 
-  describe('#setStopLifecycle', function () {
+  describe('#setStopLifecycle', function() {
 
   });
 
-  describe('#setTestBehavior', function () {
+  describe('#setTestBehavior', function() {
 
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // describe('magnet', function() {
 // 	it('sandbox', async () => {

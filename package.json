@@ -59,6 +59,7 @@
     "eslint": "^3.13.1",
     "eslint-config-google": "^0.7.1",
     "eslint-loader": "^1.6.1",
+    "github-changes": "^1.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-cached": "^1.1.1",
