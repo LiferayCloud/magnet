@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="http://travis-ci.com/wedeploy/magnet">
-    <img src="https://secure.travis-ci.com/wedeploy/magnet.svg?branch=master" alt="Travis CI" />
+    <img src="https://travis-ci.com/wedeploy/magnet.svg?token=a51FNuiJPYZtHhup9q1V&branch=master" alt="Travis CI" />
   </a>
 
   <a href="https://codecov.io/gh/wedeploy/magnet">
