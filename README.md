@@ -3,8 +3,8 @@
 <h5 align="center">The API framework for nodejs.</h5>
 
 <div align="center">
-  <a href="http://travis-ci.org/wedeploy/magnet">
-    <img src="https://secure.travis-ci.org/wedeploy/magnet.svg?branch=master" alt="Travis CI" />
+  <a href="http://travis-ci.com/wedeploy/magnet">
+    <img src="https://secure.travis-ci.com/wedeploy/magnet.svg?branch=master" alt="Travis CI" />
   </a>
 
   <a href="https://codecov.io/gh/wedeploy/magnet">
