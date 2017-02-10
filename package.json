@@ -28,6 +28,10 @@
   "bin": {
     "magnet": "build/bin/magnet"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wedeploy/magnet.git"
+  },
   "homepage": "https://github.com/wedeploy/magnet",
   "dependencies": {
     "bluebird": "^3.4.7",
