@@ -10,6 +10,7 @@ import ExpressEngine from './server/express-engine';
 import {assertDefAndNotNull} from './assertions';
 import {errorMiddleware} from './middleware/general-errors';
 import Server from './server/server';
+import environment from './environment';
 
 /**
  * Main class.
@@ -203,8 +204,7 @@ class Magnet {
    * @param {String} appEnv application environment variables.
    */
   loadEnvironment_(appEnv) {
-    const env = require('./environment')(this.getDirectory(), appEnv);
-    this.environment_ = env;
+    this.environment_ = environment(this.getDirectory(), appEnv);
   }
 
   /**
