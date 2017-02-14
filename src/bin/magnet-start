@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony-async-await
 
 import parseArgs from 'minimist';
 import path from 'path';
