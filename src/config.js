@@ -13,7 +13,7 @@ const baseConfig = () => {
         ],
         host: 'localhost',
         injectionFiles: [
-          '**/*.js'
+          '**/*.js',
         ],
         isTest: false,
         port: 80,
