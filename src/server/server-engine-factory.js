@@ -5,24 +5,27 @@ import ExpressEngine from './express-engine';
  */
 class ServerEngineFactory {
   /**
-   * Constructor
-   * @param  {String} type Engine type
-   */
-  constructor(type = 'express') {
-    this.factoryType = type;
-  }
-
-  /**
    * Creates factory.
-   * @return {BaseEngine|Error}
+   * @param {ServerEngineFactory.Types} type
+   * @return {BaseEngine}
+   * @throws Error
    */
-  create() {
-    if(this.factoryType === 'express') {
-      return new ExpressEngine();
-    } else {
-      throw new Error('Engine not implemented.');
+  static create(type = ServerEngineFactory.Types.EXPRESS) {
+    switch (type) {
+      case ServerEngineFactory.Types.EXPRESS:
+        return new ExpressEngine();
+      default:
+        throw new Error('Engine not implemented');
     }
   }
 }
+
+/**
+ * Types of server engines.
+ * @enum {string}
+ */
+ServerEngineFactory.Types = {
+  EXPRESS: 'express',
+};
 
 export default ServerEngineFactory;

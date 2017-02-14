@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { join } from 'path';
+import {join} from 'path';
 import pkg from '../../package.json';
 import {spawn} from 'cross-spawn';
 
 const defaultCommand = 'start';
 const commands = new Set([
-  defaultCommand
+  defaultCommand,
 ]);
 
 let cmd = process.argv[2];
@@ -40,11 +40,11 @@ if (commands.has(cmd)) {
 
 const bin = join(__dirname, 'magnet-' + cmd);
 
-const proc = spawn(bin, args, { stdio: 'inherit' });
+const proc = spawn(bin, args, {stdio: 'inherit'});
 
 proc.on('close', (code) => process.exit(code));
 
 proc.on('error', (err) => {
-  console.error(err) // eslint-disable-line no-console
-  process.exit(1)
+  console.error(err);
+  process.exit(1);
 });

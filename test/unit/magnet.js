@@ -1,58 +1,12 @@
 import Magnet from '../../src/magnet';
 import ExpressEngine from '../../src/server/express-engine';
 import Server from '../../src/server/server';
-// import {existsSync} from 'fs';
-// import path from 'path';
-import wiston from 'winston';
-
 
 describe('Magnet', function() {
   describe('#getAppEnvironment', function() {
-    it('should return an empty object if nothing is defined on enviroment', function() {// eslint-disable-line max-len
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-      };
-
-      const engine = new ExpressEngine();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/',
-        serverEngine: engine,
-      };
-
-      let magnet = new Magnet(magnetConfig);
-
-      expect(magnet.getAppEnvironment()).to.deep.equal({});
-    });
-
-    it('should return atribbutes and exclude the object magnet', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-        foo: 'bar',
-      };
-
-      const engine = new ExpressEngine();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/',
-        serverEngine: engine,
-      };
-
-      let magnet = new Magnet(magnetConfig);
-
-      expect(magnet.getAppEnvironment()).to.deep.equal({foo: 'bar'});
-    });
   });
 
-  describe('#getDirectory', function() {
+  describe('#getAppDirectory', function() {
     it('should return the same directory provided on the constructor', function() {// eslint-disable-line max-len
       const magnetEnv = {
         magnet: {
@@ -71,7 +25,7 @@ describe('Magnet', function() {
 
       let magnet = new Magnet(magnetConfig);
 
-      expect(magnet.getDirectory()).to.equal('/foo');
+      expect(magnet.getAppDirectory()).to.equal('/foo');
     });
   });
 
@@ -95,48 +49,6 @@ describe('Magnet', function() {
       let magnet = new Magnet(magnetConfig);
 
       expect(magnet.getServerEngine()).to.deep.equal(engine);
-    });
-  });
-
-  describe('#getEnvironment', function() {
-    it('should return the current environment', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-      };
-
-      const engine = new ExpressEngine();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/foo',
-        serverEngine: engine,
-      };
-
-      let magnet = new Magnet(magnetConfig);
-
-      const expected = {
-                          server: {
-                            isTest: false,
-                            port: 5000,
-                            host: 'localhost',
-                          },
-                          express: {
-                            bodyParser: {extended: true},
-                            wizard: {
-                              verbose: true,
-                              cwd: '/foo',
-                              logger: wiston,
-                            },
-                          },
-                          injectionFiles: [],
-                          exclusionFiles: [],
-                          appEnvironment: {},
-                        };
-
-      expect(magnet.getEnvironment()).to.deep.equal(expected);
     });
   });
 
@@ -319,7 +231,7 @@ describe('Magnet', function() {
 
   describe('#setupApplication', function() {
     it('should inject dependencies of all the files', async () => {
-      const magnetEnv = {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'localhost',
@@ -327,11 +239,11 @@ describe('Magnet', function() {
       };
 
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const engine = new ExpressEngine();
+      const serverEngine = new ExpressEngine();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: appDirectory,
-        serverEngine: engine,
+        appEnvironment,
+        appDirectory,
+        serverEngine,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -400,7 +312,7 @@ describe('Magnet', function() {
 
   });
 
-  describe('#setDirectory', function() {
+  describe('#setAppDirectory', function() {
     it('should set app directory', function() {
       const magnetEnv = {
         magnet: {
@@ -418,33 +330,9 @@ describe('Magnet', function() {
       };
 
       const magnet = new Magnet(magnetConfig);
-      magnet.setDirectory('/newDirectory');
+      magnet.setAppDirectory('/newDirectory');
 
-      expect(magnet.getDirectory()).to.equal('/newDirectory');
-    });
-  });
-
-  describe('#setEnvironment', function() {
-    it('should setEnvironment', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const engine = new ExpressEngine();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/foo',
-        serverEngine: engine,
-      };
-
-      const magnet = new Magnet(magnetConfig);
-      magnet.setEnvironment({foo: 'bar'});
-
-      expect(magnet.getEnvironment()).to.deep.equal({foo: 'bar'});
+      expect(magnet.getAppDirectory()).to.equal('/newDirectory');
     });
   });
 

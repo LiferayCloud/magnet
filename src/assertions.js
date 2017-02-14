@@ -12,23 +12,23 @@ export function assertDefAndNotNull(value, errorMessage) {
 }
 
 /**
- * Asserts value is not null.
- * @param  {Object} value
- * @param  {string} errorMessage Error message
- */
-export function assertNotNull(value, errorMessage) {
-  if (isNull(value)) {
-    throw new Error(errorMessage);
-  }
-}
-
-/**
  * Asserts value is a function.
  * @param  {Function} value
  * @param  {string} errorMessage Error message
  */
 export function assertFunction(value, errorMessage) {
   if (!isFunction(value)) {
+    throw new Error(errorMessage);
+  }
+}
+
+/**
+ * Asserts value is not null.
+ * @param  {Object} value
+ * @param  {string} errorMessage Error message
+ */
+export function assertNotNull(value, errorMessage) {
+  if (isNull(value)) {
     throw new Error(errorMessage);
   }
 }

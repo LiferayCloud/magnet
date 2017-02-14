@@ -5,7 +5,6 @@ import BaseEngine from './base-engine';
  * Engine interface
  */
 class ExpressEngine extends BaseEngine {
-
   /**
    * Constructor
    */

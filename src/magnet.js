@@ -10,7 +10,7 @@ import ExpressEngine from './server/express-engine';
 import {assertDefAndNotNull} from './assertions';
 import {errorMiddleware} from './middleware/general-errors';
 import Server from './server/server';
-import environment from './environment';
+import {loadConfig} from './config';
 
 /**
  * Main class.
@@ -22,17 +22,26 @@ class Magnet {
    * @param  {Object} config
    */
   constructor(config) {
-    assertDefAndNotNull(config, 'The config param is required.');
-    assertDefAndNotNull(config.appDirectory, 'Specify app directory.');
-    assertDefAndNotNull(config.serverEngine, 'Specify server engine.');
-    assertDefAndNotNull(config.appEnvironment, 'Specify app environment.');
+    assertDefAndNotNull(config, 'The config param is required');
+    assertDefAndNotNull(config.appDirectory, 'Specify app directory');
+    assertDefAndNotNull(config.serverEngine, 'Specify server engine');
+    assertDefAndNotNull(config.appEnvironment, 'Specify app environment');
 
-    this.setDirectory(config.appDirectory);
+    this.environment_ = loadConfig(config.appDirectory, config.appEnvironment);
+
+    this.setAppDirectory(config.appDirectory);
+    this.setHost(this.getAppEnvironment().magnet.host);
+    this.setPort(this.getAppEnvironment().magnet.port);
     this.setServerEngine(config.serverEngine);
-    this.loadEnvironment_(config.appEnvironment);
-    this.setPort(this.getEnvironment().server.port);
-    this.setHost(this.getEnvironment().server.host);
-    this.setTestBehavior(this.getEnvironment().server.isTest);
+    this.setTestBehavior(this.getAppEnvironment().magnet.isTest);
+  }
+
+  /**
+   * Get app directory.
+   * @return {String} application directory.
+   */
+  getAppDirectory() {
+    return this.appDirectory;
   }
 
   /**
@@ -40,31 +49,16 @@ class Magnet {
    * @return {Object}
    */
   getAppEnvironment() {
-    return this.getEnvironment().appEnvironment;
+    return this.environment_.app;
   }
 
   /**
-   * Get directory.
-   * @return {String} application directory.
+   * Get internal environment
+   * @return {Object}
+   * @protected
    */
-  getDirectory() {
-    return this.directory;
-  }
-
-  /**
-   * Gets server engine.
-   * @return {Express} Express instance.
-   */
-  getServerEngine() {
-    return this.serverEngine_;
-  }
-
-  /**
-   * Get environment.
-   * @return {Object} environment.
-   */
-  getEnvironment() {
-    return this.environment_;
+  getInternalEnvironment() {
+    return this.environment_.internal;
   }
 
   /**
@@ -89,6 +83,14 @@ class Magnet {
    */
   getServer() {
     return this.server_;
+  }
+
+  /**
+   * Gets server engine.
+   * @return {Express} Express instance.
+   */
+  getServerEngine() {
+    return this.serverEngine_;
   }
 
   /**
@@ -119,36 +121,32 @@ class Magnet {
    * Loads app directories into the engine.
    * @param  {Magnet} instance
    * @return {Magnet}
+   * @protected
    */
-  async loadApplication_() {
+  async loadApplication() {
     logger.info('[APP]', 'Loading middlewares, models and routes');
 
     try {
-      let wizard = new Wizard(this.getEnvironment().express.wizard);
+      let magnetConfig = this.getAppEnvironment().magnet;
+      let expressConfig = this.getInternalEnvironment().express;
 
-      if (this.getEnvironment().injectionFiles.length > 0) {
-        this.getEnvironment().injectionFiles.forEach((stack) => {
-          wizard = wizard.inject(stack);
+      let wizard = new Wizard(expressConfig.wizard);
+
+      if (magnetConfig.injectionFiles.length > 0) {
+        magnetConfig.injectionFiles.forEach((glob) => {
+          wizard.inject(glob);
         });
-      } else {
-        wizard = wizard.inject('**/*.js');
       }
 
-      if (this.getEnvironment().exclusionFiles.length > 0) {
-        this.getEnvironment().exclusionFiles.forEach((stack) => {
-          wizard = wizard.exclude(stack);
+      if (magnetConfig.exclusionFiles.length > 0) {
+        magnetConfig.exclusionFiles.forEach((glob) => {
+          wizard.exclude(glob);
         });
-      } else {
-        wizard = wizard.exclude('node_modules/**')
-        .exclude('start.js')
-        .exclude('stop.js')
-        .exclude('dist/**')
-        .exclude('build/**');
       }
 
       await wizard.into(this.getServerEngine().getEngine(), this);
     } catch(e) {
-      logger.error('eita', e);
+      logger.error(e);
     }
 
     return this;
@@ -159,13 +157,11 @@ class Magnet {
    * @return {Magnet}
    */
   loadBodyParser_() {
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
-      .use(bodyParser.urlencoded({extended: true}));
+      .use(bodyParser.urlencoded({extended: false}));
 
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
       .use(bodyParser.json({type: '*/*'}));
 
@@ -177,8 +173,7 @@ class Magnet {
    * @return {Magnet}
    */
   loadCompression_() {
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
       .use(compression());
     return this;
@@ -189,7 +184,7 @@ class Magnet {
    * @param  {Magnet} instance
    * @return {Magnet}
    */
-  loadEngineDependencies_() {
+  loadEngineMiddlewares_() {
     this.loadHttpLogger_()
       .loadBodyParser_()
       .loadSecurity_()
@@ -200,22 +195,13 @@ class Magnet {
   }
 
   /**
-   * Load environment from app.
-   * @param {String} appEnv application environment variables.
-   */
-  loadEnvironment_(appEnv) {
-    this.environment_ = environment(this.getDirectory(), appEnv);
-  }
-
-  /**
    * Setup general error middleware.
    * @return {Magnet}
    */
   loadGeneralErrorMiddleware_() {
     logger.info('[APP]', 'Configuring error handler');
     const engine = this.getServerEngine().getEngine();
-    engine.use(errorMiddleware(engine.get('env')));
-
+    engine.use(errorMiddleware());
     return this;
   }
 
@@ -224,8 +210,7 @@ class Magnet {
    * @return {Magnet}
    */
   loadHttpLogger_() {
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
       .use(morgan('common'));
 
@@ -237,8 +222,7 @@ class Magnet {
    * @return {Magnet}
    */
   loadSecurity_() {
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
       .use(helmet());
 
@@ -250,10 +234,10 @@ class Magnet {
    * @return {Magnet}
    */
   loadStaticFiles_() {
-    this
-      .getServerEngine()
+    this.getServerEngine()
       .getEngine()
-      .use('/static', express.static(path.join(this.getDirectory(), 'static')));
+      .use('/static', express.static(
+        path.join(this.getAppDirectory(), 'static')));
 
     return this;
   }
@@ -283,15 +267,23 @@ class Magnet {
   }
 
   /**
+   * Set app directory.
+   * @param {string} appDirectory
+   */
+  setAppDirectory(appDirectory) {
+    this.appDirectory = appDirectory;
+  }
+
+  /**
    * Setup application.
    * @return {Magnet}
    */
   async setupApplication() {
     try {
-      this.loadEngineDependencies_()
+      this.loadEngineMiddlewares_()
         .maybeCallStartHook_();
 
-      await this.loadApplication_();
+      await this.loadApplication();
 
       this.loadGeneralErrorMiddleware_();
 
@@ -329,6 +321,7 @@ class Magnet {
    */
   stop() {
     logger.info('[APP]', 'Received kill signal, shutting down gracefully.');
+
     this.maybeCallStopHook_();
 
     this
@@ -336,22 +329,6 @@ class Magnet {
       .close(() => {
         logger.info('[SERVER]', 'Closed out remaining connections.');
       });
-  }
-
-  /**
-   * Set directory.
-   * @param {string} directory
-   */
-  setDirectory(directory) {
-    this.directory = directory;
-  }
-
-  /**
-   * Set environment.
-   * @param {string} env
-   */
-  setEnvironment(env) {
-    this.environment_ = env;
   }
 
   /**

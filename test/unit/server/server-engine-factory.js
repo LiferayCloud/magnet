@@ -3,19 +3,19 @@ import ExpressEngine from '../../../src/server/express-engine';
 
 describe('ServerEngineFactory', function() {
   it('should create an instance of a express by default', () => {
-    const engine = new ServerEngineFactory();
-    expect(engine.create() instanceof ExpressEngine).to.equal(true);
+    let engine = ServerEngineFactory.create();
+    expect(engine instanceof ExpressEngine).to.equal(true);
   });
 
   it('should create an instance of a express by passing a param', () => {
-    const engine = new ServerEngineFactory('express');
-    expect(engine.create() instanceof ExpressEngine).to.equal(true);
+    const engine = ServerEngineFactory.create(
+      ServerEngineFactory.Types.EXPRESS);
+    expect(engine instanceof ExpressEngine).to.equal(true);
   });
 
   it('should thrown an error if the specified type is not implemented', () => {
     expect(function() {
-      const engine = new ServerEngineFactory('notImplemented');
-      engine.create();
-    }).to.throw('Engine not implemented.');
+      ServerEngineFactory.create('notImplemented');
+    }).to.throw('Engine not implemented');
   });
 });

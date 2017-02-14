@@ -1,27 +1,27 @@
 #!/usr/bin/env node
 
-import parseArgs from 'minimist'
-import path from 'path'
-import { existsSync } from 'fs';
+import parseArgs from 'minimist';
+import path from 'path';
+import {existsSync} from 'fs';
 import Magnet from '../magnet';
 import _ from 'lodash';
 import {ExpressEngine} from '../magnet';
 import chokidar from 'chokidar';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-const rootDir = process.cwd();
-const { NODE_ENV } = process.env;
+
+const appDirectory = process.cwd();
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     h: 'help',
     p: 'port',
-    e: 'env'
+    e: 'env',
   },
   boolean: ['h'],
   default: {
-    p: 3000
-  }
+    p: 3000,
+  },
 });
 
 if (argv.help) {
@@ -35,43 +35,42 @@ if (argv.help) {
       --port, -p      A port number on which to start the application
       --env, -e       Environemnt config file path
       --help, -h      Displays this message
-  `)
-  process.exit(0)
+  `);
+  process.exit(0);
 }
 
-let magnetEnv = {};
+let appEnvironment = {};
 
 if (argv.env) {
-  if (existsSync(path.join(rootDir, argv.env))) {
-    magnetEnv = require(path.join(rootDir, argv.env));
-    if (magnetEnv.default) {
-      magnetEnv = magnetEnv.default;
+  if (existsSync(path.join(appDirectory, argv.env))) {
+    appEnvironment = require(path.join(appDirectory, argv.env));
+    if (appEnvironment.default) {
+      appEnvironment = appEnvironment.default;
     }
   } else {
     console.log('Environment file doesn\'t exist.');
     process.exit(1);
   }
 } else {
-  magnetEnv = {
+  appEnvironment = {
     magnet: {
       port: argv.port,
-      host: 'localhost'
-    }
+      host: 'localhost',
+    },
   };
 }
 
-const engine = new ExpressEngine();
-const magnetConfig = {
-  appEnvironment: magnetEnv,
-  appDirectory: rootDir,
-  serverEngine: engine,
-};
+const serverEngine = new ExpressEngine();
 
-let magnet = new Magnet(magnetConfig);
+let magnet = new Magnet({
+  appEnvironment,
+  appDirectory,
+  serverEngine,
+});
 
 // - External Start and Stop
-if (existsSync(path.join(rootDir, 'start.js'))) {
-  let startFn = require(path.join(rootDir, 'start.js'));
+if (existsSync(path.join(appDirectory, 'start.js'))) {
+  let startFn = require(path.join(appDirectory, 'start.js'));
 
   if (startFn.default) {
     startFn = startFn.default;
@@ -80,8 +79,8 @@ if (existsSync(path.join(rootDir, 'start.js'))) {
   magnet.setStartLifecycle(startFn);
 }
 
-if (existsSync(path.join(rootDir, 'stop.js'))) {
-  let stopFn = require(path.join(rootDir, 'stop.js'));
+if (existsSync(path.join(appDirectory, 'stop.js'))) {
+  let stopFn = require(path.join(appDirectory, 'stop.js'));
 
   if (stopFn.default) {
     stopFn = stopFn.default;
@@ -102,19 +101,17 @@ if (existsSync(path.join(rootDir, 'stop.js'))) {
 //   magnet.stop();
 // });
 
-
-
 magnet.setupApplication()
       .then((instance) => {
         magnet.start(instance);
       });
 
-const watcher = chokidar.watch(`${rootDir}/**/*`, {
-  ignoreInitial: true
+const watcher = chokidar.watch(`${appDirectory}/**/*`, {
+  ignoreInitial: true,
 });
 
 const refreshFiles = _.debounce(() => {
-    const d = Date.now()
+    const d = Date.now();
 
     const fileGen = new Promise((resolve, reject) => {
       if (magnet) {
@@ -122,10 +119,10 @@ const refreshFiles = _.debounce(() => {
       }
       const newEngine = new ExpressEngine();
       const newMagnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: rootDir,
+        appEnvironment,
+        appDirectory,
         serverEngine: newEngine,
-      }
+      };
       magnet = new Magnet(newMagnetConfig);
       magnet.setupApplication()
             .then((instance) => {
@@ -135,10 +132,8 @@ const refreshFiles = _.debounce(() => {
     });
 
     fileGen.then(() => {
-      console.log('Time to gen:' + (Date.now() - d) + 'ms')
-    })
-
+      console.log('Time to gen:' + (Date.now() - d) + 'ms');
+    });
   }, 200);
 
-watcher
-  .on('change',refreshFiles);
+watcher.on('change', refreshFiles);
