@@ -45,6 +45,7 @@
     "helmet": "^3.3.0",
     "lodash": "^4.17.4",
     "lx-valid": "^1.2.4",
+    "metal": "^2.6.0",
     "minimist": "^1.2.0",
     "morgan": "^1.6.0",
     "nodemon": "^1.11.0",

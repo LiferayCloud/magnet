@@ -1,4 +1,4 @@
-import {isDefAndNotNull, isNull, isFunction, isObject} from './util';
+import {isDefAndNotNull, isNull, isFunction, isObject} from 'metal';
 
 /**
  * Asserts value is defined and not null.
