@@ -35,7 +35,6 @@
   },
   "homepage": "https://github.com/wedeploy/magnet",
   "dependencies": {
-    "bluebird": "^3.4.7",
     "body-parser": "^1.13.1",
     "compression": "^1.6.2",
     "cross-spawn": "^5.0.1",
@@ -54,7 +53,6 @@
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
     "babel-plugin-transform-async-to-module-method": "^6.22.0",
-    "babel-plugin-transform-promise-to-bluebird": "^1.1.1",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
     "chai": "^3.5.0",
