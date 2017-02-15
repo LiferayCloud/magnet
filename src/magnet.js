@@ -95,14 +95,6 @@ class Magnet {
   }
 
   /**
-   * Get stop lifecycle function.
-   * @return {function}
-   */
-  getStopLifecycle() {
-    return this.stopFn_;
-  }
-
-  /**
    * Get test behavior.
    * @return {boolean} Test behavior.
    */
@@ -226,15 +218,6 @@ class Magnet {
   }
 
   /**
-   * Maybe execute stop hook.
-   */
-  maybeCallStopHook_() {
-    if (isFunction(this.getStopLifecycle())) {
-      this.getStopLifecycle().call(this, this);
-    }
-  }
-
-  /**
    * Set app directory.
    * @param {string} appDirectory
    */
@@ -272,8 +255,6 @@ class Magnet {
     await this.getServer().close();
 
     logger.info('[SERVER]', 'Closed out remaining connections.');
-
-    this.maybeCallStopHook_();
   }
 
   /**
@@ -306,14 +287,6 @@ class Magnet {
    */
   setStartLifecycle(fn) {
     this.startFn_ = fn;
-  }
-
-  /**
-   * Set stop lifecycle function.
-   * @param {function} fn
-   */
-  setStopLifecycle(fn) {
-    this.stopFn_ = fn;
   }
 
   /**

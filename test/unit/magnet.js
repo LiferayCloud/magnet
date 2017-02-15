@@ -128,35 +128,6 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#getStopLifecycle', function() {
-    it('should get the stop lifecycle ', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const server = ServerFactory.create();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/foo',
-        server,
-      };
-
-      const magnet = new Magnet(magnetConfig);
-
-      const stopFn = (app) => {
-        app.foo = 'bar';
-      };
-
-      magnet.setStopLifecycle(stopFn);
-
-      expect(magnet.getStopLifecycle()).to.equal(stopFn);
-    });
-  });
-
   describe('#getTestBehavior', function() {
     it('should get the test behavior equal to true when specified on app environment', function() {// eslint-disable-line max-len
       const magnetEnv = {
@@ -319,10 +290,6 @@ describe('Magnet', function() {
 
   });
 
-  describe('#setStopLifecycle', function() {
-
-  });
-
   describe('#setTestBehavior', function() {
 
   });
@@ -336,58 +303,3 @@ describe('Magnet', function() {
 function isExpress(obj) {
   return obj && obj.name === 'app' && isFunction(obj.use);
 }
-
-// describe('magnet', function() {
-// 	it('sandbox', async () => {
-//     // - External Env Var
-//     // Start using default file export
-//     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-//     const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-
-//     const env = {
-//       magnet: {
-//         port: 8888,
-//         host: 'localhost',
-//       },
-//     };
-
-//     const engine = new ExpressEngine();
-
-//     const magnetConfig = {
-//       appEnvironment: env,
-//       appDirectory: appDirectory,
-//       serverEngine: engine,
-//     };
-
-//     const magnet = new Magnet(magnetConfig);
-
-//     // - External Start and Stop
-//     if (existsSync(path.join(appDirectory, 'start.js'))) {
-//       let startFn = require(path.join(appDirectory, 'start.js'));
-
-//       if (startFn.default) {
-//         startFn = startFn.default;
-//       }
-
-//       magnet.setStartLifecycle(startFn);
-//     }
-
-//     if (existsSync(path.join(appDirectory, 'stop.js'))) {
-//       let stopFn = require(path.join(appDirectory, 'stop.js'));
-
-//       if (stopFn.default) {
-//         stopFn = stopFn.default;
-//       }
-
-//       magnet.setStopLifecycle(stopFn);
-//     }
-
-//     magnet.setupApplication()
-//       // .then(magnet.start);
-//       .then((instance) => {
-//         // console.log(instance);
-//         // magnet.start(instance).listen();
-//         // console.log(instance.getEngine().controllers.one.toString());
-//       });
-// 	});
-// });

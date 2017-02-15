@@ -75,22 +75,4 @@ if (existsSync(path.join(appDirectory, 'start.js'))) {
   magnet.setStartLifecycle(startFn);
 }
 
-if (existsSync(path.join(appDirectory, 'stop.js'))) {
-  let stopFn = require(path.join(appDirectory, 'stop.js'));
-
-  if (stopFn.default) {
-    stopFn = stopFn.default;
-  }
-
-  magnet.setStopLifecycle(stopFn);
-}
-
 magnet.start();
-
-process.on('SIGTERM', () => {
-  magnet.stop();
-});
-
-process.on('SIGINT', () => {
-  magnet.stop();
-});

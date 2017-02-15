@@ -9,7 +9,6 @@ const baseConfig = () => {
             'dist/**',
             'node_modules/**',
             'start.js',
-            'stop.js',
         ],
         host: 'localhost',
         injectionFiles: [
