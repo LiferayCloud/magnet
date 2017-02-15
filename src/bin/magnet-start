@@ -7,6 +7,7 @@ import Magnet from '../magnet';
 import _ from 'lodash';
 import {ExpressEngine} from '../magnet';
 import chokidar from 'chokidar';
+import {Magnet, ServerFactory} from '../';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
@@ -60,15 +61,14 @@ if (argv.env) {
   };
 }
 
-const serverEngine = new ExpressEngine();
+const server = ServerFactory.create();
 
 let magnet = new Magnet({
   appEnvironment,
   appDirectory,
-  serverEngine,
+  server,
 });
 
-// - External Start and Stop
 if (existsSync(path.join(appDirectory, 'start.js'))) {
   let startFn = require(path.join(appDirectory, 'start.js'));
 

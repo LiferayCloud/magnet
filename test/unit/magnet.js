@@ -1,6 +1,6 @@
 import Magnet from '../../src/magnet';
-import ExpressEngine from '../../src/server/express-engine';
-import Server from '../../src/server/server';
+import ServerFactory from '../../src/server/server-factory';
+import {isFunction} from 'metal';
 
 describe('Magnet', function() {
   describe('#getAppEnvironment', function() {
@@ -8,121 +8,94 @@ describe('Magnet', function() {
 
   describe('#getAppDirectory', function() {
     it('should return the same directory provided on the constructor', function() {// eslint-disable-line max-len
-      const magnetEnv = {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'localhost',
         },
       };
-
-      const engine = new ExpressEngine();
-
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
-
       let magnet = new Magnet(magnetConfig);
-
       expect(magnet.getAppDirectory()).to.equal('/foo');
     });
   });
 
-  describe('#getServerEngine', function() {
-    it('should return the current server engine', function() {
-      const magnetEnv = {
+  describe('#getServer', function() {
+    it('should get the current server', function() {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'localhost',
         },
       };
-
-      const engine = new ExpressEngine();
-
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
-
       let magnet = new Magnet(magnetConfig);
-
-      expect(magnet.getServerEngine()).to.deep.equal(engine);
+      expect(magnet.getServer()).to.deep.equal(server);
     });
-  });
 
-  describe('#getHost', function() {
-    it('should get the current host', function() {
-      const magnetEnv = {
+    it('should get the current server engine', function() {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'testhost',
         },
       };
-
-      const engine = new ExpressEngine();
-
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
+      const magnet = new Magnet(magnetConfig);
+      expect(isExpress(magnet.getServer().getEngine())).to.equal(true);
+    });
+  });
 
+  describe('#getHost', function() {
+    it('should get the current host', function() {
+      const appEnvironment = {
+        magnet: {
+          port: 5000,
+          host: 'testhost',
+        },
+      };
+      const server = ServerFactory.create();
+      const magnetConfig = {
+        appEnvironment,
+        appDirectory: '/foo',
+        server,
+      };
       let magnet = new Magnet(magnetConfig);
-
       expect(magnet.getHost()).to.equal('testhost');
     });
   });
 
   describe('#getPort', function() {
     it('should get the current port', function() {
-      const magnetEnv = {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'testhost',
         },
       };
-
-      const engine = new ExpressEngine();
-
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
-
       let magnet = new Magnet(magnetConfig);
-
       expect(magnet.getPort()).to.equal(5000);
-    });
-  });
-
-  describe('#getServer', function() {
-    it('should get the current server instance', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const engine = new ExpressEngine();
-
-      const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: '/foo',
-        serverEngine: engine,
-      };
-
-      const magnet = new Magnet(magnetConfig);
-
-      const expressEngine = magnet.getServerEngine()
-                                  .getEngine();
-
-      magnet.setServer(expressEngine);
-
-      expect(magnet.getServer()).to.be.an.instanceof(Server);
     });
   });
 
@@ -135,12 +108,12 @@ describe('Magnet', function() {
         },
       };
 
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
 
       const magnetConfig = {
         appEnvironment: magnetEnv,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -164,12 +137,12 @@ describe('Magnet', function() {
         },
       };
 
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
 
       const magnetConfig = {
         appEnvironment: magnetEnv,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -194,12 +167,12 @@ describe('Magnet', function() {
         },
       };
 
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
 
       const magnetConfig = {
         appEnvironment: magnetEnv,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -215,12 +188,12 @@ describe('Magnet', function() {
         },
       };
 
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
 
       const magnetConfig = {
         appEnvironment: magnetEnv,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -229,7 +202,7 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#setupApplication', function() {
+  describe('#loadApplication', function() {
     it('should inject dependencies of all the files', async () => {
       const appEnvironment = {
         magnet: {
@@ -237,68 +210,59 @@ describe('Magnet', function() {
           host: 'localhost',
         },
       };
-
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const serverEngine = new ExpressEngine();
+      const server = ServerFactory.create();
       const magnetConfig = {
         appEnvironment,
         appDirectory,
-        serverEngine,
+        server,
       };
-
       const magnet = new Magnet(magnetConfig);
-      const instance = await magnet.setupApplication();
-      const internalEngine = instance.getServerEngine().getEngine();
-
+      await magnet.loadApplication();
+      const internalEngine = magnet.getServer().getEngine();
       expect(internalEngine.controllers.one).to.be.an.instanceof(Function);
     });
 
     it('should inject dependencies selected files if specified on injectionFiles app config ', async () => {// eslint-disable-line max-len
-      const magnetEnv = {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'localhost',
           injectionFiles: ['models/**/*.js'],
         },
       };
-
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: appDirectory,
-        serverEngine: engine,
+        appEnvironment,
+        appDirectory,
+        server,
       };
-
       const magnet = new Magnet(magnetConfig);
-      const instance = await magnet.setupApplication();
-      const internalEngine = instance.getServerEngine().getEngine();
-
+      await magnet.loadApplication();
+      const internalEngine = magnet.getServer().getEngine();
       expect(internalEngine.models.one).to.be.an.instanceof(Function);
       expect(internalEngine.controllers).to.be.undefined;
     });
 
     it('should exclude dependencies selected files if specified on exclusionFiles app config ', async () => {// eslint-disable-line max-len
-      const magnetEnv = {
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'localhost',
           exclusionFiles: ['models/**/*.js'],
         },
       };
-
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const engine = new ExpressEngine();
+      const server = ServerFactory.create();
       const magnetConfig = {
-        appEnvironment: magnetEnv,
-        appDirectory: appDirectory,
-        serverEngine: engine,
+        appEnvironment,
+        appDirectory,
+        server,
       };
-
       const magnet = new Magnet(magnetConfig);
-      const instance = await magnet.setupApplication();
-      const internalEngine = instance.getServerEngine().getEngine();
-
+      await magnet.loadApplication();
+      const internalEngine = magnet.getServer().getEngine();
       expect(internalEngine.controllers.one).to.be.an.instanceof(Function);
       expect(internalEngine.models).to.be.undefined;
     });
@@ -321,12 +285,11 @@ describe('Magnet', function() {
         },
       };
 
-      const engine = new ExpressEngine();
-
+      const server = ServerFactory.create();
       const magnetConfig = {
         appEnvironment: magnetEnv,
         appDirectory: '/foo',
-        serverEngine: engine,
+        server,
       };
 
       const magnet = new Magnet(magnetConfig);
@@ -364,6 +327,15 @@ describe('Magnet', function() {
 
   });
 });
+
+/**
+ * Checks if obj is an express() instance.
+ * @param {object} obj
+ * @return {Boolean}
+ */
+function isExpress(obj) {
+  return obj && obj.name === 'app' && isFunction(obj.use);
+}
 
 // describe('magnet', function() {
 // 	it('sandbox', async () => {
