@@ -24,17 +24,17 @@ class Server {
 
   /**
    * Gets the http server.
-   * @return {[type]} [description]
+   * @return {Http}
    */
   getHttpServer() {
-    return this.server_;
+    return this.httpServer_;
   }
 
   /**
    * Starts listening to specified host and port.
-   * @param  {integer} port
-   * @param  {string} host
-   * @param  {Function} cb
+   * @param {integer} port
+   * @param {string} host
+   * @param {function} cb
    * @return {Server}
    */
   listen(port = 3000, host = 'localhost') {
