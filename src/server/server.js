@@ -47,11 +47,12 @@ class Server {
 
   /**
    * Closes http server.
-   * @param  {Function} cb
-   * @return {boolean}
+   * @return {Promise}
    */
-  close(cb) {
-    return this.getHttpServer().close(cb);
+  close() {
+    return new Promise((resolve) => {
+      this.getHttpServer().close(() => resolve());
+    });
   }
 }
 
