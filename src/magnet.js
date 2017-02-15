@@ -5,11 +5,10 @@ import helmet from 'helmet';
 import logger from 'winston';
 import morgan from 'morgan';
 import path from 'path';
+import {isFunction} from 'metal';
 import Wizard from 'express-wizard';
-import ExpressEngine from './server/express-engine';
 import {assertDefAndNotNull} from './assertions';
 import {errorMiddleware} from './middleware/general-errors';
-import Server from './server/server';
 import {loadConfig} from './config';
 
 /**
@@ -23,16 +22,18 @@ class Magnet {
    */
   constructor(config) {
     assertDefAndNotNull(config, 'The config param is required');
+    assertDefAndNotNull(config.server, 'Specify server');
     assertDefAndNotNull(config.appDirectory, 'Specify app directory');
-    assertDefAndNotNull(config.serverEngine, 'Specify server engine');
     assertDefAndNotNull(config.appEnvironment, 'Specify app environment');
 
     this.environment_ = loadConfig(config.appDirectory, config.appEnvironment);
 
+    this.setServer(config.server);
     this.setAppDirectory(config.appDirectory);
+    this.loadServerEngineMiddlewares_();
+
     this.setHost(this.getAppEnvironment().magnet.host);
     this.setPort(this.getAppEnvironment().magnet.port);
-    this.setServerEngine(config.serverEngine);
     this.setTestBehavior(this.getAppEnvironment().magnet.isTest);
   }
 
@@ -86,16 +87,8 @@ class Magnet {
   }
 
   /**
-   * Gets server engine.
-   * @return {Express} Express instance.
-   */
-  getServerEngine() {
-    return this.serverEngine_;
-  }
-
-  /**
    * Get start lifecycle function.
-   * @return {Function}
+   * @return {function}
    */
   getStartLifecycle() {
     return this.startFn_;
@@ -103,7 +96,7 @@ class Magnet {
 
   /**
    * Get stop lifecycle function.
-   * @return {Function}
+   * @return {function}
    */
   getStopLifecycle() {
     return this.stopFn_;
@@ -124,7 +117,7 @@ class Magnet {
    * @protected
    */
   async loadApplication() {
-    logger.info('[APP]', 'Loading middlewares, models and routes');
+    logger.info('[APP]', 'Loading middlewares');
 
     try {
       let magnetConfig = this.getAppEnvironment().magnet;
@@ -144,7 +137,7 @@ class Magnet {
         });
       }
 
-      await wizard.into(this.getServerEngine().getEngine(), this);
+      await wizard.into(this.getServer().getEngine(), this);
     } catch(e) {
       logger.error(e);
     }
@@ -154,116 +147,91 @@ class Magnet {
 
   /**
    * Loads body parser.
-   * @return {Magnet}
    */
   loadBodyParser_() {
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use(bodyParser.urlencoded({extended: false}));
 
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use(bodyParser.json({type: '*/*'}));
-
-    return this;
   }
 
   /**
    * Load compression system.
-   * @return {Magnet}
    */
   loadCompression_() {
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use(compression());
-    return this;
   }
 
   /**
    * Load engine dependencies.
-   * @param  {Magnet} instance
-   * @return {Magnet}
    */
-  loadEngineMiddlewares_() {
-    this.loadHttpLogger_()
-      .loadBodyParser_()
-      .loadSecurity_()
-      .loadCompression_()
-      .loadStaticFiles_();
-
-    return this;
+  loadServerEngineMiddlewares_() {
+    this.loadBodyParser_();
+    this.loadCompression_();
+    this.loadErrorMiddleware_();
+    this.loadHttpLogger_();
+    this.loadSecurity_();
+    this.loadStaticFiles_();
   }
 
   /**
    * Setup general error middleware.
-   * @return {Magnet}
    */
-  loadGeneralErrorMiddleware_() {
-    logger.info('[APP]', 'Configuring error handler');
-    const engine = this.getServerEngine().getEngine();
-    engine.use(errorMiddleware());
-    return this;
+  loadErrorMiddleware_() {
+    this.getServer()
+      .getEngine()
+      .use(errorMiddleware());
   }
 
   /**
    * Loads http logger.
-   * @return {Magnet}
    */
   loadHttpLogger_() {
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use(morgan('common'));
-
-    return this;
   }
 
   /**
    * Loads protection rules.
-   * @return {Magnet}
    */
   loadSecurity_() {
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use(helmet());
-
-    return this;
   }
 
   /**
    * Load static files on engine.
-   * @return {Magnet}
    */
   loadStaticFiles_() {
-    this.getServerEngine()
+    this.getServer()
       .getEngine()
       .use('/static', express.static(
         path.join(this.getAppDirectory(), 'static')));
-
-    return this;
   }
 
   /**
    * Maybe execute start hook.
-   * @return {Magnet}
    */
   maybeCallStartHook_() {
-    if (typeof(this.getStartLifecycle()) === 'function') {
+    if (isFunction(this.getStartLifecycle())) {
       this.getStartLifecycle().call(this, this);
     }
-
-    return this;
   }
 
   /**
    * Maybe execute stop hook.
-   * @return {Magnet}
    */
   maybeCallStopHook_() {
-    if (typeof(this.getStopLifecycle()) === 'function') {
+    if (isFunction(this.getStopLifecycle())) {
       this.getStopLifecycle().call(this, this);
     }
-
-    return this;
   }
 
   /**
@@ -275,68 +243,37 @@ class Magnet {
   }
 
   /**
-   * Setup application.
-   * @return {Magnet}
-   */
-  async setupApplication() {
-    try {
-      this.loadEngineMiddlewares_()
-        .maybeCallStartHook_();
-
-      await this.loadApplication();
-
-      this.loadGeneralErrorMiddleware_();
-
-      return this;
-    } catch(e) {
-      logger.error(e);
-    }
-  }
-
-  /**
    * Starts application.
    * @param {Magnet} instance
    */
-  async start(instance) {
-    const engine = instance.getServerEngine()
-                          .getEngine();
+  async start() {
+    this.maybeCallStartHook_();
 
-    instance.setServer(engine);
+    await this.loadApplication();
 
     await new Promise((resolve, reject) => {
-      // This code catches EADDRINUSE error if the port is already in use
-      instance.getServer()
+      this.getServer()
           .getHttpServer()
           .on('error', reject);
-      instance.getServer()
+      this.getServer()
           .getHttpServer()
           .on('listening', () => resolve());
-      instance.getServer()
-          .listen(instance.getPort(), instance.getHost());
+      this.getServer()
+          .listen(this.getPort(), this.getHost());
     });
   }
 
   /**
    * Stops application.
    */
-  stop() {
-    logger.info('[APP]', 'Received kill signal, shutting down gracefully.');
+  async stop() {
+    logger.info('[APP]', 'Shutting down gracefully.');
+
+    await this.getServer().close();
+
+    logger.info('[SERVER]', 'Closed out remaining connections.');
 
     this.maybeCallStopHook_();
-
-    this
-      .getServer()
-      .close(() => {
-        logger.info('[SERVER]', 'Closed out remaining connections.');
-      });
-  }
-
-  /**
-   * Set engine.
-   * @param {Object} engine
-   */
-  setServerEngine(engine) {
-    this.serverEngine_ = engine;
   }
 
   /**
@@ -349,10 +286,10 @@ class Magnet {
 
   /**
    * Set Http server.
-   * @param {Object} engine
+   * @param {Server} server
    */
-  setServer(engine) {
-    this.server_ = new Server(engine);
+  setServer(server) {
+    this.server_ = server;
   }
 
   /**
@@ -365,7 +302,7 @@ class Magnet {
 
   /**
    * Set start lifecycle function.
-   * @param {Function} fn
+   * @param {function} fn
    */
   setStartLifecycle(fn) {
     this.startFn_ = fn;
@@ -373,7 +310,7 @@ class Magnet {
 
   /**
    * Set stop lifecycle function.
-   * @param {Function} fn
+   * @param {function} fn
    */
   setStopLifecycle(fn) {
     this.stopFn_ = fn;
@@ -390,4 +327,3 @@ class Magnet {
 }
 
 export default Magnet;
-export {Magnet, ExpressEngine};
