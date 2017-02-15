@@ -3,10 +3,6 @@
 import parseArgs from 'minimist';
 import path from 'path';
 import {existsSync} from 'fs';
-import Magnet from '../magnet';
-import _ from 'lodash';
-import {ExpressEngine} from '../magnet';
-import chokidar from 'chokidar';
 import {Magnet, ServerFactory} from '../';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
@@ -89,51 +85,12 @@ if (existsSync(path.join(appDirectory, 'stop.js'))) {
   magnet.setStopLifecycle(stopFn);
 }
 
-// Stop SIGNTERM
-// process.on('SIGTERM', () => {
-//   watcher.close();
-//   magnet.stop();
-// });
+magnet.start();
 
-// // listen for INT signal e.g. Ctrl-C
-// process.on('SIGINT', () => {
-//   watcher.close();
-//   magnet.stop();
-// });
-
-magnet.setupApplication()
-      .then((instance) => {
-        magnet.start(instance);
-      });
-
-const watcher = chokidar.watch(`${appDirectory}/**/*`, {
-  ignoreInitial: true,
+process.on('SIGTERM', () => {
+  magnet.stop();
 });
 
-const refreshFiles = _.debounce(() => {
-    const d = Date.now();
-
-    const fileGen = new Promise((resolve, reject) => {
-      if (magnet) {
-        magnet.stop();
-      }
-      const newEngine = new ExpressEngine();
-      const newMagnetConfig = {
-        appEnvironment,
-        appDirectory,
-        serverEngine: newEngine,
-      };
-      magnet = new Magnet(newMagnetConfig);
-      magnet.setupApplication()
-            .then((instance) => {
-              magnet.start(instance);
-            });
-      resolve();
-    });
-
-    fileGen.then(() => {
-      console.log('Time to gen:' + (Date.now() - d) + 'ms');
-    });
-  }, 200);
-
-watcher.on('change', refreshFiles);
+process.on('SIGINT', () => {
+  magnet.stop();
+});
