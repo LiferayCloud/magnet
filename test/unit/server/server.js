@@ -1,13 +1,13 @@
 import Server from '../../../src/server/server';
 import http from 'http';
 
-describe('server', function() {
-  const fakeEngine = (req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Fake Engine');
-  };
-  const server = new Server(fakeEngine);
+const fakeEngine = (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Fake Engine');
+};
+const server = new Server(fakeEngine);
 
+describe('Server', function() {
   before(function() {
     server.listen(8888, 'localhost', () => {});
   });

@@ -5,19 +5,18 @@ import logger from 'winston';
  * Server implementation.
  */
 class Server {
-
   /**
    * Constructor.
-   * @param  {ServerEngine} engine
+   * @param {Object} engine
    */
   constructor(engine) {
     this.engine_ = engine;
-    this.server_ = http.createServer(engine);
+    this.httpServer_ = http.createServer(engine);
   }
 
   /**
    * Gets the current engine used in the server instance.
-   * @return {ServerEngine}
+   * @return {Object}
    */
   getEngine() {
     return this.engine_;
