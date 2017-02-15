@@ -42,11 +42,11 @@ const nodeModules = fs.readdirSync('node_modules')
   });
 
 const backendConfig = config_({
-  entry: path.join(__dirname, '/src/magnet.js'),
+  entry: path.join(__dirname, '/src/index.js'),
   target: 'node',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: `magnet.js`,
+    filename: `index.js`,
     libraryTarget: 'commonjs2'
   },
   node: {
