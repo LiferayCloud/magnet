@@ -379,30 +379,6 @@ describe('Magnet', function() {
       await magnet.start();
 
       magnet.stop();
-
     });
   });
 });
-
-
-/**
- * Assert async http request
- * @param {String} port
- * @param {String} path
- * @param {integer} status
- * @param {String} responseBody
- * @return {Promise}
- */
-function assertAsyncHttpRequest({port, path = '', status = 200, responseBody = ''}) { // eslint-disable-line max-len
-  return new Promise((resolve) => {
-    http.get(`http://localhost:${port}${path}`, function(res) {
-        let rawData = '';
-        res.on('data', (chunk) => rawData += chunk);
-        res.on('end', () => {
-          expect(status).to.equal(res.statusCode);
-          expect(rawData).to.equal(responseBody);
-          resolve();
-        });
-    });
-  });
-}
