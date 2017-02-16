@@ -1,5 +1,3 @@
-
-import {isFunction} from 'metal';
 import ServerFactory from '../../../src/server/server-factory';
 import Server from '../../../src/server/server';
 
@@ -26,12 +24,3 @@ describe('ServerFactory', function() {
     }).to.throw('Engine not implemented');
   });
 });
-
-/**
- * Checks if obj is an express() instance.
- * @param {object} obj
- * @return {Boolean}
- */
-function isExpress(obj) {
-  return obj && obj.name === 'app' && isFunction(obj.use);
-}
