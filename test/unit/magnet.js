@@ -365,16 +365,17 @@ describe('Magnet', function() {
         },
       };
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-        const magnetConfig = {
-          appEnvironment,
-          appDirectory,
-          server,
-        };
-
-        const magnet = new Magnet(magnetConfig);
+      const magnetConfig = {
+        appEnvironment,
+        appDirectory,
+        server,
+      };
+      const magnet = new Magnet(magnetConfig);
 
       const startFn = () => {};
+
       magnet.setStartLifecycle(startFn);
+
       await magnet.start();
 
       magnet.stop();
