@@ -6,6 +6,10 @@
   },
   "globals": {
     "expect": false,
+    "mock": false,
+    "stub": false,
+    "assertAsyncHttpRequest": false,
+    "isExpress": false
   },
   "env": {
     "node": true,

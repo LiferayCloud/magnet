@@ -14,6 +14,7 @@ module.exports = function(root) {
     root.spy = root.sandbox.spy.bind(root.sandbox);
     root.mock = root.sandbox.mock.bind(root.sandbox);
     root.isExpress = isExpress;
+    root.assertAsyncHttpRequest = assertAsyncHttpRequest;
 
     root.useFakeTimers = root
       .sandbox
@@ -52,3 +53,24 @@ function isExpress(obj) {
   return obj && obj.name === 'app' && isFunction(obj.use);
 }
 
+/**
+ * Assert async http request
+ * @param {String} port
+ * @param {String} path
+ * @param {integer} status
+ * @param {String} responseBody
+ * @return {Promise}
+ */
+function assertAsyncHttpRequest({port, path = '', status = 200, responseBody = ''}) { // eslint-disable-line max-len
+  return new Promise((resolve) => {
+    http.get(`http://localhost:${port}${path}`, function(res) {
+        let rawData = '';
+        res.on('data', (chunk) => rawData += chunk);
+        res.on('end', () => {
+          expect(status).to.equal(res.statusCode);
+          expect(rawData).to.equal(responseBody);
+          resolve();
+        });
+    });
+  });
+}
