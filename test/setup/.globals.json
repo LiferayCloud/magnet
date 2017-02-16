@@ -8,6 +8,7 @@
     "useFakeServer": true,
     "useFakeTimers": true,
     "useFakeXMLHttpRequest": true,
+    "assertAsyncHttpRequest": true,
     "isExpress": true
   }
 }
