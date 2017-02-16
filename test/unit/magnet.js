@@ -1,9 +1,36 @@
 import Magnet from '../../src/magnet';
 import ServerFactory from '../../src/server/server-factory';
-import {isFunction} from 'metal';
+import Server from '../../src/server/server';
+import Wizard from 'express-wizard';
+import express from 'express';
+import http from 'http';
 
 describe('Magnet', function() {
-  describe('#getAppEnvironment', function() {
+  describe('config', () => {
+    it('should raise an error if no param is provided', () => {
+      expect(function() {
+         new Magnet();
+      }).to.throw('The config param is required');
+    });
+
+    it('should raise an error if server is not provided', () => {
+      expect(function() {
+         new Magnet({appDirectory: 'appDirectory',
+                    appEnvironment: {foo: 'bar'}});
+      }).to.throw('The server param is required');
+    });
+
+    it('should raise an error if app directory is not provided', () => {
+      expect(function() {
+         new Magnet({server: 'foo', appEnvironment: {foo: 'bar'}});
+      }).to.throw('The appDirectory param is required');
+    });
+
+    it('should raise an error if app environment is not provided', () => {
+      expect(function() {
+         new Magnet({server: 'foo', appDirectory: 'appDirectory'});
+      }).to.throw('The appEnvironment param is required');
+    });
   });
 
   describe('#getAppDirectory', function() {
@@ -57,7 +84,8 @@ describe('Magnet', function() {
         server,
       };
       const magnet = new Magnet(magnetConfig);
-      expect(isExpress(magnet.getServer().getEngine())).to.equal(true);
+      expect(isExpress(magnet.getServer().getEngine()))
+        .to.equal(true);
     });
   });
 
@@ -234,14 +262,35 @@ describe('Magnet', function() {
       expect(magnet.scope.controllers.one).to.be.an.instanceof(Function);
       expect(magnet.scope.models).to.be.undefined;
     });
-  });
 
-  describe('#start', function() {
+    it('should reject the promise in case of error', (done) => {
+      const appEnvironment = {
+        magnet: {
+          port: 5000,
+          host: 'localhost',
+          exclusionFiles: ['models/**/*.js'],
+        },
+      };
+      const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
+      const server = ServerFactory.create();
+      const magnetConfig = {
+        appEnvironment,
+        appDirectory,
+        server,
+      };
 
-  });
+      const wizardMock = stub(Wizard.prototype, 'into');
 
-  describe('#stop', function() {
+      wizardMock.throws('Error message');
 
+      const magnet = new Magnet(magnetConfig);
+
+      magnet.loadApplication()
+      .catch((err) => {
+        expect(err.toString()).to.equal('Error message');
+        done();
+      });
+    });
   });
 
   describe('#setAppDirectory', function() {
@@ -267,36 +316,93 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#setServerEngine', function() {
+  describe('#start', () => {
+    const server = new Server(express());
+    const appEnvironment = {
+      magnet: {
+        port: 8887,
+        host: 'localhost',
+        exclusionFiles: ['models/**/*.js'],
+      },
+    };
+    const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
+      const magnetConfig = {
+        appEnvironment,
+        appDirectory,
+        server,
+      };
 
+    after(function() {
+      server.close();
+    });
+
+    it('should start an http server', async () => {
+      const magnet = new Magnet(magnetConfig);
+      await magnet.start();
+
+      await assertAsyncHttpRequest({
+        port: 8887,
+        responseBody: JSON.stringify({foo: 'bar'}),
+      });
+    });
+
+    it('should perform the start callback', async() => {
+      const magnet = new Magnet(magnetConfig);
+
+      const startFn = () => {};
+      magnet.setStartLifecycle(startFn);
+      await magnet.start();
+    });
   });
 
-  describe('#setHost', function() {
+  describe('#stop', () => {
+    it('should stop the server', async() => {
+      const server = new Server(express());
+      const appEnvironment = {
+        magnet: {
+          port: 8887,
+          host: 'localhost',
+          exclusionFiles: ['models/**/*.js'],
+        },
+      };
+      const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
+        const magnetConfig = {
+          appEnvironment,
+          appDirectory,
+          server,
+        };
 
-  });
+        const magnet = new Magnet(magnetConfig);
 
-  describe('#setServer', function() {
+      const startFn = () => {};
+      magnet.setStartLifecycle(startFn);
+      await magnet.start();
 
-  });
+      magnet.stop();
 
-  describe('#setPort', function() {
-
-  });
-
-  describe('#setStartLifecycle', function() {
-
-  });
-
-  describe('#setTestBehavior', function() {
-
+    });
   });
 });
 
+
 /**
- * Checks if obj is an express() instance.
- * @param {object} obj
- * @return {Boolean}
+ * Assert async http request
+ * @param {String} port
+ * @param {String} path
+ * @param {integer} status
+ * @param {String} responseBody
+ * @return {Promise}
  */
-function isExpress(obj) {
-  return obj && obj.name === 'app' && isFunction(obj.use);
+function assertAsyncHttpRequest({port, path = '', status = 200, responseBody = ''}) { // eslint-disable-line max-len
+  return new Promise((resolve) => {
+    http.get(`http://localhost:${port}${path}`, function(res) {
+        let rawData = '';
+        res.on('data', (chunk) => rawData += chunk);
+        res.on('end', () => {
+          expect(status).to.equal(res.statusCode);
+          expect(rawData).to.equal(responseBody);
+          resolve();
+        });
+    });
+  });
 }
