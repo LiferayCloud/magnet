@@ -8,7 +8,7 @@ import path from 'path';
 import {isFunction} from 'metal';
 import Wizard from 'express-wizard';
 import {assertDefAndNotNull} from './assertions';
-import {errorMiddleware} from './middleware/general-errors';
+import errorMiddleware from './middleware/general-errors';
 import {loadConfig} from './config';
 
 /**
@@ -22,9 +22,11 @@ class Magnet {
    */
   constructor(config) {
     assertDefAndNotNull(config, 'The config param is required');
-    assertDefAndNotNull(config.server, 'Specify server');
-    assertDefAndNotNull(config.appDirectory, 'Specify app directory');
-    assertDefAndNotNull(config.appEnvironment, 'Specify app environment');
+    assertDefAndNotNull(config.server, 'The server param is required');
+    assertDefAndNotNull(config.appDirectory,
+      'The appDirectory param is required');
+    assertDefAndNotNull(config.appEnvironment,
+      'The appEnvironment param is required');
 
     this.environment_ = loadConfig(config.appDirectory, config.appEnvironment);
 
@@ -117,30 +119,31 @@ class Magnet {
   async loadApplication() {
     logger.info('[APP]', 'Loading middlewares');
 
+    return new Promise(async (resolve, reject) => {
     try {
       let magnetConfig = this.getAppEnvironment().magnet;
       let wizardConfig = this.getInternalEnvironment().wizard;
 
-      let wizard = new Wizard(wizardConfig);
+        let wizard = new Wizard(expressConfig.wizard);
 
-      if (magnetConfig.injectionFiles.length > 0) {
-        magnetConfig.injectionFiles.forEach((glob) => {
-          wizard.inject(glob);
-        });
+        if (wizardConfig.injectionFiles.length > 0) {
+          magnetConfig.injectionFiles.forEach((glob) => {
+            wizard.inject(glob);
+          });
+        }
+
+        if (magnetConfig.exclusionFiles.length > 0) {
+          magnetConfig.exclusionFiles.forEach((glob) => {
+            wizard.exclude(glob);
+          });
+        }
+
+        await wizard.into(this.getServer().getEngine(), this);
+      } catch(e) {
+        reject(e);
       }
-
-      if (magnetConfig.exclusionFiles.length > 0) {
-        magnetConfig.exclusionFiles.forEach((glob) => {
-          wizard.exclude(glob);
-        });
-      }
-
-      await wizard.into(this.scope, this.getServer().getEngine(), this);
-    } catch(e) {
-      logger.error(e);
-    }
-
-    return this;
+      resolve();
+    });
   }
 
   /**
