@@ -2,7 +2,7 @@
  * Error middleware.
  * @return {Function}
  */
-export function errorMiddleware() {
+export default () => {
   return (err, req, res, next) => {
     let status = err.status || 500;
     let message = err.message || '';
@@ -13,4 +13,4 @@ export function errorMiddleware() {
     });
     next(err);
   };
-}
+};
