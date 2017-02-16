@@ -7,8 +7,8 @@ describe('generalErrors', function() {
         method: 'GET',
         url: '/test/path?myid=312',
         query: {
-            myid: '312'
-        }
+            myid: '312',
+        },
     });
     let response = httpMocks.createResponse();
 

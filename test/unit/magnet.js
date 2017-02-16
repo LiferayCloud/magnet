@@ -3,7 +3,6 @@ import ServerFactory from '../../src/server/server-factory';
 import Server from '../../src/server/server';
 import Wizard from 'express-wizard';
 import express from 'express';
-import http from 'http';
 
 describe('Magnet', function() {
   describe('config', () => {
