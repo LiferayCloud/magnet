@@ -1,46 +1,51 @@
 import Magnet from '../../src/magnet';
 import ServerFactory from '../../src/server/server-factory';
-import Server from '../../src/server/server';
 import Wizard from 'express-wizard';
-import express from 'express';
 
-describe('Magnet', function() {
+describe('Magnet', () => {
+  let appEnvironment;
+  let server;
+
+  beforeEach((done) => {
+    appEnvironment = {
+      magnet: {
+        port: 8888,
+        host: 'localhost',
+      },
+    };
+    server = ServerFactory.create();
+    done();
+  });
+
   describe('config', () => {
     it('should raise an error if no param is provided', () => {
-      expect(function() {
+      expect(() => {
          new Magnet();
       }).to.throw('The config param is required');
     });
 
     it('should raise an error if server is not provided', () => {
-      expect(function() {
+      expect(() => {
          new Magnet({appDirectory: 'appDirectory',
                     appEnvironment: {foo: 'bar'}});
       }).to.throw('The server param is required');
     });
 
     it('should raise an error if app directory is not provided', () => {
-      expect(function() {
+      expect(() => {
          new Magnet({server: 'foo', appEnvironment: {foo: 'bar'}});
       }).to.throw('The appDirectory param is required');
     });
 
     it('should raise an error if app environment is not provided', () => {
-      expect(function() {
+      expect(() => {
          new Magnet({server: 'foo', appDirectory: 'appDirectory'});
       }).to.throw('The appEnvironment param is required');
     });
   });
 
-  describe('#getAppDirectory', function() {
-    it('should return the same directory provided on the constructor', function() {// eslint-disable-line max-len
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-      };
-      const server = ServerFactory.create();
+  describe('#getAppDirectory', () => {
+    it('should return the same directory provided on the constructor', () => {// eslint-disable-line max-len
       const magnetConfig = {
         appEnvironment,
         appDirectory: '/foo',
@@ -51,94 +56,60 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#getServer', function() {
-    it('should get the current server', function() {
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-      };
-      const server = ServerFactory.create();
-      const magnetConfig = {
-        appEnvironment,
-        appDirectory: '/foo',
-        server,
-      };
+  describe('#getServer', () => {
+    let appEnvironment = {
+      magnet: {
+        port: 8888,
+        host: 'localhost',
+      },
+    };
+    let server = ServerFactory.create();
+    const magnetConfig = {
+      appEnvironment,
+      appDirectory: '/foo',
+      server,
+    };
+
+    it('should get the current server', () => {
       let magnet = new Magnet(magnetConfig);
       expect(magnet.getServer()).to.deep.equal(server);
     });
 
-    it('should get the current server engine', function() {
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-      const server = ServerFactory.create();
-      const magnetConfig = {
-        appEnvironment,
-        appDirectory: '/foo',
-        server,
-      };
+    it('should get the current server engine', () => {
       const magnet = new Magnet(magnetConfig);
       expect(isExpress(magnet.getServer().getEngine()))
         .to.equal(true);
     });
   });
 
-  describe('#getHost', function() {
-    it('should get the current host', function() {
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-      const server = ServerFactory.create();
+  describe('#getHost', () => {
+    it('should get the current host', () => {
       const magnetConfig = {
         appEnvironment,
         appDirectory: '/foo',
         server,
       };
       let magnet = new Magnet(magnetConfig);
-      expect(magnet.getHost()).to.equal('testhost');
+      expect(magnet.getHost()).to.equal('localhost');
     });
   });
 
-  describe('#getPort', function() {
-    it('should get the current port', function() {
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-      const server = ServerFactory.create();
+  describe('#getPort', () => {
+    it('should get the current port', () => {
       const magnetConfig = {
         appEnvironment,
         appDirectory: '/foo',
         server,
       };
       let magnet = new Magnet(magnetConfig);
-      expect(magnet.getPort()).to.equal(5000);
+      expect(magnet.getPort()).to.equal(8888);
     });
   });
 
-  describe('#getStartLifecycle', function() {
-    it('should get the start lifecycle ', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const server = ServerFactory.create();
-
+  describe('#getStartLifecycle', () => {
+    it('should get the start lifecycle ', () => {
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment: appEnvironment,
         appDirectory: '/foo',
         server,
       };
@@ -155,9 +126,9 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#getTestBehavior', function() {
-    it('should get the test behavior equal to true when specified on app environment', function() {// eslint-disable-line max-len
-      const magnetEnv = {
+  describe('#getTestBehavior', () => {
+    it('should get the test behavior equal to true when specified on app environment', () => {// eslint-disable-line max-len
+      const appEnvironment = {
         magnet: {
           port: 5000,
           host: 'testhost',
@@ -165,10 +136,8 @@ describe('Magnet', function() {
         },
       };
 
-      const server = ServerFactory.create();
-
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment: appEnvironment,
         appDirectory: '/foo',
         server,
       };
@@ -178,18 +147,9 @@ describe('Magnet', function() {
       expect(magnet.getTestBehavior()).to.equal(true);
     });
 
-    it('should get the test behavior equal to false if not specified', function() {// eslint-disable-line max-len
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const server = ServerFactory.create();
-
+    it('should get the test behavior equal to false if not specified', () => {// eslint-disable-line max-len
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment: appEnvironment,
         appDirectory: '/foo',
         server,
       };
@@ -200,16 +160,10 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#loadApplication', function() {
+  describe('#loadApplication', () => {
     it('should inject dependencies of all the files', async () => {
-      const appEnvironment = {
-        magnet: {
-          port: 5000,
-          host: 'localhost',
-        },
-      };
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const server = ServerFactory.create();
+
       const magnetConfig = {
         appEnvironment,
         appDirectory,
@@ -224,13 +178,12 @@ describe('Magnet', function() {
     it('should inject dependencies selected files if specified on injectionFiles app config ', async () => {// eslint-disable-line max-len
       const appEnvironment = {
         magnet: {
-          port: 5000,
+          port: 8888,
           host: 'localhost',
           injectionFiles: ['models/**/*.js'],
         },
       };
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const server = ServerFactory.create();
       const magnetConfig = {
         appEnvironment,
         appDirectory,
@@ -245,13 +198,12 @@ describe('Magnet', function() {
     it('should exclude dependencies selected files if specified on exclusionFiles app config ', async () => {// eslint-disable-line max-len
       const appEnvironment = {
         magnet: {
-          port: 5000,
+          port: 8888,
           host: 'localhost',
           exclusionFiles: ['models/**/*.js'],
         },
       };
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const server = ServerFactory.create();
       const magnetConfig = {
         appEnvironment,
         appDirectory,
@@ -266,13 +218,12 @@ describe('Magnet', function() {
     it('should reject the promise in case of error', (done) => {
       const appEnvironment = {
         magnet: {
-          port: 5000,
+          port: 8888,
           host: 'localhost',
           exclusionFiles: ['models/**/*.js'],
         },
       };
       const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const server = ServerFactory.create();
       const magnetConfig = {
         appEnvironment,
         appDirectory,
@@ -293,18 +244,10 @@ describe('Magnet', function() {
     });
   });
 
-  describe('#setAppDirectory', function() {
-    it('should set app directory', function() {
-      const magnetEnv = {
-        magnet: {
-          port: 5000,
-          host: 'testhost',
-        },
-      };
-
-      const server = ServerFactory.create();
+  describe('#setAppDirectory', () => {
+    it('should set app directory', () => {
       const magnetConfig = {
-        appEnvironment: magnetEnv,
+        appEnvironment: appEnvironment,
         appDirectory: '/foo',
         server,
       };
@@ -317,22 +260,22 @@ describe('Magnet', function() {
   });
 
   describe('#start', () => {
-    const server = new Server(express());
-    const appEnvironment = {
+    let appEnvironment = {
       magnet: {
-        port: 8887,
+        port: 8888,
         host: 'localhost',
         exclusionFiles: ['models/**/*.js'],
       },
     };
+    let server = ServerFactory.create();
     const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const magnetConfig = {
-        appEnvironment,
-        appDirectory,
-        server,
-      };
+    const magnetConfig = {
+      appEnvironment,
+      appDirectory,
+      server,
+    };
 
-    after(function() {
+    afterEach(() => {
       server.close();
     });
 
@@ -341,45 +284,15 @@ describe('Magnet', function() {
       await magnet.start();
 
       await assertAsyncHttpRequest({
-        port: 8887,
+        port: 8888,
         responseBody: JSON.stringify({foo: 'bar'}),
       });
     });
 
-    it('should perform the start callback', async() => {
-      const magnet = new Magnet(magnetConfig);
-
-      const startFn = () => {};
-      magnet.setStartLifecycle(startFn);
-      await magnet.start();
-    });
+    it('should perform the start callback');
   });
 
   describe('#stop', () => {
-    it('should stop the server', async() => {
-      const server = new Server(express());
-      const appEnvironment = {
-        magnet: {
-          port: 8887,
-          host: 'localhost',
-          exclusionFiles: ['models/**/*.js'],
-        },
-      };
-      const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
-      const magnetConfig = {
-        appEnvironment,
-        appDirectory,
-        server,
-      };
-      const magnet = new Magnet(magnetConfig);
-
-      const startFn = () => {};
-
-      magnet.setStartLifecycle(startFn);
-
-      await magnet.start();
-
-      magnet.stop();
-    });
+    it('should stop the server');
   });
 });
