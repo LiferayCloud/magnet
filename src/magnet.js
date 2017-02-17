@@ -112,8 +112,6 @@ class Magnet {
 
   /**
    * Loads app directories into the engine.
-   * @param  {Magnet} instance
-   * @return {Magnet}
    * @protected
    */
   async loadApplication() {
