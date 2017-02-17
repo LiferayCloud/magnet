@@ -8,6 +8,7 @@
     "expect": false,
     "mock": false,
     "stub": false,
+    "spy": false,
     "assertAsyncHttpRequest": false,
     "isExpress": false
   },

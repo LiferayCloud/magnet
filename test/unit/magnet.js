@@ -289,7 +289,15 @@ describe('Magnet', () => {
       });
     });
 
-    it('should perform the start callback');
+    it('should perform the start callback', async() => {
+      const magnet = new Magnet(magnetConfig);
+
+      const startFn = spy();
+      magnet.setStartLifecycle(startFn);
+      await magnet.start();
+
+      expect(startFn.calledOnce).to.be.true;
+    });
   });
 
   describe('#stop', () => {
