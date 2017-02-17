@@ -23,11 +23,11 @@ const baseConfig = () => {
         bodyParser: {
           extended: true,
         },
-        wizard: {
-          cwd: '/',
-          logger: logger,
-          verbose: true,
-        },
+      },
+      wizard: {
+        cwd: '/',
+        logger: logger,
+        verbose: true,
       },
     },
   };
@@ -62,7 +62,7 @@ function deepMerge(destination, source) {
 function loadConfig(appDirectory, appConfig) {
   let config = baseConfig();
   deepMerge(config.app, appConfig);
-  config.internal.express.wizard.cwd = appDirectory || '/';
+  config.internal.wizard.cwd = appDirectory || '/';
   return config;
 }
 

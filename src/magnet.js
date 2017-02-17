@@ -113,9 +113,9 @@ class Magnet {
 
     try {
       let magnetConfig = this.getAppEnvironment().magnet;
-      let expressConfig = this.getInternalEnvironment().express;
+      let wizardConfig = this.getInternalEnvironment().wizard;
 
-      let wizard = new Wizard(expressConfig.wizard);
+      let wizard = new Wizard(wizardConfig);
 
       if (magnetConfig.injectionFiles.length > 0) {
         magnetConfig.injectionFiles.forEach((glob) => {
