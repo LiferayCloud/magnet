@@ -30,11 +30,6 @@ module.exports = function(root) {
       .sandbox
       .useFakeXMLHttpRequest
       .bind(root.sandbox);
-
-    root.useFakeServer = root
-      .sandbox
-      .useFakeServer
-      .bind(root.sandbox);
   });
 
   afterEach(() => {

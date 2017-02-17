@@ -215,6 +215,7 @@ describe('Magnet', function() {
         appDirectory,
         server,
       };
+
       const magnet = new Magnet(magnetConfig);
       await magnet.loadApplication();
       expect(magnet.scope.controllers.one).to.be.an.instanceof(Function);
