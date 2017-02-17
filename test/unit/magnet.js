@@ -301,6 +301,27 @@ describe('Magnet', () => {
   });
 
   describe('#stop', () => {
-    it('should stop the server');
+    it('should stop the server', async() => {
+      const appEnvironment = {
+        magnet: {
+          port: 8888,
+          host: 'localhost',
+          exclusionFiles: ['models/**/*.js'],
+        },
+      };
+      const server = ServerFactory.create();
+      const appDirectory = `${process.cwd()}/test/fixtures/fake_app`;
+      const magnetConfig = {
+        appEnvironment,
+        appDirectory,
+        server,
+      };
+      const magnet = new Magnet(magnetConfig);
+
+      await magnet.start();
+      magnet.stop();
+
+      expect(magnet.getServer().getHttpServer().address()).to.be.null;
+    });
   });
 });
