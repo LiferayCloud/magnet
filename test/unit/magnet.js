@@ -190,8 +190,7 @@ describe('Magnet', function() {
       };
       const magnet = new Magnet(magnetConfig);
       await magnet.loadApplication();
-      const internalEngine = magnet.getServer().getEngine();
-      expect(internalEngine.controllers.one).to.be.an.instanceof(Function);
+      expect(magnet.scope.controllers.one).to.be.an.instanceof(Function);
     });
 
     it('should inject dependencies selected files if specified on injectionFiles app config ', async () => {// eslint-disable-line max-len
@@ -211,9 +210,8 @@ describe('Magnet', function() {
       };
       const magnet = new Magnet(magnetConfig);
       await magnet.loadApplication();
-      const internalEngine = magnet.getServer().getEngine();
-      expect(internalEngine.models.one).to.be.an.instanceof(Function);
-      expect(internalEngine.controllers).to.be.undefined;
+      expect(magnet.scope.models.one).to.be.an.instanceof(Function);
+      expect(magnet.scope.controllers).to.be.undefined;
     });
 
     it('should exclude dependencies selected files if specified on exclusionFiles app config ', async () => {// eslint-disable-line max-len
@@ -233,9 +231,8 @@ describe('Magnet', function() {
       };
       const magnet = new Magnet(magnetConfig);
       await magnet.loadApplication();
-      const internalEngine = magnet.getServer().getEngine();
-      expect(internalEngine.controllers.one).to.be.an.instanceof(Function);
-      expect(internalEngine.models).to.be.undefined;
+      expect(magnet.scope.controllers.one).to.be.an.instanceof(Function);
+      expect(magnet.scope.models).to.be.undefined;
     });
   });
 

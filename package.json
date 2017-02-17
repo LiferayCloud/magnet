@@ -39,7 +39,7 @@
     "compression": "^1.6.2",
     "cross-spawn": "^5.0.1",
     "express": "^4.13.0",
-    "express-wizard": "^0.2.2",
+    "express-wizard": "^1.1.0",
     "helmet": "^3.3.0",
     "metal": "^2.6.0",
     "minimist": "^1.2.0",

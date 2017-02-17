@@ -18,7 +18,7 @@ class Magnet {
 
   /**
    * Constructor.
-   * @param  {Object} config
+   * @param  {object} config
    */
   constructor(config) {
     assertDefAndNotNull(config, 'The config param is required');
@@ -35,11 +35,17 @@ class Magnet {
     this.setHost(this.getAppEnvironment().magnet.host);
     this.setPort(this.getAppEnvironment().magnet.port);
     this.setTestBehavior(this.getAppEnvironment().magnet.isTest);
+
+    /**
+     * Scope that receives dependency injections from scanned files.
+     * @type {object}
+     */
+    this.scope = {};
   }
 
   /**
    * Get app directory.
-   * @return {String} application directory.
+   * @return {string} application directory.
    */
   getAppDirectory() {
     return this.appDirectory;
@@ -47,7 +53,7 @@ class Magnet {
 
   /**
    * Get app environment
-   * @return {Object}
+   * @return {object}
    */
   getAppEnvironment() {
     return this.environment_.app;
@@ -55,7 +61,7 @@ class Magnet {
 
   /**
    * Get internal environment
-   * @return {Object}
+   * @return {object}
    * @protected
    */
   getInternalEnvironment() {
@@ -80,7 +86,7 @@ class Magnet {
 
   /**
    * Get server.
-   * @return {Object} express http server.
+   * @return {object} express http server.
    */
   getServer() {
     return this.server_;
@@ -129,7 +135,7 @@ class Magnet {
         });
       }
 
-      await wizard.into(this.getServer().getEngine(), this);
+      await wizard.into(this.scope, this.getServer().getEngine(), this);
     } catch(e) {
       logger.error(e);
     }
