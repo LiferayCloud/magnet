@@ -119,30 +119,23 @@ class Magnet {
   async loadApplication() {
     logger.info('[APP]', 'Loading middlewares');
 
-    return new Promise(async (resolve, reject) => {
-      try {
-        let magnetConfig = this.getAppEnvironment().magnet;
-        let wizardConfig = this.getInternalEnvironment().wizard;
-        let wizard = new Wizard(wizardConfig);
+    let magnetConfig = this.getAppEnvironment().magnet;
+    let wizardConfig = this.getInternalEnvironment().wizard;
+    let wizard = new Wizard(wizardConfig);
 
-        if (magnetConfig.injectionFiles.length > 0) {
-          magnetConfig.injectionFiles.forEach((glob) => {
-            wizard.inject(glob);
-          });
-        }
+    if (magnetConfig.injectionFiles.length > 0) {
+      magnetConfig.injectionFiles.forEach((glob) => {
+        wizard.inject(glob);
+      });
+    }
 
-        if (magnetConfig.exclusionFiles.length > 0) {
-          magnetConfig.exclusionFiles.forEach((glob) => {
-            wizard.exclude(glob);
-          });
-        }
+    if (magnetConfig.exclusionFiles.length > 0) {
+      magnetConfig.exclusionFiles.forEach((glob) => {
+        wizard.exclude(glob);
+      });
+    }
 
-        await wizard.into(this.scope, this.getServer().getEngine(), this);
-      } catch(e) {
-        reject(e);
-      }
-      resolve();
-    });
+    await wizard.into(this.scope, this.getServer().getEngine(), this);
   }
 
   /**
