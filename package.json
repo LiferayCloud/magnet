@@ -10,7 +10,7 @@
     "test": "./node_modules/.bin/gulp coverage",
     "test:watch": "./node_modules/.bin/gulp test:watch",
     "test:coverage:travis": "./node_modules/.bin/gulp test:coverage:travis",
-    "generate-changelog": "node ./node_modules/.bin/auto-changelog",
+    "generate-changelog": "./node_modules/.bin/auto-changelog",
     "preversion": "npm test",
     "postversion": "git push && git push --tags && rm -rf dist",
     "version": "npm run generate-changelog && git add CHANGELOG.md",
