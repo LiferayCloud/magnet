@@ -6,9 +6,9 @@ import Server from '../../src/server/server';
  */
 class ServerFactory {
   /**
-   * Creates factory.
-   * @param {ServerFactory.Types} type
-   * @return {BaseEngine}
+   * Creates server instance based on engine type.
+   * @param {ServerFactory.Types} type Server engine types.
+   * @return {Server}
    * @throws Error
    */
   static create(type = ServerFactory.Types.EXPRESS) {
@@ -22,7 +22,7 @@ class ServerFactory {
 }
 
 /**
- * Types of server engines.
+ * Server engine types.
  * @enum {string}
  */
 ServerFactory.Types = {

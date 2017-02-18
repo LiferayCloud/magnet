@@ -12,13 +12,14 @@ import errorMiddleware from './middleware/general-errors';
 import {loadConfig} from './config';
 
 /**
- * Main class.
+ * Magnet main class.
  */
 class Magnet {
 
   /**
    * Constructor.
-   * @param  {object} config
+   * @param  {!Object} config Default configuration with
+   * server, app directory and app environment.
    */
   constructor(config) {
     assertDefAndNotNull(config, 'The config param is required');
@@ -28,8 +29,69 @@ class Magnet {
     assertDefAndNotNull(config.appEnvironment,
       'The appEnvironment param is required');
 
-    this.environment_ = loadConfig(config.appDirectory, config.appEnvironment);
+    /**
+     * Application directory based on provided path.
+     * @type {string}
+     * @default null
+     * @private
+     */
+    this.appDirectory_ = null;
 
+    /**
+     * Application environment.
+     * @type {Object}
+     * @default null
+     * @private
+     */
+    this.environment_ = null;
+
+    /**
+     * Application test behavior.
+     * @type {boolean}
+     * @default null
+     * @private
+     */
+    this.isTest_ = null;
+
+    /**
+     * Server host.
+     * @type {string}
+     * @default null
+     * @private
+     */
+    this.host_ = null;
+
+    /**
+     * Server port.
+     * @type {string}
+     * @default null
+     * @private
+     */
+    this.port_ = null;
+
+    /**
+     * Scope that receives dependency injections from scanned files.
+     * @type {object}
+     * @default {}
+     * @public
+     */
+    this.scope = {};
+
+    /**
+     * Default server engine used to handle http requests.
+     * @type {Server}
+     * @default null
+     * @private
+     */
+    this.server_ = null;
+
+    /**
+     * Default function to be performed when server starts with an application.
+     * @type {Function}
+     */
+    this.startFn_ = null;
+
+    this.environment_ = loadConfig(config.appDirectory, config.appEnvironment);
     this.setServer(config.server);
     this.setAppDirectory(config.appDirectory);
     this.loadServerEngineMiddlewares_();
@@ -37,33 +99,27 @@ class Magnet {
     this.setHost(this.getAppEnvironment().magnet.host);
     this.setPort(this.getAppEnvironment().magnet.port);
     this.setTestBehavior(this.getAppEnvironment().magnet.isTest);
-
-    /**
-     * Scope that receives dependency injections from scanned files.
-     * @type {object}
-     */
-    this.scope = {};
   }
 
   /**
-   * Get app directory.
-   * @return {string} application directory.
+   * Gets application directory.
+   * @return {string} Application directory.
    */
   getAppDirectory() {
-    return this.appDirectory;
+    return this.appDirectory_;
   }
 
   /**
-   * Get app environment
-   * @return {object}
+   * Gets application environment.
+   * @return {Object} Application environment.
    */
   getAppEnvironment() {
     return this.environment_.app;
   }
 
   /**
-   * Get internal environment
-   * @return {object}
+   * Gets internal environment.
+   * @return {Object} Internal environment
    * @protected
    */
   getInternalEnvironment() {
@@ -71,39 +127,39 @@ class Magnet {
   }
 
   /**
-   * Get host.
-   * @return {string} Host.
+   * Gets server hostname.
+   * @return {string} Hostname.
    */
   getHost() {
     return this.host_;
   }
 
   /**
-   * Get port.
-   * @return {string} Port.
+   * Gets server port.
+   * @return {number} Port.
    */
   getPort() {
     return this.port_;
   }
 
   /**
-   * Get server.
-   * @return {object} express http server.
+   * Gets server manager.
+   * @return {Server} Server manager.
    */
   getServer() {
     return this.server_;
   }
 
   /**
-   * Get start lifecycle function.
-   * @return {function}
+   * Gets start lifecycle function.
+   * @return {Function} Start lifecycle function.
    */
   getStartLifecycle() {
     return this.startFn_;
   }
 
   /**
-   * Get test behavior.
+   * Gets test behavior.
    * @return {boolean} Test behavior.
    */
   getTestBehavior() {
@@ -111,15 +167,15 @@ class Magnet {
   }
 
   /**
-   * Loads app directories into the engine.
+   * Loads app directories into magnet scope.
    * @protected
    */
   async loadApplication() {
     logger.info('[APP]', 'Loading middlewares');
 
-    let magnetConfig = this.getAppEnvironment().magnet;
-    let wizardConfig = this.getInternalEnvironment().wizard;
-    let wizard = new Wizard(wizardConfig);
+    const magnetConfig = this.getAppEnvironment().magnet;
+    const wizardConfig = this.getInternalEnvironment().wizard;
+    const wizard = new Wizard(wizardConfig);
 
     if (magnetConfig.injectionFiles.length > 0) {
       magnetConfig.injectionFiles.forEach((glob) => {
@@ -137,7 +193,8 @@ class Magnet {
   }
 
   /**
-   * Loads body parser.
+   * Loads body parser applying url encoded system and json configuration.
+   * @private
    */
   loadBodyParser_() {
     this.getServer()
@@ -150,7 +207,8 @@ class Magnet {
   }
 
   /**
-   * Load compression system.
+   * Loads compression system.
+   * @private
    */
   loadCompression_() {
     this.getServer()
@@ -159,7 +217,8 @@ class Magnet {
   }
 
   /**
-   * Load engine dependencies.
+   * Loads engine dependencies.
+   * @private
    */
   loadServerEngineMiddlewares_() {
     this.loadBodyParser_();
@@ -172,6 +231,7 @@ class Magnet {
 
   /**
    * Setup general error middleware.
+   * @private
    */
   loadErrorMiddleware_() {
     this.getServer()
@@ -181,6 +241,7 @@ class Magnet {
 
   /**
    * Loads http logger.
+   * @private
    */
   loadHttpLogger_() {
     this.getServer()
@@ -190,6 +251,7 @@ class Magnet {
 
   /**
    * Loads protection rules.
+   * @private
    */
   loadSecurity_() {
     this.getServer()
@@ -198,7 +260,8 @@ class Magnet {
   }
 
   /**
-   * Load static files on engine.
+   * Loads static files on engine.
+   * @private
    */
   loadStaticFiles_() {
     this.getServer()
@@ -208,7 +271,8 @@ class Magnet {
   }
 
   /**
-   * Maybe execute start hook.
+   * Maybe execute start lifecycle function.
+   * @private
    */
   maybeCallStartHook_() {
     if (isFunction(this.getStartLifecycle())) {
@@ -217,16 +281,15 @@ class Magnet {
   }
 
   /**
-   * Set app directory.
-   * @param {string} appDirectory
+   * Sets application directory.
+   * @param {string} appDirectory Application directory.
    */
   setAppDirectory(appDirectory) {
-    this.appDirectory = appDirectory;
+    this.appDirectory_ = appDirectory;
   }
 
   /**
-   * Starts application.
-   * @param {Magnet} instance
+   * Loads application and starts http server.
    */
   async start() {
     this.maybeCallStartHook_();
@@ -257,45 +320,44 @@ class Magnet {
   }
 
   /**
-   * Set host.
-   * @param {string} host
+   * Sets hostname.
+   * @param {string} host Hostname.
    */
   setHost(host) {
     this.host_ = host;
   }
 
   /**
-   * Set Http server.
-   * @param {Server} server
+   * Sets server manager.
+   * @param {Server} server Server manager.
    */
   setServer(server) {
     this.server_ = server;
   }
 
   /**
-   * Set port.
-   * @param {string} port
+   * Sets server port.
+   * @param {number} port Server port.
    */
   setPort(port) {
     this.port_ = port;
   }
 
   /**
-   * Set start lifecycle function.
-   * @param {function} fn
+   * Sets start lifecycle function.
+   * @param {function} fn Start lifecycle function.
    */
   setStartLifecycle(fn) {
     this.startFn_ = fn;
   }
 
   /**
-   * Set test behavior.
-   * @param {boolean} isTest
+   * Sets test behavior.
+   * @param {boolean} isTest Test behavior.
    */
   setTestBehavior(isTest) {
     this.isTest_ = isTest;
   }
-
 }
 
 export default Magnet;
