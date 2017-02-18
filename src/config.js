@@ -35,9 +35,9 @@ const baseConfig = () => {
 
 /**
  * Deep merges object.
- * @param {!object} destination
- * @param {!object} source
- * @return {object}
+ * @param {!Object} destination Destination object.
+ * @param {!Object} source Source object.
+ * @return {Object} Returns the result of mergint the two params.
  */
 function deepMerge(destination, source) {
   for (let property in source) {
@@ -55,9 +55,10 @@ function deepMerge(destination, source) {
 /**
  * Loads base configuration for a specific `appDirectory` merged with
  * `appConfig`.
- * @param {!string} appDirectory
- * @param {!object} appConfig
- * @return {object}
+ * @param {!string} appDirectory Application directory.
+ * @param {!Object} appConfig Application config.
+ * @return {Object} Returns result of merge and manual assignment
+ * of application configuration.
  */
 function loadConfig(appDirectory, appConfig) {
   let config = baseConfig();
