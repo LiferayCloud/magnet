@@ -14,6 +14,7 @@ import morgan from 'morgan';
 import path from 'path';
 import registratorDefault from './registrator/default';
 import registratorInjection from './registrator/injection';
+import registratorString from './registrator/string';
 import ServerFactory from './server-factory';
 
 /**
@@ -114,6 +115,9 @@ class Magnet {
       }
       if (registratorDefault.test(file, module, this)) {
         registratorDefault.register(file, module, this);
+      }
+      if (registratorString.test(file, module, this)) {
+        registratorString.register(file, module, this);
       }
     });
   }

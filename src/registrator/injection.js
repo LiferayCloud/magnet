@@ -1,4 +1,5 @@
 import path from 'path';
+import {isObject} from 'metal';
 
 /**
  * Creates namespace in `obj` based on `parts` with `value`.
@@ -30,7 +31,7 @@ function removeExtension_(filename) {
 
 export default {
   test() {
-    return true;
+    return !isObject(module.route);
   },
   register(filename, module, magnet) {
     let folder = magnet.getServerDistDirectory();

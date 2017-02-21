@@ -1,8 +1,8 @@
-import {isFunction} from 'metal';
+import {isFunction, isObject} from 'metal';
 
 export default {
   test(filename, module, magnet) {
-    return isFunction(module.default);
+    return !isObject(module.route) && isFunction(module.default);
   },
   register(filename, module, magnet) {
     if (module.default.call) {
