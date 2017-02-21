@@ -27,7 +27,7 @@ if (argv.help) {
   process.exit(0);
 }
 
-let config = argv.config;
-let directory = process.cwd();
-let magnet = new Magnet({config, directory});
+const config = argv.config;
+const directory = process.cwd();
+const magnet = new Magnet({config, directory});
 magnet.start();
