@@ -1,34 +1,18 @@
-import logger from 'winston';
+import fs from 'fs';
+import path from 'path';
 
 const baseConfig = () => {
   return {
-    app: {
-      magnet: {
-        exclusionFiles: [
-            'build/**',
-            'dist/**',
-            'node_modules/**',
-            'start.js',
-        ],
-        host: 'localhost',
-        injectionFiles: [
-          '**/*.js',
-        ],
-        isTest: false,
-        port: 80,
-      },
-    },
-    internal: {
-      express: {
-        bodyParser: {
-          extended: true,
-        },
-      },
-      wizard: {
-        cwd: '/',
-        logger: logger,
-        verbose: true,
-      },
+    magnet: {
+      host: 'localhost',
+      ignore: [
+          './build/**',
+          './gulpfile.js',
+          './magnet.config.js',
+          './node_modules/**',
+      ],
+      port: 80,
+      src: ['./**/*.js'],
     },
   };
 };
@@ -38,6 +22,7 @@ const baseConfig = () => {
  * @param {!Object} destination Destination object.
  * @param {!Object} source Source object.
  * @return {Object} Returns the result of mergint the two params.
+ * @private
  */
 function deepMerge(destination, source) {
   for (let property in source) {
@@ -53,18 +38,20 @@ function deepMerge(destination, source) {
 }
 
 /**
- * Loads base configuration for a specific `appDirectory` merged with
- * `appConfig`.
- * @param {!string} appDirectory Application directory.
- * @param {!Object} appConfig Application config.
- * @return {Object} Returns result of merge and manual assignment
- * of application configuration.
+ * Creates configuration.
+ * @param {!string} directory
+ * @param {!string} config Config filename.
+ * @return {Object}
  */
-function loadConfig(appDirectory, appConfig) {
-  let config = baseConfig();
-  deepMerge(config.app, appConfig);
-  config.internal.wizard.cwd = appDirectory || '/';
-  return config;
+function createConfig(directory, config = 'magnet.config.js') {
+  let ext = {};
+  let file = path.resolve(config);
+  if (fs.existsSync(file)) {
+    ext = require(file);
+  } else {
+    throw new Error('Config file not found: ' + file);
+  }
+  return deepMerge(baseConfig(), ext);
 }
 
-export {loadConfig};
+export {createConfig};

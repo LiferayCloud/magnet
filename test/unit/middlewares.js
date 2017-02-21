@@ -1,7 +1,7 @@
-import generalErrors from '../../../src/middleware/general-errors';
+import {errorMiddleware} from '../../src/middlewares';
 import httpMocks from 'node-mocks-http';
 
-describe('generalErrors', function() {
+describe('errorMiddleware', function() {
   it('should create an instance of a server', () => {
     let request = httpMocks.createRequest({
         method: 'GET',
@@ -12,7 +12,7 @@ describe('generalErrors', function() {
     });
     let response = httpMocks.createResponse();
 
-    generalErrors()({foo: 'bar'}, request, response, (err) => {
+    errorMiddleware()({foo: 'bar'}, request, response, (err) => {
       expect(err).to.deep.equal({foo: 'bar'});
     });
   });

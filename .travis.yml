@@ -3,7 +3,7 @@ node_js:
 - '6'
 - '7.5'
 after_success:
-- npm run test:coverage:travis
+- npm run coverage
 deploy:
   provider: npm
   email: pragmaticivan@gmail.com

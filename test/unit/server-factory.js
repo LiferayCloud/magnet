@@ -1,5 +1,5 @@
-import ServerFactory from '../../../src/server/server-factory';
-import Server from '../../../src/server/server';
+import Server from '../../src/server';
+import ServerFactory from '../../src/server-factory';
 
 describe('ServerFactory', function() {
   it('should create an instance of a server', () => {
