@@ -1,4 +1,4 @@
-import {isDefAndNotNull, isNull, isFunction, isObject} from 'metal';
+import {isDefAndNotNull, isNull, isFunction, isObject, isString} from 'metal';
 
 /**
  * Asserts value is defined and not null.
@@ -40,6 +40,17 @@ export function assertNotNull(value, errorMessage) {
  */
 export function assertObject(value, errorMessage) {
   if (!isObject(value)) {
+    throw new Error(errorMessage);
+  }
+}
+
+/**
+ * Asserts value is a string.
+ * @param  {String} value
+ * @param  {string} errorMessage Error message
+ */
+export function assertString(value, errorMessage) {
+  if (!isString(value)) {
     throw new Error(errorMessage);
   }
 }
