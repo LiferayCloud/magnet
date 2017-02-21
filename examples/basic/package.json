@@ -1,0 +1,11 @@
+{
+  "name": "magnet-example",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet start"
+  },
+  "dependencies": {
+    "magnet": "^0.1.0"
+  }
+}
