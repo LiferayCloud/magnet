@@ -12,8 +12,9 @@ import helmet from 'helmet';
 import logger from 'winston';
 import morgan from 'morgan';
 import path from 'path';
-import ServerFactory from './server-factory';
+import registratorDefault from './registrator/default';
 import registratorInjection from './registrator/injection';
+import ServerFactory from './server-factory';
 
 /**
  * Magnet.
@@ -111,8 +112,8 @@ class Magnet {
       if (registratorInjection.test(file, module, this)) {
         registratorInjection.register(file, module, this);
       }
-      if (module.default.call) {
-        module.default.call(module.default, this.getServer().getEngine(), this);
+      if (registratorDefault.test(file, module, this)) {
+        registratorDefault.register(file, module, this);
       }
     });
   }
