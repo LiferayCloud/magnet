@@ -1,7 +1,7 @@
 export const route = {
   path: '/string',
   method: 'get',
-  type: 'html'
+  type: 'html',
 };
 
 export default `<html>
