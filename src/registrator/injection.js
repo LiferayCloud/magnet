@@ -11,7 +11,7 @@ function createNamespace_(obj = {}, parts = [], value) {
   let last = obj;
   parts.forEach((key, i) => {
     last[key] = (i === parts.length - 1) ? value : {};
-    last = obj[key];
+    last = last[key];
   });
 }
 
