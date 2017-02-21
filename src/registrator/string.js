@@ -10,7 +10,7 @@ export default {
     let method = module.route.method || 'get';
 
     assertDefAndNotNull(path, `Route configuration path must be specified, ` +
-      `check your file ${filename}.`);
+      `check ${filename.substring(magnet.getServerDistDirectory().length)}.`);
 
     let app = magnet.getServer().getEngine();
 
