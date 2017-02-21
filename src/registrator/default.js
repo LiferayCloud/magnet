@@ -5,9 +5,7 @@ export default {
     return !isObject(module.route) && isFunction(module.default);
   },
   register(filename, module, magnet) {
-    if (module.default.call) {
-      let app = magnet.getServer().getEngine();
-      module.default.call(module.default, app, magnet);
-    }
+    let app = magnet.getServer().getEngine();
+    module.default.call(module.default, app, magnet);
   },
 };
