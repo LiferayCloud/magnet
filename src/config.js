@@ -7,6 +7,7 @@ const baseConfig = () => {
       host: 'localhost',
       ignore: [
           './build/**',
+          './coverage/**',
           './gulpfile.js',
           './magnet.config.js',
           './node_modules/**',
@@ -24,12 +25,12 @@ const baseConfig = () => {
  * @return {Object} Returns the result of mergint the two params.
  * @private
  */
-function deepMerge(destination, source) {
+function deepMerge_(destination, source) {
   for (let property in source) {
     if (source[property] && source[property].constructor &&
      source[property].constructor === Object) {
       destination[property] = destination[property] || {};
-      deepMerge(destination[property], source[property]);
+      deepMerge_(destination[property], source[property]);
     } else {
       destination[property] = source[property];
     }
@@ -46,12 +47,12 @@ function deepMerge(destination, source) {
 function createConfig(directory, config = 'magnet.config.js') {
   let ext = {};
   let file = path.resolve(config);
+
   if (fs.existsSync(file)) {
     ext = require(file);
-  } else {
-    throw new Error('Config file not found: ' + file);
   }
-  return deepMerge(baseConfig(), ext);
+
+  return deepMerge_(baseConfig(), ext);
 }
 
 export {createConfig};
