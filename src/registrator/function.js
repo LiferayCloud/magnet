@@ -6,8 +6,8 @@ export default {
     return isObject(module.route) && isFunction(module.default);
   },
   register(filename, module, magnet) {
-    let method = module.route.method || 'get';
     let path = module.route.path;
+    let method = module.route.method || 'get';
 
     assertDefAndNotNull(path, `Route configuration path must be specified, ` +
       `check ${filename.substring(magnet.getServerDistDirectory().length)}.`);

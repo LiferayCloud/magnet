@@ -6,8 +6,8 @@ export default {
     return isObject(module.route) && isString(module.default);
   },
   register(filename, module, magnet) {
-    let method = module.route.method || 'get';
     let path = module.route.path;
+    let method = module.route.method || 'get';
     let type = module.route.type || 'html';
 
     assertDefAndNotNull(path, `Route configuration path must be specified, ` +
