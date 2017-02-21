@@ -4,7 +4,7 @@ import webpack from 'webpack';
 
 /**
  * Builds `files` into `outputPath`.
- * @param {!array.<string>} files
+ * @param {!Array.<string>} files
  * @param {string} outputPath
  * @return {Promise}
  * @async
@@ -16,13 +16,13 @@ export async function build(files, outputPath) {
     let entry = {};
     files.forEach((file) => entry[file] = file);
 
-    let webpackServerConfig = buildWebpackServerConfig(entry, outputPath);
+    const webpackServerConfig = buildWebpackServerConfig(entry, outputPath);
 
     webpack(webpackServerConfig, function(err, stats) {
       if (err) {
         reject(err);
       }
-      let output = stats.toString({
+      const output = stats.toString({
         colors: true,
         chunks: false,
       });
