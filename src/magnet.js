@@ -13,6 +13,7 @@ import logger from 'winston';
 import morgan from 'morgan';
 import path from 'path';
 import ServerFactory from './server-factory';
+import registratorInjection from './registrator/injection';
 
 /**
  * Magnet.
@@ -35,6 +36,13 @@ class Magnet {
      * @protected
      */
     this.config = createConfig(directory, config);
+
+    /**
+     * Injections object.
+     * @type {!object}
+     * @protected
+     */
+    this.injections = {};
 
     /**
      * Directory to start magnet application.
@@ -96,12 +104,16 @@ class Magnet {
    * @async
    */
   async load() {
-    let serverDistFiles = this.getFiles(this.getServerDistDirectory(), true);
-
-    serverDistFiles.forEach((file) => {
+    let files = this.getFiles(this.getServerDistDirectory(), true);
+    files.forEach((file) => {
       delete require.cache[file];
       let module = require(file);
-      module.default.call(module.default, this.getServer().getEngine(), this);
+      if (registratorInjection.test(file, module, this)) {
+        registratorInjection.register(file, module, this);
+      }
+      if (module.default.call) {
+        module.default.call(module.default, this.getServer().getEngine(), this);
+      }
     });
   }
 
