@@ -17,6 +17,9 @@ gulp.task('build', ['clean'], () =>
     .pipe(babel())
     .pipe(gulp.dest('build')));
 
+gulp.task('build:watch', () =>
+  gulp.watch('src/**/*', ['build']));
+
 gulp.task('clean', () => del('build'));
 
 gulp.task('coverage', (done) => {
