@@ -18,7 +18,7 @@ if (argv.help) {
     Description
       Starts the application in production mode.
     Usage
-      $ magnet start <dir> -p <port> -c <config file path>
+      $ magnet start <dir> -c <config file path>
     If no directory is provided, the current directory will be assumed.
     Options
       --config, -c    Config file path, e.g. magnet.config.js
