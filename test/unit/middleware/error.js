@@ -1,4 +1,4 @@
-import {errorMiddleware} from '../../src/middlewares';
+import {errorMiddleware} from '../../../src/middleware/error';
 import httpMocks from 'node-mocks-http';
 
 describe('errorMiddleware', function() {
