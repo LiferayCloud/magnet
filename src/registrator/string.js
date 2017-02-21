@@ -6,8 +6,9 @@ export default {
     return isObject(module.route) && isString(module.default);
   },
   register(filename, module, magnet) {
-    let path = module.route.path;
     let method = module.route.method || 'get';
+    let path = module.route.path;
+    let type = module.route.type || 'html';
 
     assertDefAndNotNull(path, `Route configuration path must be specified, ` +
       `check ${filename.substring(magnet.getServerDistDirectory().length)}.`);
@@ -15,6 +16,6 @@ export default {
     let app = magnet.getServer().getEngine();
 
     app[method.toLowerCase()](path,
-      (req, res) => res.type('html').end(module.default));
+      (req, res) => res.type(type).end(module.default));
   },
 };
