@@ -1,8 +1,5 @@
-import {assertDefAndNotNull,
-        assertNotNull,
-        assertFunction,
-        assertObject}
-        from '../../src/assertions';
+import {assertDefAndNotNull, assertNotNull, assertFunction, assertObject}
+  from '../../src/assertions';
 
 describe('assertions', function() {
   describe('assertDefAndNotNull', function() {

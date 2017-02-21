@@ -1,19 +1,21 @@
+import {assertDefAndNotNull} from './assertions';
 import http from 'http';
 import logger from 'winston';
 
 /**
- * Server manager implementation.
+ * Server runtime.
  */
 class Server {
   /**
    * Constructor.
-   * @param {!Object} engine Server engine.
+   * @param {!Object} engine
    */
   constructor(engine) {
+    assertDefAndNotNull(engine, `Magnet server engine is required`);
+
     /**
      * Server engine.
      * @type {Object}
-     * @default engine
      * @private
      */
     this.engine_ = engine;
@@ -21,22 +23,21 @@ class Server {
     /**
      * Http server.
      * @type {Http.net.Server}
-     * @default Http.net.Server(engine)
      * @private
      */
     this.httpServer_ = http.createServer(engine);
   }
 
   /**
-   * Gets the current engine used in the server instance.
-   * @return {Object} Server engine.
+   * Gets server engine.
+   * @return {Object}
    */
   getEngine() {
     return this.engine_;
   }
 
   /**
-   * Gets the http server.
+   * Gets http server.
    * @return {Http.net.Server}
    */
   getHttpServer() {
@@ -50,10 +51,9 @@ class Server {
    * @return {Server} Returns server instance.
    */
   listen(port = 3000, host = 'localhost') {
-    this.getHttpServer().listen(port, host, () => {
-      logger.info('[SERVER]', `Address: http://${host}:${port}`);
-    });
-
+    this.getHttpServer()
+      .listen(port, host, () =>
+        logger.info('[SERVER]', `Address: http://${host}:${port}`));
     return this;
   }
 

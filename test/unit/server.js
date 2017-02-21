@@ -1,5 +1,5 @@
-import Server from '../../../src/server/server';
 import http from 'http';
+import Server from '../../src/server';
 
 const fakeEngine = (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
