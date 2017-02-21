@@ -13,6 +13,7 @@ import logger from 'winston';
 import morgan from 'morgan';
 import path from 'path';
 import registratorDefault from './registrator/default';
+import registratorFunction from './registrator/function';
 import registratorInjection from './registrator/injection';
 import registratorString from './registrator/string';
 import ServerFactory from './server-factory';
@@ -119,6 +120,9 @@ class Magnet {
         }
         if (registratorString.test(file, module, this)) {
           registratorString.register(file, module, this);
+        }
+        if (registratorFunction.test(file, module, this)) {
+          registratorFunction.register(file, module, this);
         }
       } catch(error) {
         logger.error(error);
