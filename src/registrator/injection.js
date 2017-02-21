@@ -2,12 +2,12 @@ import path from 'path';
 
 /**
  * Creates namespace in `obj` based on `parts` with `value`.
- * @param {?object} obj
+ * @param {?Object} obj
  * @param {?array.<string>} parts
  * @param {*} value
  * @private
  */
-function createNamespace(obj = {}, parts = [], value) {
+function createNamespace_(obj = {}, parts = [], value) {
   let last = obj;
   parts.forEach((key, i) => {
     last[key] = (i === parts.length - 1) ? value : {};
@@ -20,7 +20,7 @@ function createNamespace(obj = {}, parts = [], value) {
  * @return {string} Filename without extension.
  * @private
  */
-function removeExtension(filename) {
+function removeExtension_(filename) {
   let last = filename.lastIndexOf('.');
   if (last > -1) {
     return filename.substring(0, last);
@@ -34,9 +34,9 @@ export default {
   },
   register(filename, module, magnet) {
     let folder = magnet.getServerDistDirectory();
-    let parts = removeExtension(filename.substring(folder.length + 1))
+    let parts = removeExtension_(filename.substring(folder.length + 1))
       .split(path.sep)
       .map((part) => part.toLowerCase());
-    createNamespace(magnet.injections, parts, module.default);
+    createNamespace_(magnet.injections, parts, module.default);
   },
 };
