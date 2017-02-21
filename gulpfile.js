@@ -46,3 +46,6 @@ gulp.task('lint', () =>
 gulp.task('test', () =>
   gulp.src(testFiles)
   .pipe(mocha({compilers: babelRegister})));
+
+gulp.task('test:watch', () =>
+  gulp.watch(testFiles, ['test']));
