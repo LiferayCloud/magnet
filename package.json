@@ -10,7 +10,10 @@
     "prepublish": "gulp build",
     "test": "gulp test"
   },
-  "author": "Ivan Santos <ivan.santos@liferay.com>",
+  "contributors": [
+    "Ivan Santos <ivan.santos@liferay.com>",
+    "Eduardo Lundgren <eduardo.lundgren@liferay.com>"
+  ],
   "license": "BSD-3-Clause",
   "keywords": [
     "api",
