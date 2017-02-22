@@ -46,7 +46,7 @@ function deepMerge_(destination, source) {
  */
 function createConfig(directory, config = 'magnet.config.js') {
   let ext = {};
-  let file = path.resolve(config);
+  let file = path.resolve(directory, config);
 
   if (fs.existsSync(file)) {
     ext = require(file);
