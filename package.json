@@ -6,9 +6,15 @@
     "node": ">=7.6.0"
   },
   "scripts": {
+    "build": "gulp build",
+    "build:watch": "gulp build:watch",
+    "lint": "gulp lint",
     "coverage": "gulp coverage",
     "prepublish": "gulp build",
-    "test": "gulp test"
+    "preversion": "npm test",
+    "test": "gulp test",
+    "test:watch": "gulp test:watch",
+    "test:coverage:travis": "gulp test:coverage:travis"
   },
   "contributors": [
     "Ivan Santos <ivan.santos@liferay.com>",
@@ -57,6 +63,7 @@
     "eslint-loader": "^1.6.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-codecov": "^2.0.2",
     "gulp-eslint": "^3.0.1",
     "gulp-istanbul": "^1.1.1",
     "gulp-mocha": "^3.0.1",

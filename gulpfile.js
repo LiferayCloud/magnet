@@ -6,6 +6,7 @@ const gulp = require('gulp');
 const isparta = require('isparta');
 const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
+const codecov = require('gulp-codecov');
 
 const testFiles = [
   'test/setup/node.js',
@@ -50,3 +51,8 @@ gulp.task('test', () =>
 
 gulp.task('test:watch', () =>
   gulp.watch(testFiles.concat(['src/**/*.js']), ['test']));
+
+gulp.task('test:coverage:travis', () => {
+  gulp.src('./coverage/lcov.info')
+      .pipe(codecov());
+});
