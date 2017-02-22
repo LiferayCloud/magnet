@@ -49,4 +49,4 @@ gulp.task('test', () =>
   .pipe(mocha({compilers: babelRegister})));
 
 gulp.task('test:watch', () =>
-  gulp.watch(testFiles, ['test']));
+  gulp.watch(testFiles.concat(['src/**/*.js']), ['test']));
