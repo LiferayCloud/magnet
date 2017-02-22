@@ -74,30 +74,27 @@ export default async (req) => \`
 `;
 
 logger.info('Generating files');
+
 if (!existsSync(dir)) {
   mkdirSync(dir);
 }
-
 if (!existsSync(join(dir, 'package.json'))) {
   writeFileSync(
     join(dir, 'package.json'),
     basePackage.replace(/my-app/g, basename(dir))
   );
 }
-
 if (!existsSync(join(dir, 'static'))) {
   mkdirSync(join(dir, 'static'));
 }
-
 if (!existsSync(join(dir, 'index.js'))) {
   writeFileSync(join(dir, 'index.js'), baseIndex);
 }
-
 if (!existsSync(join(dir, 'api.js'))) {
   writeFileSync(join(dir, 'api.js'), baseApi);
 }
-
 if (!existsSync(join(dir, 'magnet.config.js'))) {
   writeFileSync(join(dir, 'magnet.config.js'), baseMagnetConfig);
 }
+
 logger.info('Done.');
