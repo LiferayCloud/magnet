@@ -22,7 +22,7 @@ export default {
       async (req, res) => {
         let result = await module.default.call(module.default, req, res);
         if (!res.headersSent) {
-          res.type(type).end(result);
+          res.type(type).send(result);
         }
       });
   },

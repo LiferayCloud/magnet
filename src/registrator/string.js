@@ -19,6 +19,6 @@ export default {
     let app = magnet.getServer().getEngine();
 
     app[method.toLowerCase()](path,
-      (req, res) => res.type(type).end(module.default));
+      (req, res) => res.type(type).send(module.default));
   },
 };
