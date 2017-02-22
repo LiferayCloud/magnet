@@ -108,8 +108,14 @@ class Magnet {
    * @async
    */
   async load() {
-    let files = this.getFiles(this.getServerDistDirectory(), true);
+    let dist = this.getServerDistDirectory();
+    let files = this.getFiles(dist, true);
     files.forEach((file) => {
+      // Skip loading registratora for lifecycle files
+      switch (file) {
+        case path.join(dist, Magnet.LifecyleFiles.START):
+          return;
+      }
       delete require.cache[file];
       let module = require(file);
       try {
@@ -166,7 +172,8 @@ class Magnet {
    * @async
    */
   async runStartHook_() {
-    let start = path.resolve(this.getServerDistDirectory(), 'start.js');
+    let start = path.resolve(
+      this.getServerDistDirectory(), Magnet.LifecyleFiles.START);
     if (fs.existsSync(start)) {
       let startFn = require(start);
       if (startFn.default) {
@@ -285,5 +292,12 @@ class Magnet {
         path.join(this.getDirectory(), 'static')));
   }
 }
+
+/**
+ * @static
+ */
+Magnet.LifecyleFiles = {
+  START: 'start.js',
+};
 
 export default Magnet;
