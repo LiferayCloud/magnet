@@ -8,6 +8,7 @@ export default {
   register(filename, module, magnet) {
     let path = module.route.path;
     let method = module.route.method || 'get';
+    let type = module.route.type || 'html';
     let fileshort = filename.substring(magnet.getServerDistDirectory().length);
 
     assertString(method, `Route configration method must be a string, `
@@ -17,6 +18,12 @@ export default {
 
     let app = magnet.getServer().getEngine();
 
-    app[method.toLowerCase()](path, module.default);
+    app[method.toLowerCase()](path,
+      async (req, res) => {
+        let result = await module.default.call(module.default, req, res);
+        if (!res.headersSent) {
+          res.type(type).end(result);
+        }
+      });
   },
 };
