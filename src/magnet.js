@@ -294,7 +294,9 @@ class Magnet {
 }
 
 /**
+ * Mgnet lifecycle files.
  * @static
+ * @enum {string}
  */
 Magnet.LifecyleFiles = {
   START: 'start.js',
