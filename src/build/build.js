@@ -1,6 +1,5 @@
 import buildWebpackServerConfig from './webpack.server.config';
 import del from 'del';
-import path from 'path';
 import webpack from 'webpack';
 
 /**
