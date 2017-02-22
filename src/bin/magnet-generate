@@ -16,7 +16,7 @@ if (argv.help) {
     Description
       Scaffolds a simple project structure to get started quickly.
     Usage
-      $ magnet init <dir>
+      $ magnet generate <dir>
     If no directory is provided, the current directory will be assumed.
     Options
       --help, -h      Displays this message
