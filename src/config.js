@@ -6,14 +6,14 @@ const baseConfig = () => {
     magnet: {
       host: 'localhost',
       ignore: [
-          './build/**',
-          './coverage/**',
-          './gulpfile.js',
-          './magnet.config.js',
-          './node_modules/**',
+          'build/**',
+          'coverage/**',
+          'gulpfile.js',
+          'magnet.config.js',
+          'node_modules/**',
       ],
       port: 80,
-      src: ['./**/*.js'],
+      src: ['**/*.js'],
     },
   };
 };

@@ -96,7 +96,8 @@ class Magnet {
   async build() {
     let files = this.getFiles(this.getDirectory());
 
-    let output = await build(files, this.getServerDistDirectory());
+    let output = await build(
+      files, this.getDirectory(), this.getServerDistDirectory());
 
     console.log(output);
   }
@@ -145,6 +146,17 @@ class Magnet {
       files = files.concat(
         glob.sync(pattern, {cwd: cwd, ignore: ignore, realpath: realpath}));
     });
+    if (!realpath) {
+      // Normalizes globs of relative files to always start with "./".
+      // Webpack gets confused when trying to resolve relative module files
+      // without the path separator.
+      return files.map((file) => {
+        if (path.isAbsolute(file)) {
+          return file;
+        }
+        return '.' + path.sep + path.join(file);
+      });
+    }
     return files;
   }
 

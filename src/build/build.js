@@ -1,22 +1,25 @@
 import buildWebpackServerConfig from './webpack.server.config';
 import del from 'del';
+import path from 'path';
 import webpack from 'webpack';
 
 /**
  * Builds `files` into `outputPath`.
  * @param {!Array.<string>} files
- * @param {string} outputPath
+ * @param {string} directory
+ * @param {string} outputDirectory
  * @return {Promise}
  * @async
  */
-export async function build(files, outputPath) {
-  await del(outputPath);
+export async function build(files, directory, outputDirectory) {
+  await del(outputDirectory);
 
   return new Promise((resolve, reject) => {
     let entry = {};
     files.forEach((file) => entry[file] = file);
 
-    const webpackServerConfig = buildWebpackServerConfig(entry, outputPath);
+    const webpackServerConfig = buildWebpackServerConfig(
+      entry, directory, outputDirectory);
 
     webpack(webpackServerConfig, function(err, stats) {
       if (err) {

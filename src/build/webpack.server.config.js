@@ -1,7 +1,8 @@
 import nodeExternals from 'webpack-node-externals';
 
-export default (entry, outputPath) => {
+export default (entry, directory, outputDirectory) => {
   return {
+    context: directory,
     entry: entry,
     target: 'node',
     externals: [
@@ -9,7 +10,7 @@ export default (entry, outputPath) => {
     ],
     output: {
       libraryTarget: 'commonjs2',
-      path: outputPath,
+      path: outputDirectory,
       filename: '[name]',
     },
   };
