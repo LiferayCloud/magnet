@@ -23,10 +23,11 @@ gulp.task('build:watch', () =>
 gulp.task('clean', () => del('build'));
 
 gulp.task('coverage', (done) => {
+  require('babel-register');
   gulp.src(['src/**/*.js'])
-    .pipe(babel())
     .pipe(istanbul({
       instrumenter: isparta.Instrumenter,
+      includeUntested: true,
     }))
     .pipe(istanbul.hookRequire())
     .on('finish', () => {
