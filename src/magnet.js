@@ -25,20 +25,27 @@ class Magnet {
 
   /**
    * Constructor.
+   * @param {!Object} options Magnet options.
    */
-  constructor({
-    directory,
-    config,
-  }) {
-    assertDefAndNotNull(directory, `Magnet directory is required,
-      try: new Magnet({directory: \'/app\'}).`);
+  constructor(options) {
+    assertDefAndNotNull(options, `Magnet options are required, ` +
+      `try: new Magnet({directory: \'/app\'}).`);
+    assertDefAndNotNull(options.directory, `Magnet directory is required, ` +
+      `try: new Magnet({directory: \'/app\'}).`);
 
     /**
      * Configuration object.
      * @type {!object}
      * @protected
      */
-    this.config = createConfig(directory, config);
+    this.config = createConfig(options.directory, options.config);
+
+    /**
+     * Directory to start magnet application.
+     * @type {!string}
+     * @private
+     */
+    this.directory_ = options.directory;
 
     /**
      * Injections object.
@@ -46,13 +53,6 @@ class Magnet {
      * @protected
      */
     this.injections = {};
-
-    /**
-     * Directory to start magnet application.
-     * @type {!string}
-     * @private
-     */
-    this.directory_ = directory;
 
     /**
      * Default server runtime used to handle http requests.
@@ -168,19 +168,14 @@ class Magnet {
   async runStartHook_() {
     let start = path.resolve(this.getServerDistDirectory(), 'start.js');
     if (fs.existsSync(start)) {
-      const startFn = require(start);
+      let startFn = require(start);
+      if (startFn.default) {
+        startFn = startFn.default;
+      }
       if (isFunction(startFn)) {
         startFn.call(this);
       }
     }
-  }
-
-  /**
-   * Sets server runtime.
-   * @param {Server} server
-   */
-  setServer(server) {
-    this.server_ = server;
   }
 
   /**
