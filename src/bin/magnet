@@ -8,6 +8,7 @@ import {spawn} from 'cross-spawn';
 const defaultCommand = 'dev';
 const commands = new Set([
   'start',
+  'generate',
   defaultCommand,
 ]);
 
