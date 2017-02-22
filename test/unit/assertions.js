@@ -1,4 +1,5 @@
-import {assertDefAndNotNull, assertNotNull, assertFunction, assertObject}
+import {assertDefAndNotNull, assertNotNull,
+  assertFunction, assertObject, assertString}
   from '../../src/assertions';
 
 describe('assertions', function() {
@@ -36,6 +37,14 @@ describe('assertions', function() {
     it('should thrown an error when it\'s not an object', () => {
       expect(function() {
          assertObject('string', 'error message');
+      }).to.throw('error message');
+    });
+  });
+
+  describe('assertString', function() {
+    it('should thrown an error when it\'s not an object', () => {
+      expect(function() {
+         assertString(1, 'error message');
       }).to.throw('error message');
     });
   });
