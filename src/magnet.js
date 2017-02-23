@@ -11,6 +11,7 @@ import glob from 'glob';
 import helmet from 'helmet';
 import log from './log';
 import morgan from 'morgan';
+import multer from 'multer';
 import path from 'path';
 import registratorFunction from './registrator/function';
 import registratorInjection from './registrator/injection';
@@ -234,7 +235,7 @@ class Magnet {
 
     this.getServer()
       .getEngine()
-      .use(bodyParser.json({type: '*/*'}));
+      .use(bodyParser.json());
   }
 
   /**
@@ -268,10 +269,21 @@ class Magnet {
   }
 
   /**
+   * Setup multipart form data parser middleware.
+   * @private
+   */
+  setupMiddlewareMultipart_() {
+    this.getServer()
+      .getEngine()
+      .use(multer().any());
+  }
+
+  /**
    * Setup engine middleware.
    * @private
    */
   setupMiddlewares_() {
+    this.setupMiddlewareMultipart_();
     this.setupMiddlewareBodyParser_();
     this.setupMiddlewareCompression_();
     this.setupMiddlewareError_();
