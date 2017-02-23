@@ -2,14 +2,12 @@
 
 import {getRoutesTable} from '../routes';
 import {Magnet} from '../';
+import fs from 'fs';
 import parseArgs from 'minimist';
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     h: 'help',
-    c: 'config',
   },
   boolean: ['h'],
 });
@@ -17,12 +15,10 @@ const argv = parseArgs(process.argv.slice(2), {
 if (argv.help) {
   console.log(`
     Description
-      Starts the application in development mode.
+      List application routes.
     Usage
-      $ magnet dev <dir> -c <config file path>
-    If no directory is provided, the current directory will be assumed.
+      $ magnet routes
     Options
-      --config, -c    Config file path, e.g. magnet.config.js
       --help, -h      Displays this message
   `);
   process.exit(0);
@@ -32,6 +28,15 @@ const config = argv.config;
 const directory = process.cwd();
 const magnet = new Magnet({config, directory});
 
-magnet.build()
-  .then(() => console.log(`${getRoutesTable(magnet)}\n`))
-  .then(() => magnet.start());
+/**
+ */
+async function maybeBuildThenListRoutes() {
+  try {
+    fs.accessSync(magnet.getServerDistDirectory());
+  } catch (error) {
+    await magnet.build(false);
+  }
+  console.log(getRoutesTable(magnet));
+}
+
+maybeBuildThenListRoutes();

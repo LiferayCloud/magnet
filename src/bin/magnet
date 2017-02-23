@@ -10,6 +10,7 @@ const defaultCommand = 'dev';
 const commands = new Set([
   'start',
   'generate',
+  'routes',
   defaultCommand,
 ]);
 
