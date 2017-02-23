@@ -8,7 +8,6 @@ import webpack from 'webpack';
  * @param {string} directory
  * @param {string} outputDirectory
  * @return {Promise}
- * @async
  */
 export async function build(files, directory, outputDirectory) {
   await del(outputDirectory);
