@@ -57,6 +57,7 @@ describe('Magnet', () => {
 
     it('should start an http server', async () => {
       const magnet = new Magnet({directory});
+      await magnet.build();
       await magnet.start();
 
       await assertAsyncHttpRequest({
@@ -74,6 +75,7 @@ describe('Magnet', () => {
 
     it('should stop the application server', async() => {
       const magnet = new Magnet({directory});
+      await magnet.build();
       await magnet.start();
 
       await magnet.stop();
