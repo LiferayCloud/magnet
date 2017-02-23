@@ -283,12 +283,12 @@ class Magnet {
    * @private
    */
   setupMiddlewares_() {
-    this.setupMiddlewareMultipart_();
-    this.setupMiddlewareBodyParser_();
-    this.setupMiddlewareCompression_();
-    this.setupMiddlewareError_();
-    this.setupMiddlewareHttpLogger_();
     this.setupMiddlewareSecurity_();
+    this.setupMiddlewareBodyParser_();
+    this.setupMiddlewareMultipart_();
+    this.setupMiddlewareCompression_();
+    this.setupMiddlewareHttpLogger_();
+    this.setupMiddlewareError_();
     this.setupMiddlewareStaticFiles_();
   }
 
