@@ -8,7 +8,7 @@
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp build:watch",
-    "coverage": "nyc --reporter=lcov  --reporter=text npm test",
+    "coverage": "nyc --reporter=lcov --include='src/**/*.js'  --reporter=text npm test",
     "lint": "gulp lint",
     "prepublish": "gulp build",
     "preversion": "npm test",
