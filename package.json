@@ -50,9 +50,9 @@
     "metal": "^2.6.0",
     "minimist": "^1.2.0",
     "morgan": "^1.6.0",
+    "npmlog": "^4.0.2",
     "webpack": "^2.2.1",
-    "webpack-node-externals": "^1.5.4",
-    "winston": "^1.0.0"
+    "webpack-node-externals": "^1.5.4"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.0.0",

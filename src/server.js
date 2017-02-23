@@ -1,6 +1,6 @@
 import {assertDefAndNotNull} from './assertions';
 import http from 'http';
-import logger from 'winston';
+import log from './log';
 
 /**
  * Server runtime.
@@ -53,7 +53,7 @@ class Server {
   listen(port = 3000, host = 'localhost') {
     this.getHttpServer()
       .listen(port, host, () =>
-        logger.info('[SERVER]', `Address: http://${host}:${port}`));
+        log.info('', `Ready on http://${host}:${port}`));
     return this;
   }
 

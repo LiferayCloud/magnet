@@ -9,7 +9,7 @@ import express from 'express';
 import fs from 'fs';
 import glob from 'glob';
 import helmet from 'helmet';
-import logger from 'winston';
+import log from './log';
 import morgan from 'morgan';
 import path from 'path';
 import registratorFunction from './registrator/function';
@@ -90,16 +90,21 @@ class Magnet {
 
   /**
    * Builds application.
+   * @param {boolean} outputLog
    * @protected
    * @async
    */
-  async build() {
+  async build(outputLog = true) {
+    log.info('', 'Building assets…');
+
     let files = this.getFiles(this.getDirectory());
 
     let output = await build(
       files, this.getDirectory(), this.getServerDistDirectory());
 
-    console.log(output);
+    if (outputLog) {
+      console.log(`\n${output}\n`);
+    }
   }
 
   /**
@@ -111,7 +116,7 @@ class Magnet {
     let dist = this.getServerDistDirectory();
     let files = this.getFiles(dist, true);
     files.forEach((file) => {
-      // Skip loading registratora for lifecycle files
+      // Skip loading registrator for lifecycle files
       switch (file) {
         case path.join(dist, Magnet.LifecyleFiles.START):
           return;
@@ -132,7 +137,7 @@ class Magnet {
           registratorFunction.register(file, module, this);
         }
       } catch(error) {
-        logger.error(error);
+        log.error('', error);
       }
     });
   }
@@ -190,8 +195,8 @@ class Magnet {
    * @async
    */
   async start() {
-    await this.build();
     this.runStartHook_();
+
     await this.load();
 
     await new Promise((resolve, reject) => {
@@ -210,7 +215,7 @@ class Magnet {
    * @async
    */
   async stop() {
-    logger.info('[APP]', 'Shutting down gracefully');
+    log.info('', 'Shutting down gracefully…');
     await this.getServer().close();
   }
 

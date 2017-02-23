@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import pkg from '../../package.json';
-import chokidar from 'chokidar';
 import {join} from 'path';
 import {spawn} from 'cross-spawn';
+import chokidar from 'chokidar';
+import log from '../log';
+import pkg from '../../package.json';
 
 const defaultCommand = 'dev';
 const commands = new Set([
@@ -53,13 +54,13 @@ const startProcess = () => {
       if (signal === 'SIGKILL') {
         process.exit(137);
       }
-      console.log(`exitting`);
+      log.info('', 'exitting');
       process.exit(1);
     }
     process.exit(0);
   });
   proc.on('error', (err) => {
-    console.error(err);
+    log.error('', err);
     process.exit(1);
   });
   return proc;
@@ -73,7 +74,7 @@ if (cmd === 'dev') {
     });
 
     watcher.on('change', (a, b) => {
-      console.log('\n> Found a change, restarting the server...');
+      log.info('', 'Found a change, restarting the server...');
       proc.removeAllListeners('close');
       proc.kill();
       proc = startProcess();
