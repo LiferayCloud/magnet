@@ -45,7 +45,7 @@ const baseApi = `export const route = {
   type: 'json',
 };
 
-export default (req) => {
+export default async (req) => {
   return {hello: 'Magnet'};
 };
 `;
@@ -64,7 +64,7 @@ const baseIndex = `export const route = {
  type: 'html',
 };
 
-export default async (req) => \`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>It works!</title></head>
+export default () => \`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>It works!</title></head>
 <body style="background: #0e141a; font-family: sans-serif;">
 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
 <h1 style="font-size: 72px; font-weight: 700; color: #00d46a; margin: 0;">It works!</h1>
