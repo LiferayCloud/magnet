@@ -4,7 +4,7 @@ import path from 'path';
 const baseConfig = () => {
   return {
     magnet: {
-      host: 'localhost',
+      host: '0.0.0.0',
       ignore: [
           'build/**',
           'coverage/**',
