@@ -20,7 +20,8 @@ import registratorString from './registrator/string';
 import ServerFactory from './server-factory';
 
 /**
- * Magnet.
+ * Magnet class that handle configuration, directory injection, and server.
+ * @class
  */
 class Magnet {
 
