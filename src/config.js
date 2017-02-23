@@ -12,7 +12,7 @@ const baseConfig = () => {
           'magnet.config.js',
           'node_modules/**',
       ],
-      port: 80,
+      port: 8080,
       src: ['**/*.js'],
     },
   };
