@@ -4,6 +4,8 @@ import Table from 'cli-table';
 import path from 'path';
 
 /**
+ * Scans build files collecting routes metadata into an array consumed
+ * by `magnet routes` command output table.
  * @param {Magnet} magnet
  * @return {Array.<Array.<string>>}
  * @private
@@ -38,6 +40,14 @@ function getRoutesDefinition_(magnet) {
 }
 
 /**
+ * Builds routing table based on route definitions. If no routes were found
+ * returns empty string, otherwise return as example below:
+ * ┌────────┬──────┬──────┬───────────┐
+ * │ method │ path │ type │ file      │
+ * ├────────┼──────┼──────┼───────────┤
+ * │ POST   │ /api │ json │ /api.js   │
+ * │ GET    │ /    │ html │ /index.js │
+ * └────────┴──────┴──────┴───────────┘
  * @param {Magnet} magnet
  * @return {String}
  */
