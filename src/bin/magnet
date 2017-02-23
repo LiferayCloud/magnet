@@ -71,10 +71,13 @@ let proc = startProcess();
 
 if (cmd === 'dev') {
     const watcher = chokidar.watch('**/*', {
+      awaitWriteFinish: true,
+      cwd: process.cwd(),
+      ignored: /\.magnet/,
       ignoreInitial: true,
     });
 
-    watcher.on('change', (a, b) => {
+    watcher.on('change', () => {
       log.info('', 'Found a change, restarting the server...');
       proc.removeAllListeners('close');
       proc.kill();
