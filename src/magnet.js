@@ -93,7 +93,6 @@ class Magnet {
    * Builds application.
    * @param {boolean} outputLog
    * @protected
-   * @async
    */
   async build(outputLog = true) {
     let files = this.getFiles(this.getDirectory());
@@ -115,7 +114,6 @@ class Magnet {
   /**
    * Loads application.
    * @protected
-   * @async
    */
   async load() {
     let dist = this.getServerDistDirectory();
@@ -179,7 +177,6 @@ class Magnet {
   /**
    * Run start hook.
    * @private
-   * @async
    */
   async runStartHook_() {
     let start = path.resolve(
@@ -197,7 +194,6 @@ class Magnet {
 
   /**
    * Starts application.
-   * @async
    */
   async start() {
     this.runStartHook_();
@@ -217,7 +213,6 @@ class Magnet {
 
   /**
    * Stops application.
-   * @async
    */
   async stop() {
     log.info('', 'Shutting down gracefully…');
