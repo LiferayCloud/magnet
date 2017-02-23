@@ -64,13 +64,17 @@ const baseIndex = `export const route = {
  type: 'html',
 };
 
-export default () => \`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>It works!</title></head>
-<body style="background: #0e141a; font-family: sans-serif;">
-<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-<h1 style="font-size: 72px; font-weight: 700; color: #00d46a; margin: 0;">It works!</h1>
-<h2 style="font-weight: 300; color: rgba(255, 255, 255, 0.9); margin: 0;">Now you're ready to roll.</h2>
-<p style="color: #ffffff;">Check the api route: <a style="color: #ffffff; font-weight: bold;" href="/api">API</a></p>
-</div></body></html>\`;
+export default () => \`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Magnet</title>
+</head>
+<body>
+  <h1>It works!</h1>
+  <a href="/api">http://localhost:3000/api</a>
+</body>
+</html>\`;
 `;
 
 logger.info('Generating files');
