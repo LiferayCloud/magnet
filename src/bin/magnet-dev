@@ -33,5 +33,10 @@ const directory = process.cwd();
 const magnet = new Magnet({config, directory});
 
 magnet.build()
-  .then(() => console.log(`${getRoutesTable(magnet)}\n`))
+  .then(() => {
+    const routes = getRoutesTable(magnet);
+    if (routes) {
+      console.log(`${routes}\n`);
+    }
+  })
   .then(() => magnet.start());

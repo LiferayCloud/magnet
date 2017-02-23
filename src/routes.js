@@ -51,5 +51,8 @@ export function getRoutesTable(magnet) {
     },
   });
   table.push(...getRoutesDefinition_(magnet));
-  return table.toString();
+  if (table.length) {
+    return table.toString();
+  }
+  return '';
 }

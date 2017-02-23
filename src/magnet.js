@@ -95,9 +95,13 @@ class Magnet {
    * @async
    */
   async build(outputLog = true) {
-    log.info('', 'Building assets…');
-
     let files = this.getFiles(this.getDirectory());
+
+    if (!files.length) {
+      return;
+    }
+
+    log.info('', 'Building assets…');
 
     let output = await build(
       files, this.getDirectory(), this.getServerDistDirectory());
