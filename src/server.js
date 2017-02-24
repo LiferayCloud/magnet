@@ -50,7 +50,7 @@ class Server {
    * @param {string} host Server hostname.
    * @return {Server} Returns server instance.
    */
-  listen(port = 3000, host = 'localhost') {
+  listen(port, host) {
     this.getHttpServer()
       .listen(port, host, () =>
         log.info('', `Ready on http://${host}:${port}`));
