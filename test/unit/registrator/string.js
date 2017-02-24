@@ -2,7 +2,7 @@ import registratorString from '../../../src/registrator/string';
 import Magnet from '../../../src/magnet';
 import path from 'path';
 
-describe.only('registratorString', () => {
+describe('registratorString', () => {
   describe('.test', () => {
     it('should perform the test validation for the input and return true', () => { // eslint-disable-line max-len
       const testFn = {};
