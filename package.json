@@ -1,6 +1,6 @@
 {
   "name": "magnet",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "The API framework for nodejs.",
   "engines": {
     "node": ">=7.6.0"
