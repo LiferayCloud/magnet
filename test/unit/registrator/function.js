@@ -1,5 +1,6 @@
 import registratorFunction from '../../../src/registrator/function';
 import Magnet from '../../../src/magnet';
+import path from 'path';
 
 describe('registratorFunction', () => {
   describe('.test', () => {
@@ -110,11 +111,11 @@ describe('registratorFunction', () => {
 
       expect(function() {
         registratorFunction.register(
-          magnet.getServerDistDirectory()+'foo.js',
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
           magnet,
         );
-      }).to.throw(Error, 'Route configuration path must be specified, check foo.js.'); // eslint-disable-line max-len
+      }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
     });
   });
 });
