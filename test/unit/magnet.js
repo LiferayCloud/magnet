@@ -55,6 +55,36 @@ describe('Magnet', () => {
     });
   });
 
+  describe('#getFiles', () => {
+    it('should not get javascript files inside a static folder', () => {
+      const directory = `${process.cwd()}/test/fixtures/js_in_static_app`;
+      const magnet = new Magnet({directory});
+
+      const files = magnet.getFiles(directory);
+      expect(files).to.deep.equal([]);
+    });
+
+    it('should return an empty array if directory is empty', () => {
+      const directory = `${process.cwd()}/test/fixtures/empty_app`;
+      const magnet = new Magnet({directory});
+
+      const files = magnet.getFiles(directory);
+      expect(files).to.deep.equal([]);
+    });
+
+    it('should get files with its realpath', () => {
+      const directory = `${process.cwd()}/test/fixtures/build_app`;
+      const magnet = new Magnet({directory});
+
+      const files = magnet.getFiles(directory, true);
+      const expectedArray = [
+        path.join(directory, 'one.js'),
+        path.join(directory, 'two.js'),
+      ];
+      expect(files).to.deep.equal(expectedArray);
+    });
+  });
+
   describe('#build', () => {
     it('should build an app directory', async () => {
       const directory = `${process.cwd()}/test/fixtures/build_app`;
