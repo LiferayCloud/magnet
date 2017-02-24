@@ -187,7 +187,8 @@ class Magnet {
         startFn = startFn.default;
       }
       if (isFunction(startFn)) {
-        startFn.call(this);
+        let app = this.getServer().getEngine();
+        startFn.call(this, app, this);
       }
     }
   }
