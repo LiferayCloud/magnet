@@ -118,4 +118,22 @@ describe('registratorFunction', () => {
       }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
     });
   });
+
+  describe('http request', () => {
+    const directory = `${process.cwd()}/test/fixtures/app`;
+
+    it('should start a server and make a request to a defined route with a return instead of a engine request', async () => { // eslint-disable-line max-len
+      const magnet = new Magnet({directory});
+      await magnet.build();
+      await magnet.start();
+
+      await assertAsyncHttpRequest({
+        port: 3000,
+        path: '/fn-return',
+        responseBody: JSON.stringify({foo: 'bar'}),
+      });
+
+      await magnet.stop();
+    });
+  });
 });
