@@ -93,7 +93,6 @@ class Magnet {
   /**
    * Builds application.
    * @param {boolean} outputLog
-   * @protected
    */
   async build(outputLog = true) {
     let files = this.getFiles(this.getDirectory());
