@@ -30,7 +30,7 @@ function removeExtension_(filename) {
 }
 
 export default {
-  test() {
+  test(filename, module, magnet) {
     return !isObject(module.route);
   },
   register(filename, module, magnet) {
