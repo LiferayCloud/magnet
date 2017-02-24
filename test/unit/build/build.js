@@ -3,7 +3,6 @@ import Magnet from '../../../src/magnet';
 import path from 'path';
 import del from 'del';
 import {existsSync} from 'fs';
-// import webpack from 'webpack';
 
 describe('.build', function() {
   const directory = `${process.cwd()}/test/fixtures/build_app`;
@@ -29,13 +28,7 @@ describe('.build', function() {
     await del(outputDirectory);
   });
 
-  // it.only('should raise an error on webpack', () => {
-  //   const magnet = new Magnet({directory});
-  //   const outputDirectory = path.join(directory, '.magnet');
-  //   mock(webpack).throws();
-  //   build(magnet.getFiles(directory), directory, outputDirectory)
-  //     .catch((e) => {
+  it('should inform the user that the app doesn\'t have javascript files to register'); // eslint-disable-line max-len
 
-  //     });
-  // });
+  it('should not build anything from assets folder, and instead just copy the file'); // eslint-disable-line max-len
 });
