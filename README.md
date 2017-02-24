@@ -41,7 +41,7 @@ After that magnet will generate a boilerplate project creating a folder `myproje
 Enter the directory `myproject` and run:
 
 ```
-$ npm run
+$ npm start
 ```
 
 Go to [http://localhost:3000](http://localhost:3000):
