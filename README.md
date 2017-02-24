@@ -1,6 +1,8 @@
-<h1 align="center">✨ magnet</h1>
+<h1 align="center">✨ Magnet</h1>
 
-<h5 align="center">The API framework for nodejs.</h5>
+
+<h5 align="center">A productive web framework that does not compromise speed, simplicity and maintainability</h5>
+
 
 <div align="center">
   <a href="http://travis-ci.com/wedeploy/magnet">
@@ -22,28 +24,67 @@
   <img src="https://img.shields.io/npm/l/magnet.svg" alt="License">
 </div>
 
+## Getting started
 
-## Setup
+```
+$ npm install -g magnet
+```
 
-1. Make sure you have [node and npm](https://nodejs.org/en/download/) installed:
+Generate a boilerplate project like this:
 
-  ```sh
-node -v && npm -v
-  ```
+```
+$ magnet generate myproject
+```
 
-2. Install magnet:
+After that magnet will generate a boilerplate project creating a folder `myproject`.
 
-  ```sh
-npm install magnet
-  ```
+Enter the directory `myproject` and run:
 
-## Usage
+```
+$ npm run
+```
 
-* Build the api, serve it locally, and watch for any changes:
+Go to [http://localhost:3000](http://localhost:3000):
 
-  ```
-magnet start
-  ```
+![It Works](https://cloud.githubusercontent.com/assets/301291/23318721/66e71036-fa88-11e6-9283-bfad5ba4d5c3.png)
+
+So far, we get:
+
+* Automatic transpilation and bundling (with webpack and babel)
+* Static file serving. ./static/ is mapped to /static/
+* Configurable with a magnet.config.js file
+* Error middleware.
+* Code splitting via webpack.
+* Express.js support for routing.
+
+
+## Production deployment
+
+To deploy your application, you just need to define the command start and magnet will serve your application using the port defined in your configuration.
+
+For example, to deploy with now a package.json like follows is recommended:
+
+```
+{
+  "name": "myproject",
+  "dependencies": {
+    "magnet": "latest"
+  },
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet start"
+  }
+}
+```
+
+Then run `npm run start` and enjoy!
+
+Note: we recommend putting .magnet in .npmignore or .gitignore.
+
+
+## Examples
+
+If you need examples of magnet usage, you can access othe examples on its repository [folder](https://github.com/wedeploy/magnet/tree/master/examples).
 
 
 ## License
