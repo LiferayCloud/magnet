@@ -1,4 +1,8 @@
-<h1 align="center">✨ magnet</h1>
+<h1 align="center">✨ Magnet</h1>
+
+
+<h5 align="center">A productive web framework that does not compromise speed, simplicity and maintainability</h5>
+
 
 <div align="center">
   <a href="http://travis-ci.com/wedeploy/magnet">
@@ -42,7 +46,7 @@ $ npm run
 
 Go to [http://localhost:3000](http://localhost:3000):
 
-![Ig Works](https://cloud.githubusercontent.com/assets/301291/23236885/ddd14b32-f90f-11e6-9588-ae2bb4215cbd.png)
+![It Works](https://cloud.githubusercontent.com/assets/301291/23318721/66e71036-fa88-11e6-9283-bfad5ba4d5c3.png)
 
 So far, we get:
 
@@ -80,7 +84,7 @@ Note: we recommend putting .magnet in .npmignore or .gitignore.
 
 ## Examples
 
-If you need examples of magnet usage, you can access on its repository [examples folder](https://github.com/wedeploy/magnet/tree/master/examples).
+If you need examples of magnet usage, you can access othe examples on its repository [folder](https://github.com/wedeploy/magnet/tree/master/examples).
 
 
 ## License
