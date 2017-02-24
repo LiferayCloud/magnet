@@ -11,6 +11,7 @@ const baseConfig = () => {
           'gulpfile.js',
           'magnet.config.js',
           'node_modules/**',
+          'static/**/*.js',
       ],
       port: 8080,
       src: ['**/*.js'],
