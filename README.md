@@ -46,7 +46,7 @@ $ npm run
 
 Go to [http://localhost:3000](http://localhost:3000):
 
-![It Works](https://cloud.githubusercontent.com/assets/301291/23318721/66e71036-fa88-11e6-9283-bfad5ba4d5c3.png)
+![It Works](https://cloud.githubusercontent.com/assets/301291/23318898/2f98b570-fa89-11e6-9be1-77c89d6372e3.png)
 
 So far, we get:
 
