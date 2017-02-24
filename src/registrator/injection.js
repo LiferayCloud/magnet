@@ -17,6 +17,7 @@ function createNamespace_(obj = {}, parts = [], value) {
 }
 
 /**
+ * Returns a filename without its extension.
  * @param {!string} filename
  * @return {string} Filename without extension.
  * @private
