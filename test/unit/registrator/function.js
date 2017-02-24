@@ -94,11 +94,11 @@ describe('registratorFunction', () => {
 
       expect(function() {
         registratorFunction.register(
-          magnet.getServerDistDirectory()+'foo.js',
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
           magnet,
         );
-      }).to.throw(Error, 'Route configuration method must be a string, check foo.js.'); // eslint-disable-line max-len
+      }).to.throw(Error, 'Route configuration method must be a string, check /foo.js.'); // eslint-disable-line max-len
     });
 
     it('should throw an error if route configuration path is not provided ', () => { // eslint-disable-line max-len
