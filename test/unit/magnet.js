@@ -1,5 +1,8 @@
 import Magnet from '../../src/magnet';
 import Server from '../../src/server';
+import {existsSync} from 'fs';
+import path from 'path';
+import del from 'del';
 
 describe('Magnet', () => {
   describe('config', () => {
@@ -52,6 +55,32 @@ describe('Magnet', () => {
     });
   });
 
+  describe('#build', () => {
+    it('should build an app directory', async () => {
+      const directory = `${process.cwd()}/test/fixtures/build_app`;
+      const magnet = new Magnet({directory});
+      await magnet.build();
+
+      expect(existsSync(path.join(magnet.getServerDistDirectory(), 'one.js')))
+        .to.be.true;
+      expect(existsSync(path.join(magnet.getServerDistDirectory(), 'two.js')))
+        .to.be.true;
+
+      await del(magnet.getServerDistDirectory());
+    });
+
+    it('should not build an empty directory', async () => {
+      const directory = `${process.cwd()}/test/fixtures/empty_app`;
+      const magnet = new Magnet({directory});
+      await magnet.build();
+
+      expect(existsSync(magnet.getServerDistDirectory()))
+        .to.be.false;
+    });
+
+    it('should build an directory with just static folder');
+  });
+
   describe('#start', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
@@ -62,7 +91,7 @@ describe('Magnet', () => {
 
       await assertAsyncHttpRequest({
         port: 3000,
-        path: '/',
+        path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
 
