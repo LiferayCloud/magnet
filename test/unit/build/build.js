@@ -28,6 +28,8 @@ describe('.build', function() {
     await del(outputDirectory);
   });
 
+  it('should clean dist directory before build'); // eslint-disable-line max-len
+
   it('should inform the user that the app doesn\'t have javascript files to register'); // eslint-disable-line max-len
 
   it('should not build anything from assets folder, and instead just copy the file'); // eslint-disable-line max-len
