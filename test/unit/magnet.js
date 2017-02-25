@@ -59,7 +59,6 @@ describe('Magnet', () => {
     it('should not get javascript files inside a static folder', () => {
       const directory = `${process.cwd()}/test/fixtures/js_in_static_app`;
       const magnet = new Magnet({directory});
-
       const files = magnet.getFiles(directory);
       expect(files).to.deep.equal([]);
     });
@@ -67,7 +66,6 @@ describe('Magnet', () => {
     it('should return an empty array if directory is empty', () => {
       const directory = `${process.cwd()}/test/fixtures/empty_app`;
       const magnet = new Magnet({directory});
-
       const files = magnet.getFiles(directory);
       expect(files).to.deep.equal([]);
     });
@@ -75,7 +73,6 @@ describe('Magnet', () => {
     it('should get files with its realpath', () => {
       const directory = `${process.cwd()}/test/fixtures/build_app`;
       const magnet = new Magnet({directory});
-
       const files = magnet.getFiles(directory, true);
       const expectedArray = [
         path.join(directory, 'one.js'),
@@ -90,12 +87,10 @@ describe('Magnet', () => {
       const directory = `${process.cwd()}/test/fixtures/build_app`;
       const magnet = new Magnet({directory});
       await magnet.build();
-
       expect(existsSync(path.join(magnet.getServerDistDirectory(), 'one.js')))
         .to.be.true;
       expect(existsSync(path.join(magnet.getServerDistDirectory(), 'two.js')))
         .to.be.true;
-
       await del(magnet.getServerDistDirectory());
     });
 
@@ -103,7 +98,6 @@ describe('Magnet', () => {
       const directory = `${process.cwd()}/test/fixtures/empty_app`;
       const magnet = new Magnet({directory});
       await magnet.build();
-
       expect(existsSync(magnet.getServerDistDirectory()))
         .to.be.false;
     });
@@ -118,13 +112,11 @@ describe('Magnet', () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
-
       await assertAsyncHttpRequest({
         port: 3000,
         path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
-
       await magnet.stop();
     });
   });
@@ -136,9 +128,7 @@ describe('Magnet', () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
-
       await magnet.stop();
-
       expect(magnet.getServer().getHttpServer().address()).to.be.null;
     });
   });

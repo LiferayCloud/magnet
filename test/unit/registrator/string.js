@@ -1,6 +1,6 @@
-import registratorString from '../../../src/registrator/string';
 import Magnet from '../../../src/magnet';
 import path from 'path';
+import registratorString from '../../../src/registrator/string';
 
 describe('registratorString', () => {
   describe('.test', () => {

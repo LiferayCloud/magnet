@@ -1,6 +1,6 @@
-import registratorInjection from '../../../src/registrator/injection';
 import Magnet from '../../../src/magnet';
 import path from 'path';
+import registratorInjection from '../../../src/registrator/injection';
 
 describe('registratorFunction', () => {
   describe('.test', () => {

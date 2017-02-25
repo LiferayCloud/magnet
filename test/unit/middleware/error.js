@@ -11,7 +11,6 @@ describe('errorMiddleware', function() {
         },
     });
     const response = httpMocks.createResponse();
-
     errorMiddleware()({foo: 'bar'}, request, response, (err) => {
       expect(err).to.deep.equal({foo: 'bar'});
     });

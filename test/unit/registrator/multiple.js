@@ -1,5 +1,5 @@
-import registratorMultiple from '../../../src/registrator/multiple';
 import Magnet from '../../../src/magnet';
+import registratorMultiple from '../../../src/registrator/multiple';
 
 describe('registratorMultiple', () => {
   describe('.test', () => {

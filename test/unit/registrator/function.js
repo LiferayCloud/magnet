@@ -1,6 +1,6 @@
-import registratorFunction from '../../../src/registrator/function';
 import Magnet from '../../../src/magnet';
 import path from 'path';
+import registratorFunction from '../../../src/registrator/function';
 
 describe('registratorFunction', () => {
   describe('.test', () => {
@@ -10,7 +10,6 @@ describe('registratorFunction', () => {
       testFn.route = {};
       expect(registratorFunction.test(null, testFn, null)).to.be.true;
     });
-
     it('should perform the test validation for the input and return false if that\'s a string', () => { // eslint-disable-line max-len
       expect(registratorFunction.test(null, 'wrongValue', null)).to.be.false;
     });
@@ -18,7 +17,6 @@ describe('registratorFunction', () => {
 
   describe('.register', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
-
     it('should register a function on magnet\'s current server engine', () => {
       const magnet = new Magnet({directory});
       const testFn = {
@@ -108,7 +106,6 @@ describe('registratorFunction', () => {
         },
       };
       testFn.default = (req, res) => res.end('fn');
-
       expect(function() {
         registratorFunction.register(
           path.join(magnet.getServerDistDirectory(), 'foo.js'),
@@ -126,13 +123,11 @@ describe('registratorFunction', () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
-
       await assertAsyncHttpRequest({
         port: 3000,
         path: '/fn-return',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
-
       await magnet.stop();
     });
   });
