@@ -26,6 +26,10 @@
 
 ## Getting started
 
+```sh
+npm install -g magnet
+```
+
 Generate a boilerplate project:
 
 ```sh
