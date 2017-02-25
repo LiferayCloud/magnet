@@ -43,4 +43,4 @@ Results in
 {"hello":"this is a private api"}
 ```
 
-Learn [how to plug the WeDeploy middleware in Magnet](https://github.com/wedeploy/magnet/blob/master/examples/wedeploy/api/start.js).
+Learn [how to plug the WeDeploy Auth Middleware in Magnet](https://github.com/wedeploy/magnet/blob/master/examples/wedeploy/api/start.js).
