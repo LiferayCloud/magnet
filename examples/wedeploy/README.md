@@ -42,3 +42,5 @@ Results in
 ```json
 {"hello":"this is a private api"}
 ```
+
+Learn [how to plug the middleware in Magnet](https://github.com/wedeploy/magnet/blob/master/examples/wedeploy/api/start.js).
