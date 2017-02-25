@@ -1,7 +1,7 @@
 <h1 align="center">✨ Magnet</h1>
 
 
-<h5 align="center">A productive web framework that does not compromise speed, simplicity and maintainability</h5>
+<h5 align="center">Simple, fast and unopinionated uses the power of ES2015 and beyond into your microservices</h5>
 
 
 <div align="center">
@@ -25,10 +25,6 @@
 </div>
 
 ## Getting started
-
-```sh
-npm install -g magnet
-```
 
 Generate a boilerplate project:
 
