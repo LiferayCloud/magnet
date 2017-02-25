@@ -22,7 +22,12 @@ The following example uses `curl` to request the private API exposed by [Magnet]
 1. You'll need an user in order to access the newly created private api, let's create one in order to request the private path:
 
 ```sh
-curl -XPOST auth.myproject.wedeploy.io/users -d '{"email":"user@email.com", "password":"pass"}' -H 'Content-Type: application/json'
+curl -XPOST auth.myproject.wedeploy.io/users \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email":"user@email.com", 
+    "password":"pass"
+  }'
 ```
 
 Results in
@@ -34,7 +39,8 @@ Results in
 2. Request the private path passing the user credentials:
 
 ```sh
-curl -X GET api.myproject.wedeploy.io/private/api -u user@email.com:pass -v
+curl api.myproject.wedeploy.io/private/api \
+  -u user@email.com:pass
 ```
 
 Results in
