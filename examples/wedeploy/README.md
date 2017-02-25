@@ -1,6 +1,6 @@
 # wedeploy-example
 
-Learn how to deploy a private api to WeDeploy in minutes using [wedeploy-middleware](http://github.com/wedeploy/wedeploy-middleware) and [Magnet](http://github.com/wedeploy/magnet). APIs created with Magnet can run locally or in the cloud. This example intends to show Magnet integrated with a cloud provider.
+Learn how to deploy a private API to WeDeploy in minutes using [wedeploy-middleware](http://github.com/wedeploy/wedeploy-middleware) and [Magnet](http://github.com/wedeploy/magnet). APIs created with Magnet can run locally or in the cloud. This example intends to show Magnet integrated with a cloud provider.
 
 ## Setup
 
@@ -13,11 +13,11 @@ cd magnet/examples/wedeploy/
 we deploy -p myproject
 ```
 
-That's all! now you have your api deployed in the cloud.
+That's all! now you have your API deployed in the cloud.
 
 ## Have fun
 
-The following example uses `curl` to request the private api exposed by [Magnet](http://github.com/wedeploy/magnet).
+The following example uses `curl` to request the private API exposed by [Magnet](http://github.com/wedeploy/magnet).
 
 1. Create an user to test requests to the private path:
 
