@@ -26,58 +26,68 @@
 
 ## Getting started
 
-```
-$ npm install -g magnet
+```sh
+npm install -g magnet
 ```
 
 Generate a boilerplate project:
 
-```
-$ mkdir myproject/
-$ magnet generate
-$ npm start
-```
-
-Your microservice is ready on [http://localhost:3000](http://localhost:3000)!
-
-So far, we get:
-
-* Automatic ES2015 and beyond transpilation and bundling (with webpack and babel).
-* Static file serving: If present, a folder named `static` is served as `http://localhost:3000/static/`.
-* Configurable with a [magnet.config.js](https://github.com/wedeploy/magnet/blob/master/examples/basic/magnet.config.js)
-* Error handling.
-* Security (DNS Prefetch Control, clickjacking, hide powered by [and more](https://github.com/helmetjs/helmet#how-it-works).
-* Compression (deflate, gzip).
-* Express.js support for routing.
-
-
-## Production deployment
-
-To deploy your application, you just need to define the command start and magnet will serve your application using the port defined in your configuration.
-
-For example, to deploy with now a package.json like follows is recommended:
-
-```
-{
-  "name": "myproject",
-  "dependencies": {
-    "magnet": "latest"
-  },
-  "scripts": {
-    "dev": "magnet",
-    "start": "magnet start"
-  }
-}
+```sh
+mkdir myproject/
+magnet generate
 ```
 
-Then run `npm run start` and enjoy!
+Results in
 
-Note: It is recommend adding `.magnet` in `.gitignore`.
+```sh
+~/D/myproject ❯❯❯ magnet generate
+> info Generating files
+> info Done.
+```
+
+Then install dependencies and run:
+
+```sh
+npm install
+npm run dev
+```
+
+Results in
+
+```sh
+~/D/myproject ❯❯❯ npm run dev
+
+> myproject@ dev /Users/eduardo/Desktop/myproject
+> magnet
+
+> info Building assets…
+
+Hash: cf649a3dac04233a9e9b
+Version: webpack 2.2.1
+Time: 67ms
+     Asset     Size  Chunks             Chunk Names
+./index.js  3.05 kB       0  [emitted]  ./index.js
+  ./api.js   2.9 kB       1  [emitted]  ./api.js
+
+┌────────┬──────┬──────┬───────────┐
+│ method │ path │ type │ file      │
+├────────┼──────┼──────┼───────────┤
+│ GET    │ /api │ json │ /api.js   │
+│ GET    │ /    │ html │ /index.js │
+└────────┴──────┴──────┴───────────┘
+
+> info Ready on http://0.0.0.0:3000
+```
+
+Your microservice is ready for development on [http://localhost:3000](http://localhost:3000)!
+
+## Running in production
+
+To run your application in production use `npm start` instead and Magnet will serve your application optimized for production.
 
 ## Examples
 
 If you need examples of magnet usage, you can access othe examples on its repository [folder](https://github.com/wedeploy/magnet/tree/master/examples).
-
 
 ## License
 
