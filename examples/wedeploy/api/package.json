@@ -1,0 +1,12 @@
+{
+  "name": "wedeploy-example",
+  "description": "",
+  "dependencies": {
+    "magnet": "latest",
+    "wedeploy-middleware": "latest"
+  },
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet start"
+  }
+}

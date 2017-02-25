@@ -1,0 +1,9 @@
+{
+  "type": "wedeploy/nodejs",
+  "id": "api",
+  "port": 3001,
+  "hooks": {
+    "build": "npm install",
+    "start": "npm start"
+  }
+}
