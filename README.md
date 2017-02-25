@@ -30,31 +30,24 @@
 $ npm install -g magnet
 ```
 
-Generate a boilerplate project like this:
+Generate a boilerplate project:
 
 ```
-$ magnet generate myproject
-```
-
-After that magnet will generate a boilerplate project creating a folder `myproject`.
-
-Enter the directory `myproject` and run:
-
-```
+$ mkdir myproject/
+$ magnet generate
 $ npm start
 ```
 
-Go to [http://localhost:3000](http://localhost:3000):
-
-![It Works](https://cloud.githubusercontent.com/assets/301291/23318898/2f98b570-fa89-11e6-9be1-77c89d6372e3.png)
+Your microservice is ready on [http://localhost:3000](http://localhost:3000)!
 
 So far, we get:
 
-* Automatic transpilation and bundling (with webpack and babel)
-* Static file serving. ./static/ is mapped to /static/
-* Configurable with a magnet.config.js file
-* Error middleware.
-* Code splitting via webpack.
+* Automatic ES2015 and beyond transpilation and bundling (with webpack and babel).
+* Static file serving: If present, a folder named `static` is served as `http://localhost:3000/static/`.
+* Configurable with a [magnet.config.js](https://github.com/wedeploy/magnet/blob/master/examples/basic/magnet.config.js)
+* Error handling.
+* Security (DNS Prefetch Control, clickjacking, hide powered by [and more](https://github.com/helmetjs/helmet#how-it-works).
+* Compression (deflate, gzip).
 * Express.js support for routing.
 
 
@@ -79,8 +72,7 @@ For example, to deploy with now a package.json like follows is recommended:
 
 Then run `npm run start` and enjoy!
 
-Note: we recommend putting .magnet in .npmignore or .gitignore.
-
+Note: It is recommend adding `.magnet` in `.gitignore`.
 
 ## Examples
 
