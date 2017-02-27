@@ -3,48 +3,57 @@ import registratorMultiple from '../../../src/registrator/multiple';
 
 describe('registratorMultiple', () => {
   describe('.test', () => {
-    it('should perform the test validation for the input and return true', () => { // eslint-disable-line max-len
+    it('should return true if module object does not have a route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = (app, magnet) => {};
       expect(registratorMultiple.test(null, testFn, null)).to.be.true;
     });
 
-    it('should perform the test validation for the input and return false if the route is an object', () => { // eslint-disable-line max-len
-      const testFn = {
-        route: {},
-      };
-      testFn.default = (app, magnet) => {};
+    it('should return true if in the module there\'s a route attribute but it\'s not an object and the default attribute is a function', () => { // eslint-disable-line max-len
+      const testFn = {};
+      testFn.default = () => {};
+      testFn.route = 'not an object';
+
+      expect(registratorMultiple.test(null, testFn, null)).to.be.true;
+    });
+
+    it('should return false if in the module the route attribute is an object and the default attribute is a function', () => { // eslint-disable-line max-len
+      const testFn = {};
+      testFn.default = () => {};
+      testFn.route = {};
+
+      expect(registratorMultiple.test(null, testFn, null)).to.be.false;
+    });
+
+    it('should return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
+      const testFn = {};
+      testFn.default = 'not a function';
+
       expect(registratorMultiple.test(null, testFn, null)).to.be.false;
     });
   });
 
-  describe('.register', () => {
-    const directory = `${process.cwd()}/test/fixtures/app`;
-
-    it('shluld call the default function and register a route into magnet\'s current server engine', () => { // eslint-disable-line max-len
+  describe('Integration with application folder and http server', () => {
+    it('should register a module with multiple routes from the same file when its default attribute is a function and it has no route object attribute', async () => { // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/multiple_registrator_app`; // eslint-disable-line max-len
       const magnet = new Magnet({directory});
-      const testFn = {};
-      testFn.default = (app) => {
-        app.get('/foo', (req, res) => {
-          res.json({foo: 'bar'});
-        });
-      };
 
-      registratorMultiple.register('foo.js', testFn, magnet);
+      await magnet.build();
+      await magnet.start();
 
-      const app = magnet.getServer().getEngine();
-      const routes = app._router
-        .stack
-        .filter((stack) => {
-          if (stack.route && stack.route.path) {
-            return true;
-          }
-        })
-        .map((stack) => {
-          return stack.route.path;
-        });
+      await assertAsyncHttpRequest({
+        port: 3000,
+        path: '/route-one',
+        responseBody: 'one',
+      });
 
-      expect(routes).to.include('/foo');
+      await assertAsyncHttpRequest({
+        port: 3000,
+        path: '/route-two',
+        responseBody: 'two',
+      });
+
+      await magnet.stop();
     });
   });
 });
