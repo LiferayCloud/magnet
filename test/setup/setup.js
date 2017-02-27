@@ -1,5 +1,10 @@
 import {isFunction} from 'metal';
 import http from 'http';
+import log from '../../src/log';
+
+// Silence logs for all tests by default. The `logLevel` configuration can
+// be set on `magnet.config.js` to overwrite the default.
+log.level = 'silent';
 
 module.exports = function(root) {
   root = root ? root : global;

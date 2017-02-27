@@ -13,6 +13,7 @@ const baseConfig = () => {
           'node_modules/**',
           'static/**/*.js',
       ],
+      logLevel: 'info',
       port: 8080,
       src: ['**/*.js'],
     },

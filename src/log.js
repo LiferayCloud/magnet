@@ -4,6 +4,6 @@ log.heading = '>';
 log.headingStyle = {fg: 'grey', bg: 'black'};
 
 log.addLevel('infoNoPrefix', 2000, {}, '');
-log.level = 'infoNoPrefix';
+log.level = 'info';
 
 export default log;
