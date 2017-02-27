@@ -31,10 +31,10 @@ function removeExtension_(filename) {
 }
 
 export default {
-  test(filename, module, magnet) {
+  test(module, filename, magnet) {
     return !isObject(module.route);
   },
-  register(filename, module, magnet) {
+  register(module, filename, magnet) {
     let folder = magnet.getServerDistDirectory();
     let parts = removeExtension_(filename.substring(folder.length + 1))
       .split(path.sep)

@@ -145,16 +145,16 @@ class Magnet {
       }
       delete require.cache[file];
       let module = require(file);
-      if (registratorInjection.test(file, module, this)) {
-        registratorInjection.register(file, module, this);
+      if (registratorInjection.test(module, file, this)) {
+        registratorInjection.register(module, file, this);
       }
       try {
-        if (registratorString.test(file, module, this)) {
-          registratorString.register(file, module, this);
-        } else if (registratorFunction.test(file, module, this)) {
-          registratorFunction.register(file, module, this);
-        } else if (registratorMultiple.test(file, module, this)) {
-          registratorMultiple.register(file, module, this);
+        if (registratorString.test(module, file, this)) {
+          registratorString.register(module, file, this);
+        } else if (registratorFunction.test(module, file, this)) {
+          registratorFunction.register(module, file, this);
+        } else if (registratorMultiple.test(module, file, this)) {
+          registratorMultiple.register(module, file, this);
         }
       } catch(error) {
         log.error(false, error);

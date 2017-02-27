@@ -8,24 +8,24 @@ describe('registratorFunction', () => {
       const testFn = {};
       testFn.default = () => {};
       testFn.route = {};
-      expect(registratorFunction.test(null, testFn, null)).to.be.true;
+      expect(registratorFunction.test(testFn, null, null)).to.be.true;
     });
 
     it('should return false if in the module there\'s no route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = () => {};
-      expect(registratorFunction.test(null, testFn, null)).to.be.false;
+      expect(registratorFunction.test(testFn, null, null)).to.be.false;
     });
 
     it('should return false if in the module the route attribute is not an object and the default attribute is a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = () => {};
       testFn.route = 'not an object';
-      expect(registratorFunction.test(null, testFn, null)).to.be.false;
+      expect(registratorFunction.test(testFn, null, null)).to.be.false;
     });
 
     it('should return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
-      expect(registratorFunction.test(null, 'wrongValue', null)).to.be.false;
+      expect(registratorFunction.test('wrongValue', null, null)).to.be.false;
     });
   });
 
@@ -47,8 +47,8 @@ describe('registratorFunction', () => {
 
       expect(function() {
         registratorFunction.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration method must be a string, check /foo.js.'); // eslint-disable-line max-len
@@ -65,8 +65,8 @@ describe('registratorFunction', () => {
       testFn.default = (req, res) => res.end('fn');
       expect(function() {
         registratorFunction.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
@@ -81,8 +81,8 @@ describe('registratorFunction', () => {
       testFn.default = (req, res) => res.end('fn');
       expect(function() {
         registratorFunction.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len

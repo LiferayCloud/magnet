@@ -7,14 +7,14 @@ describe('registratorInjection', () => {
     it('should return true if there\'s no route attribute in the module', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = () => {};
-      expect(registratorInjection.test(null, testFn, null)).to.be.true;
+      expect(registratorInjection.test(testFn, null, null)).to.be.true;
     });
 
     it('should return true if the route attribute in the module is not an object', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.route = 'not an object';
       testFn.default = () => {};
-      expect(registratorInjection.test(null, testFn, null)).to.be.true;
+      expect(registratorInjection.test(testFn, null, null)).to.be.true;
     });
 
     it('should false if the module if the route attribute is an object', () => {
@@ -22,7 +22,7 @@ describe('registratorInjection', () => {
         route: {},
       };
       testFn.default = () => {};
-      expect(registratorInjection.test(null, testFn, null)).to.be.false;
+      expect(registratorInjection.test(testFn, null, null)).to.be.false;
     });
   });
 
@@ -35,8 +35,8 @@ describe('registratorInjection', () => {
       testFn.default = {foo: 'bar'};
 
       registratorInjection.register(
-        path.join(magnet.getServerDistDirectory(), 'foo.js'),
         testFn,
+        path.join(magnet.getServerDistDirectory(), 'foo.js'),
         magnet,
       );
 
@@ -50,8 +50,8 @@ describe('registratorInjection', () => {
       testFn.default = () => {};
 
       registratorInjection.register(
-        path.join(magnet.getServerDistDirectory(), 'foo.js'),
         testFn,
+        path.join(magnet.getServerDistDirectory(), 'foo.js'),
         magnet,
       );
 
@@ -64,8 +64,8 @@ describe('registratorInjection', () => {
       testFn.default = {foo: 'bar'};
 
       registratorInjection.register(
-        path.join(magnet.getServerDistDirectory(), 'submodule/foo.js'),
         testFn,
+        path.join(magnet.getServerDistDirectory(), 'submodule/foo.js'),
         magnet,
       );
 

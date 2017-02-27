@@ -6,7 +6,7 @@ describe('registratorMultiple', () => {
     it('should return true if module object does not have a route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = (app, magnet) => {};
-      expect(registratorMultiple.test(null, testFn, null)).to.be.true;
+      expect(registratorMultiple.test(testFn, null, null)).to.be.true;
     });
 
     it('should return true if in the module there\'s a route attribute but it\'s not an object and the default attribute is a function', () => { // eslint-disable-line max-len
@@ -14,7 +14,7 @@ describe('registratorMultiple', () => {
       testFn.default = () => {};
       testFn.route = 'not an object';
 
-      expect(registratorMultiple.test(null, testFn, null)).to.be.true;
+      expect(registratorMultiple.test(testFn, null, null)).to.be.true;
     });
 
     it('should return false if in the module the route attribute is an object and the default attribute is a function', () => { // eslint-disable-line max-len
@@ -22,14 +22,14 @@ describe('registratorMultiple', () => {
       testFn.default = () => {};
       testFn.route = {};
 
-      expect(registratorMultiple.test(null, testFn, null)).to.be.false;
+      expect(registratorMultiple.test(testFn, null, null)).to.be.false;
     });
 
     it('should return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = 'not a function';
 
-      expect(registratorMultiple.test(null, testFn, null)).to.be.false;
+      expect(registratorMultiple.test(testFn, null, null)).to.be.false;
     });
   });
 
