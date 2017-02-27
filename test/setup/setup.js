@@ -56,14 +56,19 @@ function isExpress(obj) {
  * @param {String} responseBody
  * @return {Promise}
  */
-function assertAsyncHttpRequest({port, path = '', status = 200, responseBody = ''}) { // eslint-disable-line max-len
+function assertAsyncHttpRequest({port, path = '', status = 200, responseBody, contentType}) { // eslint-disable-line max-len
   return new Promise((resolve) => {
     http.get(`http://localhost:${port}${path}`, function(res) {
         let rawData = '';
         res.on('data', (chunk) => rawData += chunk);
         res.on('end', () => {
-          expect(status).to.equal(res.statusCode);
-          expect(rawData).to.equal(responseBody);
+          expect(res.statusCode).to.equal(status);
+          if(responseBody) {
+            expect(responseBody).to.equal(rawData);
+          }
+          if(contentType) {
+            expect(contentType).to.equal(res.headers['content-type']);
+          }
           resolve();
         });
     });
