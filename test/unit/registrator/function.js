@@ -4,7 +4,7 @@ import registratorFunction from '../../../src/registrator/function';
 
 describe('registratorFunction', () => {
   describe('.test', () => {
-    it('should return true if module objec has a route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
+    it('should return true if module object has a route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = () => {};
       testFn.route = {};
