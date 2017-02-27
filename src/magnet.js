@@ -5,6 +5,7 @@ import {errorMiddleware} from './middleware/error';
 import {isFunction} from 'metal';
 import bodyParser from 'body-parser';
 import compression from 'compression';
+import del from 'del';
 import express from 'express';
 import fs from 'fs';
 import glob from 'glob';
@@ -238,6 +239,7 @@ class Magnet {
   async stop() {
     log.info(false, 'Shutting down gracefully…');
     await this.getServer().close();
+    del(this.getServerDistDirectory());
   }
 
   /**
