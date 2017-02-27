@@ -91,6 +91,19 @@ class Magnet {
   }
 
   /**
+   * Checks if server dist directory exists.
+   * @return {boolean}
+   */
+  hasServerDistDirectory() {
+    try {
+      fs.accessSync(this.getServerDistDirectory());
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
    * Builds application.
    * @param {boolean} outputLog
    */
@@ -197,6 +210,13 @@ class Magnet {
    * Starts application.
    */
   async start() {
+    if (!this.hasServerDistDirectory()) {
+      log.error('', `Could not find the build directory '.magnet'! ` +
+        `Try building your app with 'magnet build' before starting the ` +
+        `server.`);
+      return;
+    }
+
     this.runStartHook_();
 
     await this.load();

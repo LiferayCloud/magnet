@@ -8,10 +8,11 @@ import pkg from '../../package.json';
 
 const defaultCommand = 'dev';
 const commands = new Set([
+  defaultCommand,
   'start',
+  'build',
   'generate',
   'routes',
-  defaultCommand,
 ]);
 
 let cmd = process.argv[2];

@@ -31,9 +31,7 @@ const magnet = new Magnet({config, directory});
 /**
  */
 async function maybeBuildThenListRoutes() {
-  try {
-    fs.accessSync(magnet.getServerDistDirectory());
-  } catch (error) {
+  if (!magnet.hasServerDistDirectory()) {
     await magnet.build(false);
   }
   console.log(getRoutesTable(magnet));

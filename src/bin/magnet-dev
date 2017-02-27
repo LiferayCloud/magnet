@@ -17,10 +17,9 @@ const argv = parseArgs(process.argv.slice(2), {
 if (argv.help) {
   console.log(`
     Description
-      Starts the application in development mode.
+      Builds and starts the application in development mode.
     Usage
-      $ magnet dev <dir> -c <config file path>
-    If no directory is provided, the current directory will be assumed.
+      $ magnet dev -c <config file path>
     Options
       --config, -c    Config file path, e.g. magnet.config.js
       --help, -h      Displays this message
