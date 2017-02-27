@@ -105,22 +105,22 @@ class Magnet {
 
   /**
    * Builds application.
-   * @param {boolean} outputLog
+   * @param {boolean} logBuildOutput
    */
-  async build(outputLog = true) {
+  async build(logBuildOutput = true) {
     let files = this.getFiles(this.getDirectory());
 
     if (!files.length) {
       return;
     }
 
-    log.info('', 'Building assets…');
+    log.info(false, 'Building assets…');
 
     let output = await build(
       files, this.getDirectory(), this.getServerDistDirectory());
 
-    if (outputLog) {
-      console.log(`\n${output}\n`);
+    if (logBuildOutput) {
+      log.infoNoPrefix(false, `\n${output}`);
     }
   }
 
@@ -150,7 +150,7 @@ class Magnet {
           registratorInjection.register(file, module, this);
         }
       } catch(error) {
-        log.error('', error);
+        log.error(false, error);
       }
     });
   }
@@ -208,7 +208,7 @@ class Magnet {
    */
   async start() {
     if (!this.hasServerDistDirectory()) {
-      log.error('', `Could not find the build directory '.magnet'! ` +
+      log.error(false, `Could not find the build directory '.magnet'! ` +
         `Try building your app with 'magnet build' before starting the ` +
         `server.`);
       return;
@@ -233,7 +233,7 @@ class Magnet {
    * Stops application.
    */
   async stop() {
-    log.info('', 'Shutting down gracefully…');
+    log.info(false, 'Shutting down gracefully…');
     await this.getServer().close();
   }
 

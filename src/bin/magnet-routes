@@ -2,7 +2,7 @@
 
 import {getRoutesTable} from '../routes';
 import {Magnet} from '../';
-import fs from 'fs';
+import log from '../log';
 import parseArgs from 'minimist';
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -34,7 +34,10 @@ async function maybeBuildThenListRoutes() {
   if (!magnet.hasServerDistDirectory()) {
     await magnet.build(false);
   }
-  console.log(getRoutesTable(magnet));
+  const routes = getRoutesTable(magnet);
+  if (routes) {
+    log.infoNoPrefix(false, `${routes}`);
+  }
 }
 
 maybeBuildThenListRoutes();

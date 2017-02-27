@@ -75,7 +75,7 @@ export default () => \`<!DOCTYPE html>
 </html>\`;
 `;
 
-log.info('', 'Generating files');
+log.info(false, 'Generating files');
 
 if (!existsSync(dir)) {
   mkdirSync(dir);
@@ -99,4 +99,4 @@ if (!existsSync(join(dir, 'magnet.config.js'))) {
   writeFileSync(join(dir, 'magnet.config.js'), baseMagnetConfig);
 }
 
-log.info('', 'Done.');
+log.info(false, 'Done.');

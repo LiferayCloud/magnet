@@ -56,13 +56,13 @@ const startProcess = () => {
       if (signal === 'SIGKILL') {
         process.exit(137);
       }
-      log.info('', 'exitting');
+      log.info(false, 'exitting');
       process.exit(1);
     }
     process.exit(0);
   });
   proc.on('error', (err) => {
-    log.error('', err);
+    log.error(false, err);
     process.exit(1);
   });
   return proc;
@@ -79,7 +79,7 @@ if (cmd === 'dev') {
     });
 
     watcher.on('change', () => {
-      log.info('', 'Found a change, restarting the server...');
+      log.info(false, 'Found a change, restarting the server...');
       proc.removeAllListeners('close');
       proc.kill();
       proc = startProcess();

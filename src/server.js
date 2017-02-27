@@ -53,7 +53,7 @@ class Server {
   listen(port, host) {
     this.getHttpServer()
       .listen(port, host, () =>
-        log.info('', `Ready on http://${host}:${port}`));
+        log.info(false, `Ready on http://${host}:${port}`));
     return this;
   }
 

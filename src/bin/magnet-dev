@@ -2,6 +2,7 @@
 
 import {getRoutesTable} from '../routes';
 import {Magnet} from '../';
+import log from '../log';
 import parseArgs from 'minimist';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -35,7 +36,7 @@ magnet.build()
   .then(() => {
     const routes = getRoutesTable(magnet);
     if (routes) {
-      console.log(`${routes}\n`);
+      log.infoNoPrefix(false, `\n${routes}\n`);
     }
   })
   .then(() => magnet.start());
