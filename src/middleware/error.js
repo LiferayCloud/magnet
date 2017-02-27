@@ -11,6 +11,5 @@ export function errorMiddleware() {
       status,
       message,
     });
-    next(err);
   };
 }

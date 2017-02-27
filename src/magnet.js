@@ -222,6 +222,8 @@ class Magnet {
 
     await this.load();
 
+    this.setupMiddlewareError_();
+
     await new Promise((resolve, reject) => {
       this.getServer()
           .getHttpServer()
@@ -310,7 +312,6 @@ class Magnet {
     this.setupMiddlewareMultipart_();
     this.setupMiddlewareCompression_();
     this.setupMiddlewareHttpLogger_();
-    this.setupMiddlewareError_();
     this.setupMiddlewareStaticFiles_();
   }
 
