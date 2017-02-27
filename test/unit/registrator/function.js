@@ -24,7 +24,7 @@ describe('registratorFunction', () => {
       expect(registratorFunction.test(null, testFn, null)).to.be.false;
     });
 
-    it('shouuld return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
+    it('should return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
       expect(registratorFunction.test(null, 'wrongValue', null)).to.be.false;
     });
   });
