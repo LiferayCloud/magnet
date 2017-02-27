@@ -19,6 +19,8 @@ That's all! now you have your API deployed in the cloud.
 
 The following example uses `curl` to request the private API exposed by [Magnet](http://github.com/wedeploy/magnet).
 
+### Testing the public path
+
 1. Request the public path we've just created:
 
 ```sh
@@ -31,7 +33,9 @@ Results in
 {"hello":"this is a public api"}
 ```
 
-2. You'll need an user in order to access the newly created private api, let's create one in order to request the private path:
+### Testing the private path
+
+1. You'll need an user in order to access the newly created private api, let's create one in order to request the private path:
 
 ```sh
 curl -XPOST auth.myproject.wedeploy.io/users \
@@ -48,7 +52,7 @@ Results in
 {"createdAt":1487978417414,"password":"...","id":"208617167906807212","email":"user@email.com"}
 ```
 
-3. Request the private path passing the user credentials:
+2. Request the private path passing the user credentials:
 
 ```sh
 curl api.myproject.wedeploy.io/private/api \
