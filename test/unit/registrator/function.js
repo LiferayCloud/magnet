@@ -91,7 +91,7 @@ describe('registratorFunction', () => {
 
   describe('Integration with application folder and http server', () => {
     it('should register a module from the directory when its default attribute is a function and it has a route object attribute', async() => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/registrator_function_app`; // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
       const magnet = new Magnet({directory});
 
       await magnet.build();
@@ -107,7 +107,7 @@ describe('registratorFunction', () => {
     });
 
     it('should register a module from the directory when its default attribute is a function that returns a string instead of rendering using response param', async () => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/registrator_function_app`; // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
       const magnet = new Magnet({directory});
 
       await magnet.build();
@@ -123,7 +123,7 @@ describe('registratorFunction', () => {
     });
 
     it('should set default to html if type is not provided', async () => {
-      const directory = `${process.cwd()}/test/fixtures/registrator_function_app`; // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
       const magnet = new Magnet({directory});
 
       await magnet.build();
