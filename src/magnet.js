@@ -188,10 +188,10 @@ class Magnet {
   }
 
   /**
-   * Run start hook.
+   * Maybe run start hook.
    * @private
    */
-  async runStartHook_() {
+  async maybeRunStartHook_() {
     let start = path.resolve(
       this.getServerDistDirectory(), Magnet.LifecyleFiles.START);
     if (fs.existsSync(start)) {
@@ -217,7 +217,7 @@ class Magnet {
       return;
     }
 
-    this.runStartHook_();
+    this.maybeRunStartHook_();
 
     await this.load();
 
