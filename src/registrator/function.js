@@ -2,10 +2,10 @@ import {assertDefAndNotNull, assertString} from '../assertions';
 import {isFunction, isObject} from 'metal';
 
 export default {
-  test(filename, module, magnet) {
+  test(module, filename, magnet) {
     return isObject(module.route) && isFunction(module.default);
   },
-  register(filename, module, magnet) {
+  register(module, filename, magnet) {
     let path = module.route.path;
     let method = module.route.method || 'get';
     let type = module.route.type || 'html';

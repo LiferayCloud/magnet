@@ -8,7 +8,7 @@ describe('registratorString', () => {
       const testFn = {};
       testFn.default = 'foo';
       testFn.route = {};
-      expect(registratorString.test(null, testFn, null)).to.be.true;
+      expect(registratorString.test(testFn, null, null)).to.be.true;
     });
 
     it('should return false if in the module there\'s a route attribute but it\'s not an object and the default attribute is a string', () => { // eslint-disable-line max-len
@@ -16,7 +16,7 @@ describe('registratorString', () => {
       testFn.default = 'foo';
       testFn.route = 'foo';
 
-      expect(registratorString.test(null, testFn, null)).to.be.false;
+      expect(registratorString.test(testFn, null, null)).to.be.false;
     });
 
     it('should return false if in the module the route attribute is an object and the default attribute is not a string', () => { // eslint-disable-line max-len
@@ -24,7 +24,7 @@ describe('registratorString', () => {
       testFn.default = () => {};
       testFn.route = {};
 
-      expect(registratorString.test(null, testFn, null)).to.be.false;
+      expect(registratorString.test(testFn, null, null)).to.be.false;
     });
   });
 
@@ -44,8 +44,8 @@ describe('registratorString', () => {
 
       expect(function() {
         registratorString.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration method must be a string, check /foo.js.'); // eslint-disable-line max-len
@@ -62,8 +62,8 @@ describe('registratorString', () => {
       testFn.default = (req, res) => res.end('fn');
       expect(function() {
         registratorString.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
@@ -78,8 +78,8 @@ describe('registratorString', () => {
       testFn.default = (req, res) => res.end('fn');
       expect(function() {
         registratorString.register(
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           testFn,
+          path.join(magnet.getServerDistDirectory(), 'foo.js'),
           magnet,
         );
       }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
