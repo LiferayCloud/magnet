@@ -79,7 +79,7 @@ if (cmd === 'dev') {
     });
 
     watcher.on('change', () => {
-      log.info(false, 'Found a change, restarting the server...');
+      log.info(false, 'Found a change, restarting the server…');
       proc.removeAllListeners('close');
       proc.kill();
       proc = startProcess();
