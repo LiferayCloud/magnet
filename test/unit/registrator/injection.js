@@ -2,15 +2,22 @@ import Magnet from '../../../src/magnet';
 import path from 'path';
 import registratorInjection from '../../../src/registrator/injection';
 
-describe('registratorFunction', () => {
+describe('registratorInjection', () => {
   describe('.test', () => {
-    it('should perform the test validation for the input and return true', () => { // eslint-disable-line max-len
+    it('should return true if there\'s no route attribute in the module', () => { // eslint-disable-line max-len
       const testFn = {};
       testFn.default = () => {};
       expect(registratorInjection.test(null, testFn, null)).to.be.true;
     });
 
-    it('should perform the test validation for the input and return false if the route is an object', () => { // eslint-disable-line max-len
+    it('should return true if the route attribute in the module is not an object', () => { // eslint-disable-line max-len
+      const testFn = {};
+      testFn.route = 'not an object';
+      testFn.default = () => {};
+      expect(registratorInjection.test(null, testFn, null)).to.be.true;
+    });
+
+    it('should false if the module if the route attribute is an object', () => {
       const testFn = {
         route: {},
       };
@@ -22,10 +29,9 @@ describe('registratorFunction', () => {
   describe('.register', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
-    it('should inject an object on magnet\'s current injections', () => { // eslint-disable-line max-len
+    it('should inject an object into injections public attribute', () => { // eslint-disable-line max-len
       const magnet = new Magnet({directory});
-      const testFn = {
-      };
+      const testFn = {};
       testFn.default = {foo: 'bar'};
 
       registratorInjection.register(
@@ -37,7 +43,7 @@ describe('registratorFunction', () => {
       expect(magnet.injections.foo).to.deep.equal({foo: 'bar'});
     });
 
-    it('should inject a function on magnet\'s current injections', () => {
+    it('should inject a function into injections public attribute', () => { // eslint-disable-line max-len
       const magnet = new Magnet({directory});
       const testFn = {
       };
@@ -52,10 +58,9 @@ describe('registratorFunction', () => {
       expect(magnet.injections.foo).to.be.a('function');
     });
 
-    it('should inject an object following its namespace based on its folder directories', () => { // eslint-disable-line max-len
+    it('should inject an object creating namespaces following its folder directories', () => { // eslint-disable-line max-len
       const magnet = new Magnet({directory});
-      const testFn = {
-      };
+      const testFn = {};
       testFn.default = {foo: 'bar'};
 
       registratorInjection.register(
