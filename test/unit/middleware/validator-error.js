@@ -1,6 +1,6 @@
 import Magnet from '../../../src/magnet';
 
-describe('errorMiddleware', function() {
+describe('validationErrorMiddleware', function() {
   it('should manage to catch an exception if an error occurs in a route function with param validator', async () => { // eslint-disable-line max-len
     const directory = `${process.cwd()}/test/fixtures/error`;
       const magnet = new Magnet({directory});
