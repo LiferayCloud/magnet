@@ -143,7 +143,6 @@ class Magnet {
         case path.join(dist, Magnet.LifecyleFiles.START):
           return;
       }
-      delete require.cache[file];
       let module = require(file);
       if (registratorInjection.test(module, file, this)) {
         registratorInjection.register(module, file, this);
