@@ -3,7 +3,7 @@
   "id": "api",
   "port": 3001,
   "hooks": {
-    "build": "npm install",
-    "start": "npm start"
+    "build": "npm install && npm run build",
+    "start": "npm run build && npm start"
   }
 }
