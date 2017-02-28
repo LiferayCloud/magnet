@@ -38,8 +38,6 @@ describe('Magnet', () => {
       expect(existsSync(magnet.getServerDistDirectory()))
         .to.be.false;
     });
-
-    it('should build an directory with just static folder');
   });
 
   describe('#getDirectory', () => {
@@ -130,6 +128,25 @@ describe('Magnet', () => {
         path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
+      await magnet.stop();
+    });
+
+    it('should serve an application that just has a static folder', async() => { // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/assets`;
+      const magnet = new Magnet({directory});
+      await magnet.build();
+      await magnet.start();
+
+      await assertAsyncHttpRequest({
+        path: '/static/example1.txt',
+        responseBody: 'example1\n',
+      });
+
+      await assertAsyncHttpRequest({
+        path: '/static/example2.txt',
+        responseBody: 'example2\n',
+      });
+
       await magnet.stop();
     });
   });
