@@ -214,13 +214,6 @@ class Magnet {
    * Starts application.
    */
   async start() {
-    if (!this.hasServerDistDirectory()) {
-      log.error(false, `Could not find the build directory '.magnet'! ` +
-        `Try building your app with 'magnet build' before starting the ` +
-        `server.`);
-      return;
-    }
-
     this.maybeRunStartHook_();
 
     await this.load();
