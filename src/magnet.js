@@ -46,7 +46,7 @@ class Magnet {
     this.config = createConfig(options.directory, options.config);
 
     // Sync log level to the one set on this instance.
-    log.level = this.config.logLevel;
+    log.level = this.config.magnet.logLevel;
 
     /**
      * Directory to start magnet application.
@@ -289,7 +289,7 @@ class Magnet {
    * @private
    */
   setupMiddlewareHttpLogger_() {
-    switch (log.level) {
+    switch (this.config.magnet.logLevel) {
       case 'silent':
         return;
     }
