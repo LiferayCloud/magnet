@@ -188,7 +188,7 @@ class Magnet {
         return '.' + path.sep + path.join(file);
       });
     }
-    return files;
+    return [...new Set(files)];
   }
 
   /**
