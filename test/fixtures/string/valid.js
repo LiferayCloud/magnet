@@ -1,7 +1,7 @@
 export const route = {
-  path: '/fn-false',
+  path: '/string',
   method: 'get',
   type: 'json',
 };
 
-export default 'not a function';
+export default 'valid string';

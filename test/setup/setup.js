@@ -56,7 +56,7 @@ function isExpress(obj) {
  * @param {String} responseBody
  * @return {Promise}
  */
-function assertAsyncHttpRequest({port, path = '', status = 200, responseBody, contentType}) { // eslint-disable-line max-len
+function assertAsyncHttpRequest({port = 3000, path = '', status = 200, responseBody, contentType}) { // eslint-disable-line max-len
   return new Promise((resolve) => {
     http.get(`http://localhost:${port}${path}`, function(res) {
         let rawData = '';

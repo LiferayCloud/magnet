@@ -5,7 +5,7 @@ import Magnet from '../../../src/magnet';
 import path from 'path';
 
 describe('.build', function() {
-  const directory = `${process.cwd()}/test/fixtures/build_app`;
+  const directory = `${process.cwd()}/test/fixtures/build`;
 
   it('should build the specified app directory', async() => {
     const magnet = new Magnet({directory});
@@ -24,7 +24,7 @@ describe('.build', function() {
     await del(serverDist);
   });
 
-  it('should clean dist directory before build'); // eslint-disable-line max-len
+  it('should clean dist directory before build');
 
   it('should inform the user that the app doesn\'t have javascript files to register'); // eslint-disable-line max-len
 

@@ -4,87 +4,78 @@ import registratorInjection from '../../../src/registrator/injection';
 
 describe('registratorInjection', () => {
   describe('.test', () => {
-    it('should return true if there\'s no route attribute in the module', () => { // eslint-disable-line max-len
-      const testFn = {};
-      testFn.default = () => {};
-      expect(registratorInjection.test(testFn, null, null)).to.be.true;
+    it('should return true if module has no route', () => {
+      const mod = {};
+      mod.default = 'injection value';
+      expect(registratorInjection.test(mod, null, null)).to.be.true;
     });
 
-    it('should return true if the route attribute in the module is not an object', () => { // eslint-disable-line max-len
-      const testFn = {};
-      testFn.route = 'not an object';
-      testFn.default = () => {};
-      expect(registratorInjection.test(testFn, null, null)).to.be.true;
+    it('should return true if module route is not object', () => {
+      const mod = {};
+      mod.route = 'not an object';
+      mod.default = 'injection value';
+      expect(registratorInjection.test(mod, null, null)).to.be.true;
     });
 
-    it('should false if the module if the route attribute is an object', () => {
-      const testFn = {
+    it('should false if module route is object', () => {
+      const mod = {
         route: {},
       };
-      testFn.default = () => {};
-      expect(registratorInjection.test(testFn, null, null)).to.be.false;
+      mod.default = 'injection value';
+      expect(registratorInjection.test(mod, null, null)).to.be.false;
     });
   });
 
   describe('.register', () => {
-    const directory = `${process.cwd()}/test/fixtures/app`;
+    const directory = `${process.cwd()}/test/fixtures/empty`;
 
-    it('should inject an object into injections public attribute', () => { // eslint-disable-line max-len
+    it('should inject object', () => {
       const magnet = new Magnet({directory});
-      const testFn = {};
-      testFn.default = {foo: 'bar'};
-
+      const mod = {};
+      mod.default = {foo: 'bar'};
       registratorInjection.register(
-        testFn,
-        path.join(magnet.getServerDistDirectory(), 'foo.js'),
+        mod,
+        path.join(magnet.getServerDistDirectory(), 'filename.js'),
         magnet,
       );
-
-      expect(magnet.injections.foo).to.deep.equal({foo: 'bar'});
+      expect(magnet.injections.filename).to.deep.equal({foo: 'bar'});
     });
 
-    it('should inject a function into injections public attribute', () => { // eslint-disable-line max-len
+    it('should inject function', () => {
       const magnet = new Magnet({directory});
-      const testFn = {
-      };
-      testFn.default = () => {};
-
+      const mod = {};
+      mod.default = function() {};
       registratorInjection.register(
-        testFn,
-        path.join(magnet.getServerDistDirectory(), 'foo.js'),
+        mod,
+        path.join(magnet.getServerDistDirectory(), 'filename.js'),
         magnet,
       );
-
-      expect(magnet.injections.foo).to.be.a('function');
+      expect(magnet.injections.filename).to.be.a('function');
     });
 
-    it('should inject an object creating namespaces following its folder directories', () => { // eslint-disable-line max-len
+    it('should inject value creating namespaces with folder structure', () => {
       const magnet = new Magnet({directory});
-      const testFn = {};
-      testFn.default = {foo: 'bar'};
-
+      const mod = {};
+      mod.default = 'injection value';
       registratorInjection.register(
-        testFn,
+        mod,
         path.join(magnet.getServerDistDirectory(), 'submodule/foo.js'),
         magnet,
       );
-
-      expect(magnet.injections.submodule.foo).to.deep.equal({foo: 'bar'});
+      expect(magnet.injections.submodule.foo).to.deep.equal('injection value');
     });
 
-    it('should inject an object coming from a file without extension', () => {
-      const directory = `${process.cwd()}/test/fixtures/file_without_extension_app`; // eslint-disable-line max-len
+    it('should inject value from file without extension', () => {
+      const directory = `${process.cwd()}/test/fixtures/injection`;
       const magnet = new Magnet({directory});
-      const testFn = {};
-      testFn.default = {foo: 'bar'};
-
+      const mod = {};
+      mod.default = 'injection value';
       registratorInjection.register(
-        testFn,
-        path.join(magnet.getServerDistDirectory(), 'no_extension'),
+        mod,
+        path.join(magnet.getServerDistDirectory(), 'filename'),
         magnet,
       );
-
-      expect(magnet.injections.no_extension).to.deep.equal({foo: 'bar'}); // eslint-disable-line max-len
+      expect(magnet.injections.filename).to.deep.equal('injection value');
     });
   });
 });

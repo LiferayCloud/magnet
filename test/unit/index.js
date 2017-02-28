@@ -1,6 +1,6 @@
 import {Magnet, Server, ServerFactory} from '../../src/index';
 
-describe('main import', function() {
+describe('index', function() {
   it('should import Magnet class successfully', () => {
     expect(typeof Magnet).to.equal('function');
   });

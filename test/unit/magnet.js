@@ -1,28 +1,26 @@
-import Magnet from '../../src/magnet';
-import Server from '../../src/server';
 import {existsSync} from 'fs';
-import path from 'path';
 import del from 'del';
+import Magnet from '../../src/magnet';
+import path from 'path';
+import Server from '../../src/server';
 
 describe('Magnet', () => {
   describe('config', () => {
     it('should raise an error if no options are provided', () => {
       expect(() => {
          new Magnet();
-      }).to.throw(`Magnet options are required, `+
-      `try: new Magnet({directory: \'/app\'}).`);
+      }).to.throw(`Magnet options are required, try: new Magnet({directory: \'/app\'}).`); // eslint-disable-line max-len
     });
     it('should raise an error if no directory is provided', () => {
       expect(() => {
          new Magnet({});
-      }).to.throw(`Magnet directory is required, `+
-      `try: new Magnet({directory: \'/app\'}).`);
+      }).to.throw(`Magnet directory is required, try: new Magnet({directory: \'/app\'}).`); // eslint-disable-line max-len
     });
   });
 
   describe('#build', () => {
-    it('should build an app directory', async () => {
-      const directory = `${process.cwd()}/test/fixtures/build_app`;
+    it('should build app directory', async () => {
+      const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
       await magnet.build();
       expect(existsSync(path.join(magnet.getServerDistDirectory(), 'one.js')))
@@ -32,8 +30,8 @@ describe('Magnet', () => {
       await del(magnet.getServerDistDirectory());
     });
 
-    it('should not build an empty directory', async () => {
-      const directory = `${process.cwd()}/test/fixtures/empty_app`;
+    it('should not build empty directory', async () => {
+      const directory = `${process.cwd()}/test/fixtures/empty`;
       const magnet = new Magnet({directory});
       await magnet.build();
       expect(existsSync(magnet.getServerDistDirectory()))
@@ -56,12 +54,12 @@ describe('Magnet', () => {
   describe('#getServer', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
-    it('should return the current server', () => {
+    it('should return current server', () => {
       const magnet = new Magnet({directory});
       expect(magnet.getServer() instanceof Server).to.be.true;
     });
 
-    it('should return the current server engine', () => {
+    it('should return current server engine', () => {
       const magnet = new Magnet({directory});
       expect(isExpress(magnet.getServer().getEngine()))
         .to.equal(true);
@@ -71,7 +69,7 @@ describe('Magnet', () => {
   describe('#getServerDistDirectory', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
-    it('should return the server distribution directory path', () => {
+    it('should return server distribution directory path', () => {
       const magnet = new Magnet({directory});
       expect(magnet.getServerDistDirectory())
         .to.equal(`${process.cwd()}/test/fixtures/app/.magnet/server`);
@@ -79,22 +77,22 @@ describe('Magnet', () => {
   });
 
   describe('#getFiles', () => {
-    it('should not get javascript files inside a static folder', () => {
-      const directory = `${process.cwd()}/test/fixtures/js_in_static_app`;
+    it('should not match files inside a static folder', () => {
+      const directory = `${process.cwd()}/test/fixtures/static`;
       const magnet = new Magnet({directory});
       const files = magnet.getFiles(directory);
       expect(files).to.deep.equal([]);
     });
 
     it('should return an empty array if directory is empty', () => {
-      const directory = `${process.cwd()}/test/fixtures/empty_app`;
+      const directory = `${process.cwd()}/test/fixtures/empty`;
       const magnet = new Magnet({directory});
       const files = magnet.getFiles(directory);
       expect(files).to.deep.equal([]);
     });
 
     it('should get files with its realpath', () => {
-      const directory = `${process.cwd()}/test/fixtures/build_app`;
+      const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
       const files = magnet.getFiles(directory, true);
       const expectedArray = [
@@ -106,20 +104,17 @@ describe('Magnet', () => {
   });
 
   describe('#hasServerDistDirectory', () => {
-    it('should return true if the server distribution directory exists', async () => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/build_app`;
+    it('should return true if server dist directory exists', async () => {
+      const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
       await magnet.build();
-
       expect(magnet.hasServerDistDirectory()).to.be.true;
-
       await del(magnet.getServerDistDirectory());
     });
 
-    it('should return false if the server distribution directory does not exist', () => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/build_app`;
+    it('should return false if server dist directory does not exist', () => {
+      const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
-
       expect(magnet.hasServerDistDirectory()).to.be.false;
     });
   });
@@ -132,7 +127,6 @@ describe('Magnet', () => {
       await magnet.build();
       await magnet.start();
       await assertAsyncHttpRequest({
-        port: 3000,
         path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });

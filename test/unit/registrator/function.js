@@ -4,138 +4,119 @@ import registratorFunction from '../../../src/registrator/function';
 
 describe('registratorFunction', () => {
   describe('.test', () => {
-    it('should return true if module object has a route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
-      const testFn = {};
-      testFn.default = () => {};
-      testFn.route = {};
-      expect(registratorFunction.test(testFn, null, null)).to.be.true;
+    it('should return true if module has a valid route', () => {
+      const mod = {};
+      mod.default = function() {};
+      mod.route = {};
+      expect(registratorFunction.test(mod, null, null)).to.be.true;
     });
 
-    it('should return false if in the module there\'s no route attribute and the default attribute is a function', () => { // eslint-disable-line max-len
-      const testFn = {};
-      testFn.default = () => {};
-      expect(registratorFunction.test(testFn, null, null)).to.be.false;
+    it('should return true if module has no route', () => {
+      const mod = {};
+      mod.default = function() {};
+      expect(registratorFunction.test(mod, null, null)).to.be.false;
     });
 
-    it('should return false if in the module the route attribute is not an object and the default attribute is a function', () => { // eslint-disable-line max-len
-      const testFn = {};
-      testFn.default = () => {};
-      testFn.route = 'not an object';
-      expect(registratorFunction.test(testFn, null, null)).to.be.false;
+    it('should return true if module has route undefined', () => {
+      const mod = {};
+      mod.default = function() {};
+      mod.route = undefined;
+      expect(registratorFunction.test(mod, null, null)).to.be.false;
     });
 
-    it('should return false if the module\'s default attribute is not a function', () => { // eslint-disable-line max-len
-      expect(registratorFunction.test('wrongValue', null, null)).to.be.false;
+    it('should return false if module is not function', () => {
+      expect(registratorFunction.test('notFn', null, null)).to.be.false;
     });
   });
 
   describe('.register', () => {
-    const directory = `${process.cwd()}/test/fixtures/only_config_app`;
+    const directory = `${process.cwd()}/test/fixtures/empty`;
 
-    it('should throw an error if provided method is not a string', () => {
+    it('should throw exception if route method is not string', () => {
       const magnet = new Magnet({directory});
-
-      const testFn = {
+      const mod = {
         route: {
           path: '/fn',
-          type: 'html',
           method: 1,
         },
       };
-
-      testFn.default = (req, res) => res.end('fn');
-
+      mod.default = function() {};
       expect(function() {
         registratorFunction.register(
-          testFn,
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
+          mod,
+          path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet,
         );
-      }).to.throw(Error, 'Route configuration method must be a string, check /foo.js.'); // eslint-disable-line max-len
+      }).to.throw(Error, 'Route configuration method must be a string, check /filename.js.'); // eslint-disable-line max-len
     });
 
     it('should throw an error if route configuration path is null', () => {
       const magnet = new Magnet({directory});
-      const testFn = {
+      const mod = {
         route: {
           path: null,
         },
       };
-
-      testFn.default = (req, res) => res.end('fn');
+      mod.default = function() {};
       expect(function() {
         registratorFunction.register(
-          testFn,
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
+          mod,
+          path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet,
         );
-      }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
+      }).to.throw(Error, 'Route configuration path must be specified, check /filename.js.'); // eslint-disable-line max-len
     });
 
-    it('should throw an error if route configuration path is undefined ', () => { // eslint-disable-line max-len
+    it('should throw an error if route configuration path is undefined', () => {
       const magnet = new Magnet({directory});
-      const testFn = {
+      const mod = {
         route: {
         },
       };
-      testFn.default = (req, res) => res.end('fn');
+      mod.default = function() {};
       expect(function() {
         registratorFunction.register(
-          testFn,
-          path.join(magnet.getServerDistDirectory(), 'foo.js'),
+          mod,
+          path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet,
         );
-      }).to.throw(Error, 'Route configuration path must be specified, check /foo.js.'); // eslint-disable-line max-len
+      }).to.throw(Error, 'Route configuration path must be specified, check /filename.js.'); // eslint-disable-line max-len
     });
   });
 
-  describe('Integration with application folder and http server', () => {
-    it('should register a module from the directory when its default attribute is a function and it has a route object attribute', async() => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
-      const magnet = new Magnet({directory});
+  describe('integration', () => {
+    let magnet;
+    const directory = `${process.cwd()}/test/fixtures/function`;
 
+    beforeEach(async () => {
+      magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
+    });
 
-      await assertAsyncHttpRequest({
-        port: 3000,
-        path: '/fn-true',
-        responseBody: JSON.stringify({foo: 'bar'}),
-      });
-
+    afterEach(async () => {
       await magnet.stop();
     });
 
-    it('should register a module from the directory when its default attribute is a function that returns a string instead of rendering using response param', async () => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
-      const magnet = new Magnet({directory});
-
-      await magnet.build();
-      await magnet.start();
-
+    it('should register string module from directory that ends response', async() => { // eslint-disable-line max-len
       await assertAsyncHttpRequest({
-        port: 3000,
+        path: '/fn-header-sent',
+        responseBody: 'headers sent',
+      });
+    });
+
+    it('should register string module from directory that does not ends response', async () => { // eslint-disable-line max-len
+      await assertAsyncHttpRequest({
         path: '/fn-header-not-sent',
-        responseBody: 'rendered by helper',
+        responseBody: 'headers not sent',
       });
-
-      await magnet.stop();
     });
 
-    it('should set default to html if type is not provided', async () => {
-      const directory = `${process.cwd()}/test/fixtures/function_registrator_app`; // eslint-disable-line max-len
-      const magnet = new Magnet({directory});
-
-      await magnet.build();
-      await magnet.start();
-
+    it('should set default type to to html if not specified', async () => {
       await assertAsyncHttpRequest({
-        port: 3000,
         path: '/fn-no-type',
         contentType: 'text/html; charset=utf-8',
       });
-
-      await magnet.stop();
     });
   });
 });
