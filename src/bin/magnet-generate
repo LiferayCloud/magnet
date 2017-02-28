@@ -52,7 +52,7 @@ export default async (req) => {
 const baseMagnetConfig = `module.exports = {
   magnet: {
     port: 3000,
-  }
+  },
 };
 `;
 
