@@ -3,10 +3,12 @@ import {build} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction} from 'metal';
+import {validatorErrorMiddleware} from './middleware/validator-error';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import del from 'del';
 import express from 'express';
+import expressValidator from 'express-validator';
 import fs from 'fs';
 import glob from 'glob';
 import helmet from 'helmet';
@@ -276,6 +278,9 @@ class Magnet {
   setupMiddlewareError_() {
     this.getServer()
       .getEngine()
+      .use(validatorErrorMiddleware());
+    this.getServer()
+      .getEngine()
       .use(errorMiddleware());
   }
 
@@ -304,6 +309,26 @@ class Magnet {
   }
 
   /**
+   * Setup validator middleware.
+   * @private
+   */
+  setupMiddlewareValidator_() {
+    this.getServer()
+      .getEngine()
+      .use(expressValidator({
+        errorFormatter: (param, msg, value) => {
+          return {
+            reason: msg,
+            context: {
+              param: param,
+              value: value,
+            },
+          };
+        },
+      }));
+  }
+
+  /**
    * Setup engine middleware.
    * @private
    */
@@ -313,6 +338,7 @@ class Magnet {
     this.setupMiddlewareMultipart_();
     this.setupMiddlewareCompression_();
     this.setupMiddlewareHttpLogger_();
+    this.setupMiddlewareValidator_();
     this.setupMiddlewareStaticFiles_();
   }
 

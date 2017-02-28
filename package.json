@@ -46,6 +46,7 @@
     "cross-spawn": "^5.0.1",
     "del": "^2.2.2",
     "express": "^4.13.0",
+    "express-validator": "^3.1.2",
     "glob": "^7.1.1",
     "helmet": "^3.3.0",
     "metal": "^2.6.0",
