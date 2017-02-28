@@ -6,6 +6,7 @@ const baseConfig = () => {
     magnet: {
       host: '0.0.0.0',
       ignore: [
+          'test/**',
           'build/**',
           'coverage/**',
           'gulpfile.js',
