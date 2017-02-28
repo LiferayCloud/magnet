@@ -1,18 +1,20 @@
-import {errorMiddleware} from '../../../src/middleware/error';
-import httpMocks from 'node-mocks-http';
+import Magnet from '../../../src/magnet';
 
 describe('errorMiddleware', function() {
-  it('should create an instance of a server', () => {
-    const request = httpMocks.createRequest({
-        method: 'GET',
-        url: '/test/path?myid=312',
-        query: {
-            myid: '312',
-        },
-    });
-    const response = httpMocks.createResponse();
-    errorMiddleware()({foo: 'bar'}, request, response, (err) => {
-      expect(err).to.deep.equal({foo: 'bar'});
-    });
+  it('should manage to catch an exception if an error occurs in a route function', async () => { // eslint-disable-line max-len
+    const directory = `${process.cwd()}/test/fixtures/error_simulation_app`; // eslint-disable-line max-len
+      const magnet = new Magnet({directory});
+
+      await magnet.build();
+      await magnet.start();
+
+      await assertAsyncHttpRequest({
+        port: 3000,
+        path: '/fn-error-environment',
+        status: 500,
+        responseBody: JSON.stringify({status: 500, message: 'error message'}),
+      });
+
+      await magnet.stop();
   });
 });
