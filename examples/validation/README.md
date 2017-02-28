@@ -51,7 +51,7 @@ Now check if routes were registered:
 ~/P/w/magnet❯❯❯ curl http://localhost:3001/api
 ```
 
-Results in `400` response due to parameters validation.
+Results in `400` response due to parameters validation
 
 ```json
 {
