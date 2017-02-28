@@ -3,6 +3,7 @@ import del from 'del';
 import Magnet from '../../src/magnet';
 import path from 'path';
 import Server from '../../src/server';
+import log from '../../src/log';
 
 describe('Magnet', () => {
   describe('config', () => {
@@ -120,17 +121,31 @@ describe('Magnet', () => {
   });
 
   describe('#start', () => {
-    const directory = `${process.cwd()}/test/fixtures/app`;
-
-    it('should start an http server', async () => {
+    it('should start a http server', async () => {
+      const directory = `${process.cwd()}/test/fixtures/app`;
       const magnet = new Magnet({directory});
+
       await magnet.build();
       await magnet.start();
+
       await assertAsyncHttpRequest({
         path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
+
       await magnet.stop();
+    });
+
+    it('should throw an error if dist directory is doesn\'t exist', async () => { // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/empty`;
+      spy(log, 'error');
+      const magnet = new Magnet({directory});
+
+      await magnet.start();
+
+      expect(log.error).to.be.calledOnce;
+
+      log.error.restore();
     });
   });
 
