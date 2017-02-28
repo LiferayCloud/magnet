@@ -7,7 +7,7 @@ describe('errorMiddleware', function() {
       await magnet.build();
       await magnet.start();
       await assertAsyncHttpRequest({
-        path: '/fn-error-environment',
+        path: '/error',
         status: 500,
         responseBody: JSON.stringify({status: 500, message: 'error message'}),
       });

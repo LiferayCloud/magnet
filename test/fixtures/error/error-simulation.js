@@ -1,5 +1,5 @@
 export const route = {
-  path: '/fn-error-environment',
+  path: '/error',
   method: 'get',
   type: 'json',
 };
