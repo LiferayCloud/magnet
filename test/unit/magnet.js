@@ -135,18 +135,6 @@ describe('Magnet', () => {
 
       await magnet.stop();
     });
-
-    it('should throw an error if dist directory is doesn\'t exist', async () => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/empty`;
-      spy(log, 'error');
-      const magnet = new Magnet({directory});
-
-      await magnet.start();
-
-      expect(log.error).to.be.calledOnce;
-
-      log.error.restore();
-    });
   });
 
   describe('#stop', () => {
