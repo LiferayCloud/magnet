@@ -169,9 +169,10 @@ class Magnet {
    * @return {array.<string>} Array of file paths.
    */
   getFiles(cwd, realpath = false) {
-    let src = this.config.magnet.src;
-    let ignore = this.config.magnet.ignore;
+    let src = this.config.magnet.src.concat();
+    let ignore = this.config.magnet.ignore.concat();
     let files = [];
+    src.push(Magnet.LifecyleFiles.START);
     src.forEach((pattern) => {
       files = files.concat(
         glob.sync(pattern, {cwd: cwd, ignore: ignore, realpath: realpath}));
