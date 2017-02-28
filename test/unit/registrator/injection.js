@@ -71,5 +71,20 @@ describe('registratorInjection', () => {
 
       expect(magnet.injections.submodule.foo).to.deep.equal({foo: 'bar'});
     });
+
+    it('should inject an object coming from a file without extension', () => {
+      const directory = `${process.cwd()}/test/fixtures/file_without_extension_app`; // eslint-disable-line max-len
+      const magnet = new Magnet({directory});
+      const testFn = {};
+      testFn.default = {foo: 'bar'};
+
+      registratorInjection.register(
+        testFn,
+        path.join(magnet.getServerDistDirectory(), 'no_extension'),
+        magnet,
+      );
+
+      expect(magnet.injections.no_extension).to.deep.equal({foo: 'bar'}); // eslint-disable-line max-len
+    });
   });
 });
