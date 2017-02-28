@@ -5,10 +5,3 @@ module.exports = {
     src: '**/*',
   },
 };
-
-
-
-
-
-
-
