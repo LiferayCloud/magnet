@@ -1,7 +1,7 @@
 {
   "name": "magnet",
   "version": "0.10.0",
-  "description": "The API framework for nodejs.",
+  "description": "A modern approach for async microservices in node.js",
   "engines": {
     "node": ">=7.6.0"
   },
