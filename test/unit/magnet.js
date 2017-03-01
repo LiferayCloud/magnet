@@ -140,10 +140,6 @@ describe('Magnet', () => {
         path: '/static/example1.txt',
         responseBody: 'example1\n',
       });
-      await assertAsyncHttpRequest({
-        path: '/static/example2.txt',
-        responseBody: 'example2\n',
-      });
       await magnet.stop();
     });
   });
