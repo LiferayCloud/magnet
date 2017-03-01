@@ -62,13 +62,6 @@ Results in
 
 > info Building assets…
 
-Hash: cf649a3dac04233a9e9b
-Version: webpack 2.2.1
-Time: 67ms
-     Asset     Size  Chunks             Chunk Names
-./index.js  3.05 kB       0  [emitted]  ./index.js
-  ./api.js   2.9 kB       1  [emitted]  ./api.js
-
 ┌────────┬──────┬──────┬───────────┐
 │ method │ path │ type │ file      │
 ├────────┼──────┼──────┼───────────┤
