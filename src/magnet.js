@@ -94,7 +94,7 @@ class Magnet {
     try {
       fs.accessSync(this.getServerDistDirectory());
       return true;
-    } catch (error) {
+    } catch(error) {
       return false;
     }
   }
@@ -163,7 +163,7 @@ class Magnet {
           pattern, {cwd: directory, ignore: ignore, realpath: realpath}));
     });
     if (!realpath) {
-      // Normalizes globs of relative files to always start with "./"
+      // Normalize globs of relative paths to start with './'.
       return files.map((file) => {
         if (path.isAbsolute(file)) {
           return file;
@@ -175,20 +175,21 @@ class Magnet {
   }
 
   /**
-   * Maybe run start hook.
+   * Maybe run lifecycle file.
+   * @param {!String} lifecycleFile
    * @private
    */
-  async maybeRunStartHook_() {
-    let start = path.resolve(
-      this.getServerDistDirectory(), Magnet.LifecyleFiles.START);
-    if (fs.existsSync(start)) {
-      let startFn = require(start);
-      if (startFn.default) {
-        startFn = startFn.default;
+  async maybeRunLifecycleFile_(lifecycleFile) {
+    let file = path.resolve(
+      this.getServerDistDirectory(), lifecycleFile);
+    if (fs.existsSync(file)) {
+      let fn = require(file);
+      if (fn.default) {
+        fn = fn.default;
       }
-      if (isFunction(startFn)) {
+      if (isFunction(fn)) {
         let app = this.getServer().getEngine();
-        startFn.call(this, app, this);
+        fn.call(this, app, this);
       }
     }
   }
@@ -197,7 +198,7 @@ class Magnet {
    * Starts application.
    */
   async start() {
-    this.maybeRunStartHook_();
+    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
 
     await this.load();
 
