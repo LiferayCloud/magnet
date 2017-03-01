@@ -204,13 +204,20 @@ class Magnet {
    * @param {?string=} configDir Optional config directory.
    * @return {Object} Configuration object.
    */
-  resolveConfig(directory, config = 'magnet.config.js', configDir = '') {
-    const env = process.env.NODE_ENV;
-    const lookupConfig = `magnet.${env}.config.js`;
-    if (fs.existsSync(path.resolve(directory, configDir, lookupConfig))) {
-      config = lookupConfig;
+  resolveConfig(directory, config, configDir = '') {
+    let lookupConfig = config;
+    // Try loading config from environment...
+    if (!lookupConfig) {
+      let envConfig = `magnet.${process.env.NODE_ENV}.config.js`;
+      if (fs.existsSync(path.resolve(directory, configDir, envConfig))) {
+        lookupConfig = envConfig;
+      }
     }
-    return createConfig(directory, config, configDir);
+    // If still not found, try loading default filename.
+    if (!lookupConfig) {
+      lookupConfig = 'magnet.config.js';
+    }
+    return createConfig(directory, lookupConfig, configDir);
   }
 
   /**
