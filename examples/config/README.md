@@ -12,44 +12,32 @@ node -v && npm -v
 npm install
   ```
 
-## Using configuration based on `NODE_ENV` environment variable
+## Default values
 
-* Serve it locally, and watch for any changes:
+Magnet allows changing the default values of its internal configuration by passing your own file. When no custom file is specified it uses the following values out of the box.
 
-  ```
-npm run dev
-  ```
-
-Based on the project's `package.json`, running `npm run dev` performs `magnet`, which sets the value of `NODE_ENV` to `development` in case it is not defined.
-
-Magnet checks if the app has an environment configuration file with the following pattern:
-
-- `magnet.<NODE_ENV>.config.js`
-
-Since `NODE_ENV` has its value, in this case `development`, the file to be loaded is `magnet.development.config.js`.
-
-Your app will be up and running:
-
-```bash
-~/P/w/m/e/config ❯❯❯ npm run dev
-
-> config@ dev ~/P/w/m/e/config
-> magnet
-
-> info Building assets…
-> info Ready on http://0.0.0.0:3001
+```js
+{
+  magnet: {
+    host: '0.0.0.0',
+    ignore: [
+      'build/**',
+      'magnet.config.js',
+      'node_modules/**',
+      'static/**',
+      'test/**',
+    ],
+    logLevel: 'info',
+    port: 3000,
+    src: ['**/*.js'],
+  },
+}
 ```
 
-Now check if routes were registered:
 
-```bash
-~/P/w/magnet❯❯❯ curl http://localhost:3001/
-{"environment_message":"Development is up and running"}%
-```
+## Custom configuration file
 
-## Using custom configuration file
-
-Custom configuration always wins over the environment variable, passing `-c <filename>` will result in always using the specified file.
+To overwrite configuration values you can specify `-c <filename>` to Magnet. For more information take a look on the example below.
 
 * Serve it locally, and watch for any changes:
 
@@ -73,26 +61,42 @@ Now check if routes were registered:
 {"environment_message":"Custom is up and running"}%
 ```
 
-Note that if you don't specify a `-c` parameter and there's no [configuration file based on NODE_ENV](https://github.com/wedeploy/magnet/tree/master/examples/config#using-configuration-based-on-node_env-environment-variable), Magnet tries to load the file `magnet.config.js`
-by default, and if this file doesn't exist, it will use the default configuration values:
+The response will use the value defined in [magnet.config.js](https://github.com/wedeploy/magnet/blob/master/examples/config/magnet.config.js) file.
 
-```js
-{
-  magnet: {
-    host: '0.0.0.0',
-    ignore: [
-      'build/**',
-      'magnet.config.js',
-      'node_modules/**',
-      'static/**',
-      'test/**',
-    ],
-    logLevel: 'info',
-    port: 3000,
-    src: ['**/*.js'],
-  },
-}
+## Auto loading configuration from environment
+
+Sometimes you need a fancier setup or different folder structure for your project, that's fine, we got you. Magnet detects the presence of `NODE_ENV` environment variable and automatic loads a file that matches to `magnet.<NODE_ENV>.config.js`. For more details try the example below.
+
+* Serve it locally, and watch for any changes:
+
+  ```
+npm run dev
+  ```
+
+By running `magnet dev` it sets the `NODE_ENV` to `development` in case it is not defined, then Magnet checks if the app has an environment configuration file that matches the pattern described previously.
+
+Since `NODE_ENV` has a value, in this case `development`, the file to be loaded is `magnet.development.config.js`.
+
+Your app will be up and running:
+
+```bash
+~/P/w/m/e/config ❯❯❯ npm run dev
+
+> config@ dev ~/P/w/m/e/config
+> magnet
+
+> info Building assets…
+> info Ready on http://0.0.0.0:3001
 ```
+
+Now check if routes were registered:
+
+```bash
+~/P/w/magnet❯❯❯ curl http://localhost:3001/
+{"environment_message":"Development is up and running"}%
+```
+
+Custom configuration always wins over the environment variable, passing `-c <filename>` will result in always using the specified file.
 
 Enjoy!
 
