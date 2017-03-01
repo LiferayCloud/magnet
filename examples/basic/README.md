@@ -30,15 +30,15 @@ Your app will be up and running:
 
 > info Building assets…
 
-┌────────┬─────────┬──────┬───────────────┐
-│ method │ path    │ type │ file          │
-├────────┼─────────┼──────┼───────────────┤
-│ GET    │ /fn1    │ html │ /function1.js │
-│ GET    │ /fn2    │ html │ /function2.js │
-│ GET    │ /fn3    │ html │ /function3.js │
-│ ―      │ ―       │ ―    │ /multiple.js  │
-│ GET    │ /string │ html │ /string.js    │
-└────────┴─────────┴──────┴───────────────┘
+> ┌────────┬─────────┬──────┬───────────────┐
+> │ method │ path    │ type │ file          │
+> ├────────┼─────────┼──────┼───────────────┤
+> │ GET    │ /fn1    │ html │ /function1.js │
+> │ GET    │ /fn2    │ html │ /function2.js │
+> │ GET    │ /fn3    │ html │ /function3.js │
+> │ ―      │ ―       │ ―    │ /multiple.js  │
+> │ GET    │ /string │ html │ /string.js    │
+> └────────┴─────────┴──────┴───────────────┘
 
 > info Ready on http://localhost:3001
 ```
