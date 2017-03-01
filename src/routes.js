@@ -12,7 +12,7 @@ import path from 'path';
  */
 function getRoutesDefinition_(magnet) {
   let dist = magnet.getServerDistDirectory();
-  let files = magnet.getFiles(dist, true);
+  let files = magnet.getFiles({directory: dist, realpath: true});
 
   let results = [];
   files.forEach((file) => {

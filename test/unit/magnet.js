@@ -78,21 +78,24 @@ describe('Magnet', () => {
     it('should not match files inside a static folder', () => {
       const directory = `${process.cwd()}/test/fixtures/static`;
       const magnet = new Magnet({directory});
-      const files = magnet.getFiles(directory);
+      const files = magnet.getFiles({directory});
       expect(files).to.deep.equal([]);
     });
 
     it('should return an empty array if directory is empty', () => {
       const directory = `${process.cwd()}/test/fixtures/empty`;
       const magnet = new Magnet({directory});
-      const files = magnet.getFiles(directory);
+      const files = magnet.getFiles({directory});
       expect(files).to.deep.equal([]);
     });
 
     it('should get files with its realpath', () => {
       const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
-      const files = magnet.getFiles(directory, true);
+      const files = magnet.getFiles({
+        directory,
+        realpath: true,
+      });
       const expectedArray = [
         path.join(directory, 'one.js'),
         path.join(directory, 'two.js'),

@@ -18,12 +18,12 @@ describe('.build', function() {
   });
 
   it('should build the specified app directory', async() => {
-    await build(magnet.getFiles(directory), directory, serverDist);
+    await build(magnet.getFiles({directory}), directory, serverDist);
     expect(fs.existsSync(serverDist)).to.be.true;
   });
 
   it('should build the files inside the specified app directory', async() => {
-    await build(magnet.getFiles(directory), directory, serverDist);
+    await build(magnet.getFiles({directory}), directory, serverDist);
     expect(fs.existsSync(path.join(serverDist, 'one.js'))).to.be.true;
     expect(fs.existsSync(path.join(serverDist, 'two.js'))).to.be.true;
   });
@@ -37,7 +37,7 @@ describe('.build', function() {
       fs.outputFileSync(mockedFile, 'testfile content');
     }
     expect(fs.existsSync(mockedFile)).to.be.true;
-    await build(magnet.getFiles(directory), directory, serverDist);
+    await build(magnet.getFiles({directory}), directory, serverDist);
     expect(fs.existsSync(mockedFile)).to.be.false;
   });
 });

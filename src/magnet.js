@@ -113,7 +113,7 @@ class Magnet {
    * @param {boolean} logBuildOutput
    */
   async build() {
-    let files = this.getFiles(this.getDirectory());
+    let files = this.getFiles({directory: this.getDirectory()});
 
     if (!files.length) {
       return;
@@ -130,7 +130,7 @@ class Magnet {
    */
   async load() {
     let dist = this.getServerDistDirectory();
-    let files = this.getFiles(dist, true);
+    let files = this.getFiles({directory: dist, realpath: true});
     files.forEach((file) => {
       // Skip loading registrator for lifecycle files
       switch (file) {
@@ -138,9 +138,6 @@ class Magnet {
           return;
       }
       let module = require(file);
-      if (registratorInjection.test(module, file, this)) {
-        registratorInjection.register(module, file, this);
-      }
       try {
         if (registratorString.test(module, file, this)) {
           registratorString.register(module, file, this);
@@ -156,20 +153,51 @@ class Magnet {
   }
 
   /**
+   * Inject values exposed by files that matches `config.inject` globs into
+   * `magnet.injections`.
+   * @protected
+   */
+  async inject() {
+    let dist = this.getServerDistDirectory();
+    let files = this.getFiles({
+      directory: dist,
+      realpath: true,
+      src: this.config.magnet.inject,
+    });
+    files.forEach((file) => {
+      // Skip injecting lifecycle files
+      switch (file) {
+        case path.join(dist, Magnet.LifecyleFiles.START):
+          return;
+      }
+      let module = require(file);
+      if (registratorInjection.test(module, file, this)) {
+        registratorInjection.register(module, file, this);
+      }
+    });
+  }
+
+  /**
    * Scans files that matches with `config.magnet.src` globs.
    * excluding `config.magnet.ignore`.
-   * @param {!string} cwd
+   * @param {!String} directory
    * @param {?boolean} realpath Whether should return the files real path.
+   * @param {?array.<String>} src
+   * @param {?array.<String>} ignore
    * @return {array.<string>} Array of file paths.
    */
-  getFiles(cwd, realpath = false) {
-    let src = this.config.magnet.src.concat();
-    let ignore = this.config.magnet.ignore.concat();
+  getFiles({
+    directory,
+    realpath = false,
+    src = this.config.magnet.src,
+    ignore = this.config.magnet.ignore,
+  }) {
+    src = src.concat([Magnet.LifecyleFiles.START]);
     let files = [];
-    src.push(Magnet.LifecyleFiles.START);
     src.forEach((pattern) => {
       files = files.concat(
-        glob.sync(pattern, {cwd: cwd, ignore: ignore, realpath: realpath}));
+        glob.sync(
+          pattern, {cwd: directory, ignore: ignore, realpath: realpath}));
     });
     if (!realpath) {
       // Normalizes globs of relative files to always start with "./"
@@ -208,6 +236,7 @@ class Magnet {
   async start() {
     this.maybeRunStartHook_();
 
+    await this.inject();
     await this.load();
 
     this.setupMiddlewareError_();
