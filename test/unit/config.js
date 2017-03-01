@@ -2,19 +2,19 @@ import {createConfig} from '../../src/config';
 
 describe('config', function() {
   describe('createConfig', function() {
-    it('should thrown an error when directory parameter not defined', () => {
+    it('should thrown an error when directory parameter is not defined', () => {
       expect(function() {
          createConfig(undefined, '', '');
       }).to.throw('Directory must be specified.');
     });
 
-    it('should thrown an error when config parameter not defined', () => {
+    it('should thrown an error when config parameter is not defined', () => {
       expect(function() {
          createConfig('', undefined, '');
       }).to.throw('Config filename must be specified.');
     });
 
-    it('should thrown an error when config directory parameter not defined', () => { // eslint-disable-line max-len
+    it('should thrown an error when config directory parameter is not defined', () => { // eslint-disable-line max-len
       expect(function() {
          createConfig('', '', undefined);
       }).to.throw('Config directory must be specified.');
@@ -41,7 +41,7 @@ describe('config', function() {
       expect(config).to.deep.equal(expectedDefaultConfig);
     });
 
-    it('should merge attributes from a config file with the default config', () => { // eslint-disable-line max-len
+    it('should merge attributes from a configuration file with Magnet\'s default config', () => { // eslint-disable-line max-len
       const directory = `${process.cwd()}/test/fixtures/config`;
       const config = createConfig(directory, 'magnet.config.js', '');
       const expectedDefaultConfig = {
@@ -64,7 +64,7 @@ describe('config', function() {
       expect(config).to.deep.equal(expectedDefaultConfig);
     });
 
-    it('should merge attributes from a config file located in a different location instead of root directory', () => { // eslint-disable-line max-len
+    it('should merge attributes from a configuration file located in a different location other than the root directory', () => { // eslint-disable-line max-len
       const directory = `${process.cwd()}/test/fixtures/config`;
       const config = createConfig(directory, 'magnet.config.js', 'environment');
       const expectedDefaultConfig = {
