@@ -39,6 +39,32 @@ describe('Magnet', () => {
     });
   });
 
+  describe('#getConfig', () => {
+    const directory = `${process.cwd()}/test/fixtures/app`;
+
+    it('should return the instance configuration', () => {
+      const magnet = new Magnet({directory});
+      const expectedDefaultConfig = {
+        magnet: {
+          host: 'localhost',
+          ignore:
+          [
+            'build/**',
+            'magnet.config.js',
+            'node_modules/**',
+            'static/**',
+            'test/**',
+          ],
+          logLevel: 'silent',
+          port: 3000,
+          src: ['**/*.js'],
+        },
+      };
+      expect(magnet.getConfig())
+        .to.deep.equal(expectedDefaultConfig);
+    });
+  });
+
   describe('#getDirectory', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
@@ -133,7 +159,7 @@ describe('Magnet', () => {
       await magnet.stop();
     });
 
-    it('should serve an application that just has a static folder', async() => { // eslint-disable-line max-len
+    it('should serve an application that just has a static folder', async () => { // eslint-disable-line max-len
       const directory = `${process.cwd()}/test/fixtures/static`;
       const magnet = new Magnet({directory});
       await magnet.build();
@@ -141,6 +167,34 @@ describe('Magnet', () => {
       await assertAsyncHttpRequest({
         path: '/static/example1.txt',
         responseBody: 'example1\n',
+      });
+      await magnet.stop();
+    });
+
+    it('should load the config using NODE_ENV environment variable without custom configuration', async () => { // eslint-disable-line max-len
+      const currentNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'staging';
+      const directory = `${process.cwd()}/test/fixtures/config`;
+      const magnet = new Magnet({directory});
+      await magnet.build();
+      await magnet.start();
+      await assertAsyncHttpRequest({
+        path: '/',
+        responseBody: JSON.stringify({environment: 'staging'}),
+      });
+      await magnet.stop();
+      process.env.NODE_ENV = currentNodeEnv;
+    });
+
+    it('should load the config with a different directory if configuration directory', async () => { // eslint-disable-line max-len
+      const directory = `${process.cwd()}/test/fixtures/config`;
+      const configDir = 'environment';
+      const magnet = new Magnet({directory, configDir});
+      await magnet.build();
+      await magnet.start();
+      await assertAsyncHttpRequest({
+        path: '/',
+        responseBody: JSON.stringify({environment: 'default_on_subfolder'}),
       });
       await magnet.stop();
     });
