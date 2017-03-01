@@ -78,10 +78,13 @@ if (cmd === 'dev') {
       ignoreInitial: true,
     });
 
-    watcher.on('change', () => {
+    let restart = () => {
       log.info(false, 'Found a change, restarting the server…');
       proc.removeAllListeners('close');
       proc.kill();
       proc = startProcess();
-    });
+    };
+
+    watcher.on('change', restart);
+    watcher.on('unlink', restart);
 }
