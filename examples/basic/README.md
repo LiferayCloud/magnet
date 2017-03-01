@@ -25,7 +25,7 @@ Your app will be up and running:
 ```bash
 ~/P/w/m/e/basic ❯❯❯ npm run dev                                                                                                                
 
-> magnet-example@0.0.0 dev ~/Projects/magnet/examples/basic
+> magnet-example@0.0.0 dev ~/P/w/m/e/basic
 > magnet
 
 > info Building assets…
