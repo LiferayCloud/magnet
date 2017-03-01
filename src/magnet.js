@@ -43,7 +43,11 @@ class Magnet {
     this.config = this.resolveConfig(
       options.directory, options.config, options.configDir);
 
-    // Sync log level to the one set on this instance.
+    /**
+     * Sync log level to the one set on this instance.
+     * @type {!string}
+     * @protected
+     */
     log.level = this.config.magnet.logLevel;
 
     /**
@@ -82,6 +86,14 @@ class Magnet {
     log.info(false, 'Building assets…');
 
     await build(files, this.getDirectory(), this.getServerDistDirectory());
+  }
+
+  /**
+   * Gets config.
+   * @return {Object}
+   */
+  getConfig() {
+    return this.config;
   }
 
   /**
@@ -203,6 +215,7 @@ class Magnet {
    * @param {?string=} config Optional config filename.
    * @param {?string=} configDir Optional config directory.
    * @return {Object} Configuration object.
+   * @protected
    */
   resolveConfig(directory, config, configDir = '') {
     let lookupConfig = config;
