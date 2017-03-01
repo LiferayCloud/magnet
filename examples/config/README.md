@@ -37,9 +37,9 @@ Magnet allows changing the default values of its internal configuration by passi
 
 ## Custom configuration file
 
-To overwrite configuration values you can specify `-c <filename>` to Magnet. For more information take a look on the example below.
+To overwrite configuration values you can specify `-c <filename>`. For more information take a look on the example below.
 
-* Serve it locally, and watch for any changes:
+Serve it locally, and watch for any changes:
 
 ```
 magnet -c magnet.config.js
@@ -65,9 +65,9 @@ The response will use the value defined in [magnet.config.js](https://github.com
 
 ## Auto loading configuration from environment
 
-Sometimes you need a fancier setup or different folder structure for your project, that's fine, we got you. Magnet detects the presence of `NODE_ENV` environment variable and automatic loads a file that matches to `magnet.<NODE_ENV>.config.js`. For more details try the example below.
+Sometimes you need a fancier setup or different folder structure for your project, that's fine, we've got you. Magnet detects the presence of `NODE_ENV` environment variable and automatic loads a file that matches to `magnet.<NODE_ENV>.config.js`. For more details try the example below.
 
-* Serve it locally, and watch for any changes:
+Serve it locally, and watch for any changes:
 
   ```
 npm run dev
