@@ -40,7 +40,8 @@ class Magnet {
      * @type {!object}
      * @protected
      */
-    this.config = createConfig(options.directory, options.config);
+    this.config = createConfig(
+      options.directory, options.config, options.configDir);
 
     // Sync log level to the one set on this instance.
     log.level = this.config.magnet.logLevel;

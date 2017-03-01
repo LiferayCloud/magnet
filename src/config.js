@@ -13,7 +13,7 @@ const baseConfig = () => {
         'test/**',
       ],
       logLevel: 'info',
-      port: 8080,
+      port: 3000,
       src: ['**/*.js'],
     },
   };
@@ -23,11 +23,16 @@ const baseConfig = () => {
  * Creates configuration.
  * @param {!string} directory
  * @param {!string} config Config filename.
+ * @param {!string} configDir Config directory.
  * @return {Object}
  */
-function createConfig(directory, config = 'magnet.config.js') {
+function createConfig(
+  directory,
+  config = 'magnet.config.js',
+  configDir = '',
+) {
   let ext = {};
-  let file = path.resolve(directory, config);
+  let file = path.resolve(directory, configDir, config);
 
   if (fs.existsSync(file)) {
     ext = require(file);

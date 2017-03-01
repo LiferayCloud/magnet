@@ -7,6 +7,7 @@ const argv = parseArgs(process.argv.slice(2), {
   alias: {
     h: 'help',
     c: 'config',
+    C: 'config-dir',
   },
   boolean: ['h'],
 });
@@ -16,16 +17,18 @@ if (argv.help) {
     Description
       Builds the application.
     Usage
-      $ magnet build -c <config file path>
+      $ magnet build [-c <config file path>] [-C <config dir>]
     Options
-      --config, -c    Config file path, e.g. magnet.config.js
-      --help, -h      Displays this message
+      --config, -c        Config file path [default: magnet.config.js]
+      --config-dir, -C    Directory to load configuration files from
+      --help, -h          Displays this message
   `);
   process.exit(0);
 }
 
-const config = argv.config;
+const config = argv['config'];
+const configDir = argv['config-dir'];
 const directory = process.cwd();
-const magnet = new Magnet({config, directory});
+const magnet = new Magnet({config, configDir, directory});
 
 magnet.build();
