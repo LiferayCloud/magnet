@@ -46,7 +46,7 @@ export function assertObject(value, errorMessage) {
 
 /**
  * Asserts value is a string.
- * @param  {String} value
+ * @param  {string} value
  * @param  {string} errorMessage Error message
  */
 export function assertString(value, errorMessage) {
