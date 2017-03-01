@@ -4,7 +4,7 @@ import del from 'del';
 import Magnet from '../../../src/magnet';
 import path from 'path';
 
-describe.only('.build', function() {
+describe('.build', function() {
   const directory = `${process.cwd()}/test/fixtures/build`;
   let magnet = null;
   let serverDist = null;
@@ -20,13 +20,11 @@ describe.only('.build', function() {
 
   it('should build the specified app directory', async() => {
     await build(magnet.getFiles(directory), directory, serverDist);
-
     expect(existsSync(serverDist)).to.be.true;
   });
 
   it('should build the files inside the specified app directory', async() => {
     await build(magnet.getFiles(directory), directory, serverDist);
-
     expect(existsSync(path.join(serverDist, 'one.js'))).to.be.true;
     expect(existsSync(path.join(serverDist, 'two.js'))).to.be.true;
   });
@@ -35,16 +33,12 @@ describe.only('.build', function() {
     if(!existsSync(serverDist)) {
       mkdirSync(serverDist);
     }
-
     const mockedFile = path.join(serverDist, 'testfile');
     if(!existsSync(mockedFile)) {
       writeFileSync(mockedFile, 'testfile content');
     }
-
     expect(existsSync(mockedFile)).to.be.true;
-
     await build(magnet.getFiles(directory), directory, serverDist);
-
     expect(existsSync(mockedFile)).to.be.false;
   });
 
