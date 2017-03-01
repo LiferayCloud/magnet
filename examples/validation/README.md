@@ -25,7 +25,7 @@ Your app will be up and running:
 ```bash
 ~/P/w/m/e/validation ❯❯❯ npm run dev                                                                                                           ⏎ master ✭ ✚ ◼
 
-> validation@ dev /Users/eduardo/Projects/wedeploy/magnet/examples/validation
+> validation@ dev ~/P/w/m/e/validation
 > magnet
 
 > info Building assets…
