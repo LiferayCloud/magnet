@@ -1,0 +1,11 @@
+{
+  "name": "config",
+  "description": "",
+  "dependencies": {
+    "magnet": "latest"
+  },
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet start"
+  }
+}
