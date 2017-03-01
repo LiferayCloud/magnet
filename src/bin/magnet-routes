@@ -32,7 +32,7 @@ const magnet = new Magnet({config, directory});
  */
 async function maybeBuildThenListRoutes() {
   if (!magnet.hasServerDistDirectory()) {
-    await magnet.build(false);
+    await magnet.build();
   }
   const routes = getRoutesTable(magnet);
   if (routes) {

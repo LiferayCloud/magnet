@@ -39,26 +39,25 @@
     "url": "https://github.com/wedeploy/magnet.git"
   },
   "dependencies": {
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.0.0",
     "body-parser": "^1.13.1",
     "chokidar": "^1.6.1",
     "cli-table": "^0.3.1",
     "compression": "^1.6.2",
     "cross-spawn": "^5.0.1",
-    "del": "^2.2.2",
     "express": "^4.13.0",
     "express-validator": "^3.1.2",
+    "fs-extra": "^2.0.0",
     "glob": "^7.1.1",
     "helmet": "^3.3.0",
     "metal": "^2.6.0",
     "minimist": "^1.2.0",
     "morgan": "^1.6.0",
     "multer": "^1.3.0",
-    "npmlog": "^4.0.2",
-    "webpack": "^2.2.1",
-    "webpack-node-externals": "^1.5.4"
+    "npmlog": "^4.0.2"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.0.0",
     "babel-register": "^6.23.0",
     "chai": "^3.5.0",
     "codecov": "^1.0.1",

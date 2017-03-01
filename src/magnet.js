@@ -6,10 +6,9 @@ import {isFunction} from 'metal';
 import {validatorErrorMiddleware} from './middleware/validator-error';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import del from 'del';
 import express from 'express';
 import expressValidator from 'express-validator';
-import fs from 'fs';
+import fs from 'fs-extra';
 import glob from 'glob';
 import helmet from 'helmet';
 import log from './log';
@@ -113,7 +112,7 @@ class Magnet {
    * Builds application.
    * @param {boolean} logBuildOutput
    */
-  async build(logBuildOutput = true) {
+  async build() {
     let files = this.getFiles(this.getDirectory());
 
     if (!files.length) {
@@ -122,12 +121,7 @@ class Magnet {
 
     log.info(false, 'Building assets…');
 
-    let output = await build(
-      files, this.getDirectory(), this.getServerDistDirectory());
-
-    if (logBuildOutput) {
-      log.infoNoPrefix(false, `\n${output}`);
-    }
+    await build(files, this.getDirectory(), this.getServerDistDirectory());
   }
 
   /**
@@ -178,9 +172,7 @@ class Magnet {
         glob.sync(pattern, {cwd: cwd, ignore: ignore, realpath: realpath}));
     });
     if (!realpath) {
-      // Normalizes globs of relative files to always start with "./".
-      // Webpack gets confused when trying to resolve relative module files
-      // without the path separator.
+      // Normalizes globs of relative files to always start with "./"
       return files.map((file) => {
         if (path.isAbsolute(file)) {
           return file;
@@ -237,7 +229,7 @@ class Magnet {
   async stop() {
     log.info(false, 'Shutting down gracefully…');
     await this.getServer().close();
-    del(this.getServerDistDirectory());
+    fs.removeSync(this.getServerDistDirectory());
   }
 
   /**

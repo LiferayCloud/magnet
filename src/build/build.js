@@ -1,6 +1,8 @@
-import buildWebpackServerConfig from './webpack.server.config';
-import del from 'del';
-import webpack from 'webpack';
+import {transformFileSync} from 'babel-core';
+import es2015 from 'babel-preset-es2015';
+import path from 'path';
+import fs from 'fs-extra';
+
 
 /**
  * Builds `files` into `outputPath`.
@@ -10,24 +12,24 @@ import webpack from 'webpack';
  * @return {Promise}
  */
 export async function build(files, directory, outputDirectory) {
-  await del(outputDirectory);
+  fs.removeSync(outputDirectory);
 
   return new Promise((resolve, reject) => {
-    let entry = {};
-    files.forEach((file) => entry[file] = file);
-
-    const webpackServerConfig = buildWebpackServerConfig(
-      entry, directory, outputDirectory);
-
-    webpack(webpackServerConfig, function(err, stats) {
-      if (err) {
-        reject(err);
+    files.forEach((file) => {
+      try {
+        let absoluteSrc = path.join(directory, file);
+        let absoluteDist = path.join(outputDirectory, file);
+        let transform = transformFileSync(absoluteSrc, {
+          presets: [es2015],
+          babelrc: false,
+          filename: absoluteSrc,
+          filenameRelative: file,
+        });
+        fs.outputFileSync(absoluteDist, transform.code);
+      } catch(error) {
+        reject(error);
       }
-      const output = stats.toString({
-        colors: true,
-        chunks: false,
-      });
-      resolve(output);
     });
+    resolve();
   });
 }

@@ -1,9 +1,8 @@
 import {existsSync} from 'fs';
-import del from 'del';
+import fs from 'fs-extra';
 import Magnet from '../../src/magnet';
 import path from 'path';
 import Server from '../../src/server';
-import log from '../../src/log';
 
 describe('Magnet', () => {
   describe('config', () => {
@@ -28,7 +27,7 @@ describe('Magnet', () => {
         .to.be.true;
       expect(existsSync(path.join(magnet.getServerDistDirectory(), 'two.js')))
         .to.be.true;
-      await del(magnet.getServerDistDirectory());
+      fs.removeSync(magnet.getServerDistDirectory());
     });
 
     it('should not build empty directory', async () => {
@@ -108,7 +107,7 @@ describe('Magnet', () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       expect(magnet.hasServerDistDirectory()).to.be.true;
-      await del(magnet.getServerDistDirectory());
+      fs.removeSync(magnet.getServerDistDirectory());
     });
 
     it('should return false if server dist directory does not exist', () => {
