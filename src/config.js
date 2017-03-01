@@ -7,6 +7,7 @@ const baseConfig = () => {
       host: '0.0.0.0',
       ignore: [
         'build/**',
+        'magnet.config.js',
         'node_modules/**',
         'static/**',
         'test/**',
