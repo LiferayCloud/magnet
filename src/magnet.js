@@ -125,6 +125,31 @@ class Magnet {
   }
 
   /**
+   * Inject values exposed by files that matches `config.inject` globs into
+   * `magnet.injections`.
+   * @protected
+   */
+  async inject() {
+    let dist = this.getServerDistDirectory();
+    let files = this.getFiles({
+      directory: dist,
+      realpath: true,
+      src: this.config.magnet.inject,
+    });
+    files.forEach((file) => {
+      // Skip injecting lifecycle files
+      switch (file) {
+        case path.join(dist, Magnet.LifecyleFiles.START):
+          return;
+      }
+      let module = require(file);
+      if (registratorInjection.test(module, file, this)) {
+        registratorInjection.register(module, file, this);
+      }
+    });
+  }
+
+  /**
    * Loads application.
    * @protected
    */
@@ -148,31 +173,6 @@ class Magnet {
         }
       } catch(error) {
         log.error(false, error);
-      }
-    });
-  }
-
-  /**
-   * Inject values exposed by files that matches `config.inject` globs into
-   * `magnet.injections`.
-   * @protected
-   */
-  async inject() {
-    let dist = this.getServerDistDirectory();
-    let files = this.getFiles({
-      directory: dist,
-      realpath: true,
-      src: this.config.magnet.inject,
-    });
-    files.forEach((file) => {
-      // Skip injecting lifecycle files
-      switch (file) {
-        case path.join(dist, Magnet.LifecyleFiles.START):
-          return;
-      }
-      let module = require(file);
-      if (registratorInjection.test(module, file, this)) {
-        registratorInjection.register(module, file, this);
       }
     });
   }
