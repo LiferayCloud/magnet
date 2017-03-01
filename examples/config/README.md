@@ -12,7 +12,7 @@ node -v && npm -v
 npm install
   ```
 
-## Using configuration based on NODE_ENV environment variable
+## Using configuration based on `NODE_ENV` environment variable
 
 * Serve it locally, and watch for any changes:
 
@@ -20,20 +20,20 @@ npm install
 npm run dev
   ```
 
-Based on the project's package.json, running `npm run dev` performs `magnet`, which sets the value of NODE_ENV to `development` in case NODE_ENV is not defined.
+Based on the project's `package.json`, running `npm run dev` performs `magnet`, which sets the value of `NODE_ENV` to `development` in case it is not defined.
 
-Magnet checks if the app has an `environment configuration file` with the following pattern:
+Magnet checks if the app has an environment configuration file with the following pattern:
 
 - `magnet.<NODE_ENV>.config.js`
 
-Since NODE_ENV has its value associated to `development`, the file to be loaded is `magnet.development.config.js`.
+Since `NODE_ENV` has its value, in this case `development`, the file to be loaded is `magnet.development.config.js`.
 
 Your app will be up and running:
 
 ```bash
 ~/P/w/m/e/config ❯❯❯ npm run dev
 
-> config@ dev /Users/eduardo/Projects/wedeploy/magnet/examples/config
+> config@ dev ~/P/w/m/e/config
 > magnet
 
 > info Building assets…
@@ -48,6 +48,8 @@ Now check if routes were registered:
 ```
 
 ## Using custom configuration file
+
+Custom configuration always wins over the environment variable, passing `-c <filename>` will result in always using the specified file.
 
 * Serve it locally, and watch for any changes:
 
@@ -71,8 +73,8 @@ Now check if routes were registered:
 {"environment_message":"Custom is up and running"}%
 ```
 
-Note that if you don't specify a `-c` parameter and there's no configuration file based on NODE_ENV environment variable, Magnet tries to load the file `magnet.config.js`
-by default, and if this file doesn't exist, it will load magnet's default configuration:
+Note that if you don't specify a `-c` parameter and there's no [configuration file based on NODE_ENV](https://github.com/wedeploy/magnet/tree/master/examples/config#using-configuration-based-on-node_env-environment-variable), Magnet tries to load the file `magnet.config.js`
+by default, and if this file doesn't exist, it will use the default configuration values:
 
 ```js
 {
