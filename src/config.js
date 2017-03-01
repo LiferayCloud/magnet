@@ -14,7 +14,6 @@ const baseConfig = () => {
         'static/**/*.js',
         'test/**',
       ],
-      inject: [],
       logLevel: 'info',
       port: 8080,
       src: ['**/*.js'],

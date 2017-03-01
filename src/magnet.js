@@ -11,13 +11,11 @@ import expressValidator from 'express-validator';
 import fs from 'fs-extra';
 import glob from 'glob';
 import helmet from 'helmet';
-import injections from './injections';
 import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
 import registratorFunction from './registrator/function';
-import registratorInjection from './registrator/injection';
 import registratorMultiple from './registrator/multiple';
 import registratorString from './registrator/string';
 import ServerFactory from './server-factory';
@@ -54,13 +52,6 @@ class Magnet {
      * @private
      */
     this.directory_ = options.directory;
-
-    /**
-     * Injections object.
-     * @type {!object}
-     * @protected
-     */
-    this.injections = injections;
 
     /**
      * Default server runtime used to handle http requests.
@@ -123,31 +114,6 @@ class Magnet {
     log.info(false, 'Building assets…');
 
     await build(files, this.getDirectory(), this.getServerDistDirectory());
-  }
-
-  /**
-   * Inject values exposed by files that matches `config.inject` globs into
-   * `magnet.injections`.
-   * @protected
-   */
-  async inject() {
-    let dist = this.getServerDistDirectory();
-    let files = this.getFiles({
-      directory: dist,
-      realpath: true,
-      src: this.config.magnet.inject,
-    });
-    files.forEach((file) => {
-      // Skip injecting lifecycle files
-      switch (file) {
-        case path.join(dist, Magnet.LifecyleFiles.START):
-          return;
-      }
-      let module = require(file);
-      if (registratorInjection.test(module, file, this)) {
-        registratorInjection.register(module, file, this);
-      }
-    });
   }
 
   /**
@@ -237,7 +203,6 @@ class Magnet {
   async start() {
     this.maybeRunStartHook_();
 
-    await this.inject();
     await this.load();
 
     this.setupMiddlewareError_();
