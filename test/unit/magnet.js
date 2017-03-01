@@ -127,14 +127,14 @@ describe('Magnet', () => {
       await magnet.build();
       await magnet.start();
       await assertAsyncHttpRequest({
-        path: '/fn',
+        path: '/v1',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
       await magnet.stop();
     });
 
     it('should serve an application that just has a static folder', async() => { // eslint-disable-line max-len
-      const directory = `${process.cwd()}/test/fixtures/assets`;
+      const directory = `${process.cwd()}/test/fixtures/static`;
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
