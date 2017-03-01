@@ -124,15 +124,12 @@ describe('Magnet', () => {
     it('should start a http server', async () => {
       const directory = `${process.cwd()}/test/fixtures/app`;
       const magnet = new Magnet({directory});
-
       await magnet.build();
       await magnet.start();
-
       await assertAsyncHttpRequest({
         path: '/fn',
         responseBody: JSON.stringify({foo: 'bar'}),
       });
-
       await magnet.stop();
     });
   });
