@@ -4,7 +4,7 @@ export const route = {
   type: 'html',
 };
 
-export default `<html>
+export default () => `<html>
   <body>
     string
   </body>

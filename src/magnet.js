@@ -17,7 +17,6 @@ import multer from 'multer';
 import path from 'path';
 import registratorFunction from './registrator/function';
 import registratorMultiple from './registrator/multiple';
-import registratorString from './registrator/string';
 import ServerFactory from './server-factory';
 
 /**
@@ -131,9 +130,7 @@ class Magnet {
       }
       let module = require(file);
       try {
-        if (registratorString.test(module, file, this)) {
-          registratorString.register(module, file, this);
-        } else if (registratorFunction.test(module, file, this)) {
+        if (registratorFunction.test(module, file, this)) {
           registratorFunction.register(module, file, this);
         } else if (registratorMultiple.test(module, file, this)) {
           registratorMultiple.register(module, file, this);
