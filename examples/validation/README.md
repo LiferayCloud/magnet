@@ -30,12 +30,6 @@ Your app will be up and running:
 
 > info Building assets…
 >
->  Hash: 5a31ac1f9cac3e98b67e
->  Version: webpack 2.2.1
->  Time: 46ms
->     Asset    Size  Chunks             Chunk Names
->  ./api.js  3.1 kB       0  [emitted]  ./api.js
->
 >  ┌────────┬──────┬──────┬─────────┐
 >  │ method │ path │ type │ file    │
 >  ├────────┼──────┼──────┼─────────┤
