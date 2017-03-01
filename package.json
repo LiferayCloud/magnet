@@ -1,6 +1,6 @@
 {
   "name": "magnet",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "A modern approach for async microservices in node.js",
   "engines": {
     "node": ">=7.6.0"
