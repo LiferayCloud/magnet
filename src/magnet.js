@@ -368,7 +368,7 @@ class Magnet {
 }
 
 /**
- * Mgnet lifecycle files.
+ * Magnet lifecycle files.
  * @static
  * @enum {string}
  */
