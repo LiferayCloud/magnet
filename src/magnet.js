@@ -11,6 +11,7 @@ import expressValidator from 'express-validator';
 import fs from 'fs-extra';
 import glob from 'glob';
 import helmet from 'helmet';
+import injections from './injections';
 import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
@@ -59,7 +60,7 @@ class Magnet {
      * @type {!object}
      * @protected
      */
-    this.injections = {};
+    this.injections = injections;
 
     /**
      * Default server runtime used to handle http requests.
