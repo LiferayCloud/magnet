@@ -104,7 +104,12 @@ class Magnet {
    * @param {boolean} logBuildOutput
    */
   async build() {
-    let files = this.getFiles({directory: this.getDirectory()});
+    // Include lifecycle files on build.
+    let src = this.config.magnet.src.concat([
+      Magnet.LifecyleFiles.START,
+    ]);
+
+    let files = this.getFiles({directory: this.getDirectory(), src: src});
 
     if (!files.length) {
       return;
@@ -123,11 +128,6 @@ class Magnet {
     let dist = this.getServerDistDirectory();
     let files = this.getFiles({directory: dist, realpath: true});
     files.forEach((file) => {
-      // Skip loading registrator for lifecycle files
-      switch (file) {
-        case path.join(dist, Magnet.LifecyleFiles.START):
-          return;
-      }
       let module = require(file);
       try {
         if (registratorFunction.test(module, file, this)) {
@@ -156,7 +156,6 @@ class Magnet {
     src = this.config.magnet.src,
     ignore = this.config.magnet.ignore,
   }) {
-    src = src.concat([Magnet.LifecyleFiles.START]);
     let files = [];
     src.forEach((pattern) => {
       files = files.concat(
