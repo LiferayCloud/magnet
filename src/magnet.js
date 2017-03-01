@@ -40,7 +40,7 @@ class Magnet {
      * @type {!object}
      * @protected
      */
-    this.config = createConfig(
+    this.config = this.resolveConfig(
       options.directory, options.config, options.configDir);
 
     // Sync log level to the one set on this instance.
@@ -95,10 +95,10 @@ class Magnet {
   /**
    * Scans files that matches with `config.magnet.src` globs.
    * excluding `config.magnet.ignore`.
-   * @param {!String} directory
+   * @param {!string} directory
    * @param {?boolean} realpath Whether should return the files real path.
-   * @param {?array.<String>} src
-   * @param {?array.<String>} ignore
+   * @param {?array.<string>} src
+   * @param {?array.<string>} ignore
    * @return {array.<string>} Array of file paths.
    */
   getFiles({
@@ -177,7 +177,7 @@ class Magnet {
 
   /**
    * Maybe run lifecycle file.
-   * @param {!String} lifecycleFile
+   * @param {!string} lifecycleFile
    * @private
    */
   async maybeRunLifecycleFile_(lifecycleFile) {
@@ -193,6 +193,24 @@ class Magnet {
         fn.call(this, app, this);
       }
     }
+  }
+
+  /**
+   * Resolves configuration using environment `NODE_ENV` or the specified
+   * `config` filename. Note that the configuration directory can be specified
+   * as `configDir`.
+   * @param {!string} directory
+   * @param {?string=} config Optional config filename.
+   * @param {?string=} configDir Optional config directory.
+   * @return {Object} Configuration object.
+   */
+  resolveConfig(directory, config = 'magnet.config.js', configDir = '') {
+    const env = process.env.NODE_ENV;
+    const lookupConfig = `magnet.${env}.config.js`;
+    if (fs.existsSync(path.resolve(directory, configDir, lookupConfig))) {
+      config = lookupConfig;
+    }
+    return createConfig(directory, config, configDir);
   }
 
   /**

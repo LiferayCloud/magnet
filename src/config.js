@@ -1,3 +1,4 @@
+import {assertDefAndNotNull} from './assertions';
 import fs from 'fs';
 import path from 'path';
 
@@ -26,11 +27,11 @@ const baseConfig = () => {
  * @param {!string} configDir Config directory.
  * @return {Object}
  */
-function createConfig(
-  directory,
-  config = 'magnet.config.js',
-  configDir = '',
-) {
+function createConfig(directory, config, configDir) {
+  assertDefAndNotNull(directory, 'Directory must be specified.');
+  assertDefAndNotNull(config, 'Config filename must be specified.');
+  assertDefAndNotNull(configDir, 'Config directory must be specified.');
+
   let ext = {};
   let file = path.resolve(directory, configDir, config);
 
