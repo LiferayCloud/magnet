@@ -7,11 +7,8 @@ const baseConfig = () => {
       host: '0.0.0.0',
       ignore: [
         'build/**',
-        'coverage/**',
-        'gulpfile.js',
-        'magnet.config.js',
         'node_modules/**',
-        'static/**/*.js',
+        'static/**',
         'test/**',
       ],
       logLevel: 'info',
