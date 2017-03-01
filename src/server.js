@@ -29,6 +29,16 @@ class Server {
   }
 
   /**
+   * Closes http server.
+   * @return {Promise} Returns promise that resolves when http server is closed.
+   */
+  close() {
+    return new Promise((resolve) => {
+      this.getHttpServer().close(() => resolve());
+    });
+  }
+
+  /**
    * Gets server engine.
    * @return {Object}
    */
@@ -55,16 +65,6 @@ class Server {
       .listen(port, host, () =>
         log.info(false, `Ready on http://${host}:${port}`));
     return this;
-  }
-
-  /**
-   * Closes http server.
-   * @return {Promise} Returns promise that resolves when http server is closed.
-   */
-  close() {
-    return new Promise((resolve) => {
-      this.getHttpServer().close(() => resolve());
-    });
   }
 }
 

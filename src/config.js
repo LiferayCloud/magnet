@@ -20,6 +20,23 @@ const baseConfig = () => {
 };
 
 /**
+ * Creates configuration.
+ * @param {!string} directory
+ * @param {!string} config Config filename.
+ * @return {Object}
+ */
+function createConfig(directory, config = 'magnet.config.js') {
+  let ext = {};
+  let file = path.resolve(directory, config);
+
+  if (fs.existsSync(file)) {
+    ext = require(file);
+  }
+
+  return deepMerge_(baseConfig(), ext);
+}
+
+/**
  * Deep merges object.
  * @param {!Object} destination Destination object.
  * @param {!Object} source Source object.
@@ -37,23 +54,6 @@ function deepMerge_(destination, source) {
     }
   }
   return destination;
-}
-
-/**
- * Creates configuration.
- * @param {!string} directory
- * @param {!string} config Config filename.
- * @return {Object}
- */
-function createConfig(directory, config = 'magnet.config.js') {
-  let ext = {};
-  let file = path.resolve(directory, config);
-
-  if (fs.existsSync(file)) {
-    ext = require(file);
-  }
-
-  return deepMerge_(baseConfig(), ext);
 }
 
 export {createConfig};

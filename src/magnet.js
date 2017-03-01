@@ -63,43 +63,6 @@ class Magnet {
   }
 
   /**
-   * Gets directory.
-   * @return {string}
-   */
-  getDirectory() {
-    return this.directory_;
-  }
-
-  /**
-   * Gets server runtime.
-   * @return {Server}
-   */
-  getServer() {
-    return this.server_;
-  }
-
-  /**
-   * Gets server dist directory.
-   * @return {string}
-   */
-  getServerDistDirectory() {
-    return path.join(this.directory_, '.magnet', 'server');
-  }
-
-  /**
-   * Checks if server dist directory exists.
-   * @return {boolean}
-   */
-  hasServerDistDirectory() {
-    try {
-      fs.accessSync(this.getServerDistDirectory());
-      return true;
-    } catch(error) {
-      return false;
-    }
-  }
-
-  /**
    * Builds application.
    * @param {boolean} logBuildOutput
    */
@@ -121,24 +84,11 @@ class Magnet {
   }
 
   /**
-   * Loads application.
-   * @protected
+   * Gets directory.
+   * @return {string}
    */
-  async load() {
-    let dist = this.getServerDistDirectory();
-    let files = this.getFiles({directory: dist, realpath: true});
-    files.forEach((file) => {
-      let module = require(file);
-      try {
-        if (registratorFunction.test(module, file, this)) {
-          registratorFunction.register(module, file, this);
-        } else if (registratorMultiple.test(module, file, this)) {
-          registratorMultiple.register(module, file, this);
-        }
-      } catch(error) {
-        log.error(false, error);
-      }
-    });
+  getDirectory() {
+    return this.directory_;
   }
 
   /**
@@ -175,6 +125,56 @@ class Magnet {
   }
 
   /**
+   * Gets server runtime.
+   * @return {Server}
+   */
+  getServer() {
+    return this.server_;
+  }
+
+  /**
+   * Gets server dist directory.
+   * @return {string}
+   */
+  getServerDistDirectory() {
+    return path.join(this.directory_, '.magnet', 'server');
+  }
+
+  /**
+   * Checks if server dist directory exists.
+   * @return {boolean}
+   */
+  hasServerDistDirectory() {
+    try {
+      fs.accessSync(this.getServerDistDirectory());
+      return true;
+    } catch(error) {
+      return false;
+    }
+  }
+
+  /**
+   * Loads application.
+   * @protected
+   */
+  async load() {
+    let dist = this.getServerDistDirectory();
+    let files = this.getFiles({directory: dist, realpath: true});
+    files.forEach((file) => {
+      let module = require(file);
+      try {
+        if (registratorFunction.test(module, file, this)) {
+          registratorFunction.register(module, file, this);
+        } else if (registratorMultiple.test(module, file, this)) {
+          registratorMultiple.register(module, file, this);
+        }
+      } catch(error) {
+        log.error(false, error);
+      }
+    });
+  }
+
+  /**
    * Maybe run lifecycle file.
    * @param {!String} lifecycleFile
    * @private
@@ -192,36 +192,6 @@ class Magnet {
         fn.call(this, app, this);
       }
     }
-  }
-
-  /**
-   * Starts application.
-   */
-  async start() {
-    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
-
-    await this.load();
-
-    this.setupMiddlewareError_();
-
-    await new Promise((resolve, reject) => {
-      this.getServer()
-          .getHttpServer()
-          .on('error', reject);
-      this.getServer()
-          .getHttpServer()
-          .on('listening', () => resolve());
-      this.getServer().listen(this.config.magnet.port, this.config.magnet.host);
-    });
-  }
-
-  /**
-   * Stops application.
-   */
-  async stop() {
-    log.info(false, 'Shutting down gracefully…');
-    await this.getServer().close();
-    fs.removeSync(this.getServerDistDirectory());
   }
 
   /**
@@ -338,6 +308,36 @@ class Magnet {
       .getEngine()
       .use('/static', express.static(
         path.join(this.getDirectory(), 'static')));
+  }
+
+  /**
+   * Starts application.
+   */
+  async start() {
+    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
+
+    await this.load();
+
+    this.setupMiddlewareError_();
+
+    await new Promise((resolve, reject) => {
+      this.getServer()
+          .getHttpServer()
+          .on('error', reject);
+      this.getServer()
+          .getHttpServer()
+          .on('listening', () => resolve());
+      this.getServer().listen(this.config.magnet.port, this.config.magnet.host);
+    });
+  }
+
+  /**
+   * Stops application.
+   */
+  async stop() {
+    log.info(false, 'Shutting down gracefully…');
+    await this.getServer().close();
+    fs.removeSync(this.getServerDistDirectory());
   }
 }
 
