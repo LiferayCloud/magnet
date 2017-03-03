@@ -1,4 +1,4 @@
-import {assertDefAndNotNull} from './assertions';
+import {assertDefAndNotNull} from 'metal-assertions';
 import http from 'http';
 import log from './log';
 

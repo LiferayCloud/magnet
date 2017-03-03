@@ -1,4 +1,4 @@
-import {assertDefAndNotNull} from './assertions';
+import {assertDefAndNotNull} from 'metal-assertions';
 import {build} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';

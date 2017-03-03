@@ -1,4 +1,4 @@
-import {assertDefAndNotNull, assertString} from '../assertions';
+import {assertDefAndNotNull, assertString} from 'metal-assertions';
 import {isFunction, isObject} from 'metal';
 
 export default {

@@ -1,4 +1,4 @@
-import {assertDefAndNotNull} from './assertions';
+import {assertDefAndNotNull} from 'metal-assertions';
 import fs from 'fs';
 import path from 'path';
 
