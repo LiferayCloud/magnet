@@ -302,6 +302,11 @@ class Magnet {
     this.getServer()
       .getEngine()
       .use(expressValidator({
+        customValidators: {
+          custom: function(value, fn) {
+            return fn(value);
+          },
+       },
         errorFormatter: (param, msg, value) => {
           return {
             reason: msg,
