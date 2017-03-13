@@ -62,7 +62,7 @@ class Magnet {
      * @type {!Server}
      * @private
      */
-    this.server_ = ServerFactory.create();
+    this.server_ = ServerFactory.create(ServerFactory.Types.EXPRESS, this.config.magnet.port, this.config.magnet.host);
 
     this.setupMiddlewares_();
   }
