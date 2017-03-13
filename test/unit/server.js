@@ -5,11 +5,11 @@ const fakeEngine = (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Fake Engine');
 };
-const server = new Server(fakeEngine);
+const server = new Server(fakeEngine, 8888, "0.0.0.0");
 
 describe('Server', function() {
   before(function() {
-    server.listen(8888, 'localhost', () => {});
+    server.listen(() => {});
   });
 
   after(function() {
