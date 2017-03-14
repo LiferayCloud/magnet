@@ -55,11 +55,19 @@ class Server {
     return this.port_;
   }
 
+  /**
+   * Set server port.
+   * @returns {Server}
+   */
   setPort(port) {
     this.port_ = port;
     return this;
   }
 
+  /**
+   * Set server host.
+   * @returns {Server}
+   */
   setHost(host) {
     this.host_ = host;
     return this;
