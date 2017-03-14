@@ -11,10 +11,10 @@ class ServerFactory {
    * @return {Server}
    * @throws Error
    */
-  static create(type = ServerFactory.Types.EXPRESS, port, host) {
+  static create(type = ServerFactory.Types.EXPRESS) {
     switch (type) {
       case ServerFactory.Types.EXPRESS:
-        return new Server(express(), port, host);
+        return new Server(express());
       default:
         throw new Error('Engine not implemented');
     }

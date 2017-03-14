@@ -62,7 +62,7 @@ class Magnet {
      * @type {!Server}
      * @private
      */
-    this.server_ = ServerFactory.create(ServerFactory.Types.EXPRESS, this.config.magnet.port, this.config.magnet.host);
+    this.server_ = ServerFactory.create();
 
     this.setupMiddlewares_();
   }
@@ -364,9 +364,11 @@ class Magnet {
           .getHttpServer()
           .on('error', reject);
       this.getServer()
+          .setPort(this.config.magnet.port)
+          .setHost(this.config.magnet.host)
           .getHttpServer()
           .on('listening', () => resolve());
-      this.getServer().listen(this.config.magnet.port, this.config.magnet.host);
+      this.getServer().listen();
     });
   }
 

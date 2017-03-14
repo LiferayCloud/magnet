@@ -5,7 +5,7 @@ const fakeEngine = (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Fake Engine');
 };
-const server = new Server(fakeEngine, 8888, "0.0.0.0");
+const server = new Server(fakeEngine).setPort(8888).setHost("localhost");
 
 describe('Server', function() {
   before(function() {
