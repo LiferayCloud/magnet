@@ -96,7 +96,7 @@ class Server {
   listen() {
     this.getHttpServer()
       .listen(this.getPort(), this.getHost(), () =>
-        log.info(false, `Ready on http://${this.getPort()}:${this.getHost()}`));
+        log.info(false, `Ready on http://${this.getHost()}:${this.getPort()}`));
     return this;
   }
 }
