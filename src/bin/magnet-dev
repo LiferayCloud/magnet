@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --trace-warnings
 
 import {getRoutesTable} from '../routes';
 import {Magnet} from '../';

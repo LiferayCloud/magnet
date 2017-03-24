@@ -230,6 +230,7 @@ class Magnet {
     if (!lookupConfig) {
       lookupConfig = 'magnet.config.js';
     }
+    log.info(false, 'Config file ' + lookupConfig);
     return createConfig(directory, lookupConfig, configDir);
   }
 

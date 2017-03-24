@@ -1,3 +1,5 @@
+import log from '../log';
+
 /**
  * Error middleware.
  * @return {Function}
@@ -13,6 +15,7 @@ export function errorMiddleware() {
     if (err.errors) {
       result.errors = err.errors;
     }
+    log.error(false, err);
     res.status(status).json(result);
   };
 }

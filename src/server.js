@@ -75,7 +75,7 @@ class Server {
 
   /**
    * Gets server host.
-   * @returns {string}
+   * @return {string}
    */
   getHost() {
     return this.host_;

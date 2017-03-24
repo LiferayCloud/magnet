@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --trace-warnings
 
 import {basename, join, resolve} from 'path';
 import {existsSync, mkdirSync, writeFileSync} from 'fs';
