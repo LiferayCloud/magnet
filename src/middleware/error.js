@@ -1,4 +1,5 @@
 import log from '../log';
+import PrettyError from 'pretty-error';
 
 /**
  * Error middleware.
@@ -15,7 +16,9 @@ export function errorMiddleware() {
     if (err.errors) {
       result.errors = err.errors;
     }
-    log.error(false, err);
+    const renderedError = new PrettyError().render(err);
+    const serializedError = JSON.stringify(result, 2, 2);
+    log.error(false, `${renderedError}${serializedError}`);
     res.status(status).json(result);
   };
 }
