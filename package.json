@@ -45,7 +45,6 @@
     "chokidar": "^1.6.1",
     "cli-table": "^0.3.1",
     "compression": "^1.6.2",
-    "cross-spawn": "^5.0.1",
     "express": "^4.13.0",
     "express-validator": "^3.1.2",
     "fs-extra": "^2.0.0",

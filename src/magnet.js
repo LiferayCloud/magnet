@@ -75,6 +75,7 @@ class Magnet {
     // Include lifecycle files on build.
     let src = this.config.magnet.src.concat([
       Magnet.LifecyleFiles.START,
+      Magnet.LifecyleFiles.STOP,
     ]);
 
     let files = this.getFiles({directory: this.getDirectory(), src: src});
@@ -382,7 +383,10 @@ class Magnet {
    * Stops application.
    */
   async stop() {
-    log.info(false, 'Shutting down gracefully…');
+    if(this.getServer().getHttpServer().listening) {
+      log.info(false, 'Shutting down gracefully…');
+      this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
+    }
     await this.getServer().close();
     fs.removeSync(this.getServerDistDirectory());
   }
@@ -395,6 +399,7 @@ class Magnet {
  */
 Magnet.LifecyleFiles = {
   START: 'start.js',
+  STOP: 'stop.js',
 };
 
 export default Magnet;

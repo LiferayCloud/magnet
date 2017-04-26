@@ -36,3 +36,12 @@ const directory = process.cwd();
 const magnet = new Magnet({config, configDir, directory});
 
 magnet.start();
+
+process.on('SIGTERM', (err) => {
+  magnet.stop();
+});
+
+process.on('SIGINT', (err) => {
+  magnet.stop();
+});
+
