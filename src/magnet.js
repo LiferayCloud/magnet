@@ -163,8 +163,7 @@ class Magnet {
       Magnet.LifecyleFiles.START,
       Magnet.LifecyleFiles.STOP,
     ]);
-    const files = this.getFiles({directory, src: srcFiles});
-    return files;
+    return this.getFiles({directory, src: srcFiles});
   }
 
   /**
