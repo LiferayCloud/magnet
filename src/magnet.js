@@ -139,17 +139,15 @@ class Magnet {
    */
   getLoadFiles() {
     const directory = this.getServerDistDirectory();
-    let files = this.getFiles({directory, realpath: true});
-    files = files.filter(function(item) {
+    return this.getFiles({directory, realpath: true}).filter(function(item) {
       switch (item) {
         case path.join(directory, Magnet.LifecyleFiles.START):
         case path.join(directory, Magnet.LifecyleFiles.STOP):
-          break;
+          return false;
         default:
-          return item;
+          return true;
       }
     });
-    return files;
   }
 
   /**
@@ -159,11 +157,11 @@ class Magnet {
    */
   getBuildFiles() {
     const directory = this.getDirectory();
-    const srcFiles = this.config.magnet.src.concat([
+    const src = this.config.magnet.src.concat([
       Magnet.LifecyleFiles.START,
       Magnet.LifecyleFiles.STOP,
     ]);
-    return this.getFiles({directory, src: srcFiles});
+    return this.getFiles({directory, src});
   }
 
   /**
