@@ -122,7 +122,8 @@ class Magnet {
     });
     if (!realpath) {
       // Normalize globs of relative paths to start with './'.
-      return files.map((file) => {
+
+      files = files.map((file) => {
         if (path.isAbsolute(file)) {
           return file;
         }
