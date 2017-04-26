@@ -72,13 +72,7 @@ class Magnet {
    * @param {boolean} logBuildOutput
    */
   async build() {
-    // Include lifecycle files on build.
-    let src = this.config.magnet.src.concat([
-      Magnet.LifecyleFiles.START,
-      Magnet.LifecyleFiles.STOP,
-    ]);
-
-    let files = this.getFiles({directory: this.getDirectory(), src: src});
+    let files = this.getBuildFiles({directory: this.getDirectory()});
 
     if (!files.length) {
       return;
@@ -139,6 +133,57 @@ class Magnet {
   }
 
   /**
+   * Scans files that matches with `config.magnet.src` globs.
+   * excluding `config.magnet.ignore`, start.js and stop.js.
+   * @param {!string} directory
+   * @param {?boolean} realpath Whether should return the files real path.
+   * @param {?array.<string>} src
+   * @param {?array.<string>} ignore
+   * @return {array.<string>} Array of file paths.
+   */
+  getLoadFiles({
+    directory,
+    realpath = false,
+    src = this.config.magnet.src,
+    ignore = this.config.magnet.ignore,
+  }) {
+    let files = this.getFiles({directory, realpath, src, ignore});
+    files = files.filter(function(item, idx) {
+      switch (item) {
+        case path.join(directory, Magnet.LifecyleFiles.START):
+        case path.join(directory, Magnet.LifecyleFiles.STOP):
+          break;
+        default:
+          return item;
+      }
+    });
+    return files;
+  }
+
+  /**
+   * Scans files that matches with `config.magnet.src` globs.
+   * excluding `config.magnet.ignore`, adding start.js and stop.js.
+   * @param {!string} directory
+   * @param {?boolean} realpath Whether should return the files real path.
+   * @param {?array.<string>} src
+   * @param {?array.<string>} ignore
+   * @return {array.<string>} Array of file paths.
+   */
+  getBuildFiles({
+    directory,
+    realpath = false,
+    src = this.config.magnet.src,
+    ignore = this.config.magnet.ignore,
+  }) {
+    let srcFiles = src.concat([
+      Magnet.LifecyleFiles.START,
+      Magnet.LifecyleFiles.STOP,
+    ]);
+    let files = this.getFiles({directory, realpath, src: srcFiles, ignore});
+    return files;
+  }
+
+  /**
    * Gets server runtime.
    * @return {Server}
    */
@@ -173,17 +218,7 @@ class Magnet {
    */
   async load() {
     let dist = this.getServerDistDirectory();
-    let files = this.getFiles({directory: dist, realpath: true});
-
-    files = files.filter(function(item, idx) {
-      switch (item) {
-        case path.join(dist, Magnet.LifecyleFiles.START):
-        case path.join(dist, Magnet.LifecyleFiles.STOP):
-          break;
-        default:
-          return item;
-      }
-    });
+    let files = this.getLoadFiles({directory: dist, realpath: true});
 
     files.forEach((file) => {
       let module = require(file);
