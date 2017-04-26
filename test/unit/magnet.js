@@ -130,6 +130,32 @@ describe('Magnet', () => {
     });
   });
 
+  describe('#getBuildFiles', () => {
+    it('should get build files adding start.js and stop.js', () => {
+      const directory = `${process.cwd()}/test/fixtures/lifecycle`;
+      const magnet = new Magnet({directory});
+      const files = magnet.getBuildFiles({directory, realpath: true});
+      const expectedArray = [
+        path.join(directory, 'one.js'),
+        path.join(directory, 'start.js'),
+        path.join(directory, 'stop.js'),
+      ];
+      expect(files).to.deep.equal(expectedArray);
+    });
+  });
+
+  describe('#getLoadFiles', () => {
+    it('should get load files removing start.js and stop.js', () => {
+      const directory = `${process.cwd()}/test/fixtures/lifecycle`;
+      const magnet = new Magnet({directory});
+      const files = magnet.getLoadFiles({directory, realpath: true});
+      const expectedArray = [
+        path.join(directory, 'one.js'),
+      ];
+      expect(files).to.deep.equal(expectedArray);
+    });
+  });
+
   describe('#hasServerDistDirectory', () => {
     it('should return true if server dist directory exists', async () => {
       const directory = `${process.cwd()}/test/fixtures/build`;
