@@ -174,6 +174,17 @@ class Magnet {
   async load() {
     let dist = this.getServerDistDirectory();
     let files = this.getFiles({directory: dist, realpath: true});
+
+    files = files.filter(function(item, idx) {
+      switch (item) {
+        case path.join(dist, Magnet.LifecyleFiles.START):
+        case path.join(dist, Magnet.LifecyleFiles.STOP):
+          break;
+        default:
+          return item;
+      }
+    });
+
     files.forEach((file) => {
       let module = require(file);
       try {
