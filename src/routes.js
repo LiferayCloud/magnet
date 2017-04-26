@@ -18,6 +18,7 @@ function getRoutesDefinition_(magnet) {
   files.forEach((file) => {
     switch (file) {
       case path.join(dist, Magnet.LifecyleFiles.START):
+      case path.join(dist, Magnet.LifecyleFiles.STOP):
         return;
     }
 

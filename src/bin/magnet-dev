@@ -43,3 +43,11 @@ magnet.build()
     }
   })
   .then(() => magnet.start());
+
+process.on('SIGTERM', (err) => {
+  magnet.stop();
+});
+
+process.on('SIGINT', (err) => {
+  magnet.stop();
+});

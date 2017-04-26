@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import {join} from 'path';
-import {spawn} from 'cross-spawn';
 import chokidar from 'chokidar';
+import childProcess from 'child_process';
 import log from '../log';
 import pkg from '../../package.json';
 
@@ -47,7 +47,8 @@ if (commands.has(cmd)) {
 const bin = join(__dirname, 'magnet-' + cmd);
 
 const startProcess = () => {
-  const proc = spawn(bin, args, {stdio: 'inherit', customFds: [0, 1, 2]});
+  const proc = childProcess.fork(
+    bin, args, {stdio: 'inherit', customFds: [0, 1, 2]});
   proc.on('close', (code, signal) => {
     if (code !== null) {
       process.exit(code);
@@ -71,20 +72,20 @@ const startProcess = () => {
 let proc = startProcess();
 
 if (cmd === 'dev') {
-    const watcher = chokidar.watch('**/*', {
-      awaitWriteFinish: true,
-      cwd: process.cwd(),
-      ignored: /node_modules|\.magnet|\.git/,
-      ignoreInitial: true,
-    });
+  const watcher = chokidar.watch('**/*', {
+    awaitWriteFinish: true,
+    cwd: process.cwd(),
+    ignored: /node_modules|\.magnet|\.git/,
+    ignoreInitial: true,
+  });
 
-    let restart = () => {
-      log.info(false, 'Found a change, restarting the server…');
-      proc.removeAllListeners('close');
-      proc.kill();
-      proc = startProcess();
-    };
+  let restart = () => {
+    log.info(false, 'Found a change, restarting the server…');
+    proc.removeAllListeners(['close']);
+    process.kill(proc.pid, 'SIGTERM');
+    proc = startProcess();
+  };
 
-    watcher.on('change', restart);
-    watcher.on('unlink', restart);
+  watcher.on('change', restart);
+  watcher.on('unlink', restart);
 }
