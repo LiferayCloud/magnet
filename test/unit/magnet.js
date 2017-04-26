@@ -214,7 +214,7 @@ describe('Magnet', () => {
 
   describe('lifecycle', () => {
     const directory = `${process.cwd()}/test/fixtures/lifecycle`;
-    it('should perform start and stop lifecycle when server start and stop', async () => { // eslint-disable-line max-len
+    it('should perform start and stop lifecycle when server starts and stops', async () => { // eslint-disable-line max-len
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
