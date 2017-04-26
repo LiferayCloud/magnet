@@ -211,4 +211,16 @@ describe('Magnet', () => {
       expect(magnet.getServer().getHttpServer().address()).to.be.null;
     });
   });
+
+  describe('lifecycle', () => {
+    const directory = `${process.cwd()}/test/fixtures/lifecycle`;
+    it('should perform start and stop lifecycle when server start and stop', async () => { // eslint-disable-line max-len
+      const magnet = new Magnet({directory});
+      await magnet.build();
+      await magnet.start();
+      expect(magnet.getServer().getEngine().bootstrapValue).to.eq('started');
+      await magnet.stop();
+      expect(magnet.getServer().getEngine().bootstrapValue).to.eq('finished');
+    });
+  });
 });
