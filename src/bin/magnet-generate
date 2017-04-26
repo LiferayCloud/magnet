@@ -28,7 +28,6 @@ const dir = resolve(argv._[0] || '.');
 
 const basePackage = `{
   "name": "my-app",
-  "description": "",
   "dependencies": {
     "magnet": "latest"
   },
