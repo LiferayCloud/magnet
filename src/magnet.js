@@ -122,7 +122,6 @@ class Magnet {
     });
     if (!realpath) {
       // Normalize globs of relative paths to start with './'.
-
       files = files.map((file) => {
         if (path.isAbsolute(file)) {
           return file;
@@ -136,20 +135,12 @@ class Magnet {
   /**
    * Scans files that matches with `config.magnet.src` globs.
    * excluding `config.magnet.ignore`, start.js and stop.js.
-   * @param {!string} directory
-   * @param {?boolean} realpath Whether should return the files real path.
-   * @param {?array.<string>} src
-   * @param {?array.<string>} ignore
-   * @return {array.<string>} Array of file paths.
+   * @return {Array.<string>} Array of file paths.
    */
-  getLoadFiles({
-    directory,
-    realpath = false,
-    src = this.config.magnet.src,
-    ignore = this.config.magnet.ignore,
-  }) {
-    let files = this.getFiles({directory, realpath, src, ignore});
-    files = files.filter(function(item, idx) {
+  getLoadFiles() {
+    const directory = this.getServerDistDirectory();
+    let files = this.getFiles({directory, realpath: true});
+    files = files.filter(function(item) {
       switch (item) {
         case path.join(directory, Magnet.LifecyleFiles.START):
         case path.join(directory, Magnet.LifecyleFiles.STOP):
@@ -164,23 +155,15 @@ class Magnet {
   /**
    * Scans files that matches with `config.magnet.src` globs.
    * excluding `config.magnet.ignore`, adding start.js and stop.js.
-   * @param {!string} directory
-   * @param {?boolean} realpath Whether should return the files real path.
-   * @param {?array.<string>} src
-   * @param {?array.<string>} ignore
-   * @return {array.<string>} Array of file paths.
+   * @return {Array.<string>} Array of file paths.
    */
-  getBuildFiles({
-    directory,
-    realpath = false,
-    src = this.config.magnet.src,
-    ignore = this.config.magnet.ignore,
-  }) {
-    let srcFiles = src.concat([
+  getBuildFiles() {
+    const directory = this.getDirectory();
+    const srcFiles = this.config.magnet.src.concat([
       Magnet.LifecyleFiles.START,
       Magnet.LifecyleFiles.STOP,
     ]);
-    let files = this.getFiles({directory, realpath, src: srcFiles, ignore});
+    const files = this.getFiles({directory, src: srcFiles});
     return files;
   }
 
