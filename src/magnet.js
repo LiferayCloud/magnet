@@ -413,7 +413,7 @@ class Magnet {
    */
   async stop() {
     log.info(false, 'Shutting down gracefully…');
-      this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
+    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
     await this.getServer().close();
     fs.removeSync(this.getServerDistDirectory());
   }
