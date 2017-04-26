@@ -6,6 +6,6 @@
     "start": "magnet start"
   },
   "dependencies": {
-    "magnet": "^0.1.0"
+    "magnet": "latest"
   }
 }
