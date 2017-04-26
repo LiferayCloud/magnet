@@ -134,23 +134,20 @@ describe('Magnet', () => {
     it('should get build files adding start.js and stop.js', () => {
       const directory = `${process.cwd()}/test/fixtures/lifecycle`;
       const magnet = new Magnet({directory});
-      const files = magnet.getBuildFiles({directory, realpath: true});
-      const expectedArray = [
-        path.join(directory, 'one.js'),
-        path.join(directory, 'start.js'),
-        path.join(directory, 'stop.js'),
-      ];
+      const files = magnet.getBuildFiles();
+      const expectedArray = ['./one.js', './start.js', './stop.js'];
       expect(files).to.deep.equal(expectedArray);
     });
   });
 
   describe('#getLoadFiles', () => {
-    it('should get load files removing start.js and stop.js', () => {
+    it('should get load files removing start.js and stop.js', async () => {
       const directory = `${process.cwd()}/test/fixtures/lifecycle`;
       const magnet = new Magnet({directory});
-      const files = magnet.getLoadFiles({directory, realpath: true});
+      await magnet.build();
+      const files = magnet.getLoadFiles();
       const expectedArray = [
-        path.join(directory, 'one.js'),
+        path.join(magnet.getServerDistDirectory(), 'one.js'),
       ];
       expect(files).to.deep.equal(expectedArray);
     });
