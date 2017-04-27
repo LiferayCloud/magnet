@@ -1,5 +1,5 @@
 import {assertDefAndNotNull} from 'metal-assertions';
-import {build} from './build/build';
+import {buildClient, buildServer} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction} from 'metal';
@@ -17,6 +17,7 @@ import multer from 'multer';
 import path from 'path';
 import registratorFunction from './registrator/function';
 import registratorMultiple from './registrator/multiple';
+import registratorMetal from './registrator/metal';
 import ServerFactory from './server-factory';
 
 /**
@@ -80,7 +81,18 @@ class Magnet {
 
     log.info(false, 'Building assets…');
 
-    await build(files, this.getDirectory(), this.getServerDistDirectory());
+    await buildServer(
+      files, this.getDirectory(), this.getServerDistDirectory());
+    await buildClient(
+      files, this.getDirectory(), this.getClientDistDirectory());
+  }
+
+  /**
+   * Gets client dist directory.
+   * @return {string}
+   */
+  getClientDistDirectory() {
+    return path.join(this.directory_, '.magnet', 'client');
   }
 
   /**
@@ -181,6 +193,27 @@ class Magnet {
   }
 
   /**
+   * Gets static files dist directory.
+   * @return {string}
+   */
+  getStaticDistDirectory() {
+    return path.join(this.directory_, 'static');
+  }
+
+  /**
+   * Checks if client dist directory exists.
+   * @return {boolean}
+   */
+  hasClientDistDirectory() {
+    try {
+      fs.accessSync(this.getClientDistDirectory());
+      return true;
+    } catch(error) {
+      return false;
+    }
+  }
+
+  /**
    * Checks if server dist directory exists.
    * @return {boolean}
    */
@@ -204,7 +237,9 @@ class Magnet {
     files.forEach((file) => {
       let module = require(file);
       try {
-        if (registratorFunction.test(module, file, this)) {
+        if (registratorMetal.test(module, file, this)) {
+          registratorMetal.register(module, file, this);
+        } else if (registratorFunction.test(module, file, this)) {
           registratorFunction.register(module, file, this);
         } else if (registratorMultiple.test(module, file, this)) {
           registratorMultiple.register(module, file, this);
@@ -379,8 +414,10 @@ class Magnet {
   setupMiddlewareStaticFiles_() {
     this.getServer()
       .getEngine()
-      .use('/static', express.static(
-        path.join(this.getDirectory(), 'static')));
+      .use('/static', express.static(this.getStaticDistDirectory()));
+    this.getServer()
+      .getEngine()
+      .use('/.magnet', express.static(this.getClientDistDirectory()));
   }
 
   /**
@@ -414,6 +451,7 @@ class Magnet {
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
     await this.getServer().close();
     fs.removeSync(this.getServerDistDirectory());
+    fs.removeSync(this.getClientDistDirectory());
   }
 }
 
