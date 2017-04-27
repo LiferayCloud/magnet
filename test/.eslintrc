@@ -12,5 +12,8 @@
     "node": true,
     "mocha": true,
     "es6": true
+  },
+  "rules": {
+    "max-len": 0
   }
 }

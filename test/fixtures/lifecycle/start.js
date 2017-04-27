@@ -1,3 +1,3 @@
-export default (app) => {
+export default app => {
   app.bootstrapValue = 'started';
 };

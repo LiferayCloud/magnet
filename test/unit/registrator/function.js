@@ -45,9 +45,12 @@ describe('registratorFunction', () => {
         registratorFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
-          magnet,
+          magnet
         );
-      }).to.throw(Error, 'Route configuration method must be a string, check /filename.js.'); // eslint-disable-line max-len
+      }).to.throw(
+        Error,
+        'Route configuration method must be a string, check /filename.js.'
+      );
     });
 
     it('should throw an error if route configuration path is null', () => {
@@ -62,25 +65,30 @@ describe('registratorFunction', () => {
         registratorFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
-          magnet,
+          magnet
         );
-      }).to.throw(Error, 'Route configuration path must be specified, check /filename.js.'); // eslint-disable-line max-len
+      }).to.throw(
+        Error,
+        'Route configuration path must be specified, check /filename.js.'
+      );
     });
 
     it('should throw an error if route configuration path is undefined', () => {
       const magnet = new Magnet({directory});
       const mod = {
-        route: {
-        },
+        route: {},
       };
       mod.default = function() {};
       expect(function() {
         registratorFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
-          magnet,
+          magnet
         );
-      }).to.throw(Error, 'Route configuration path must be specified, check /filename.js.'); // eslint-disable-line max-len
+      }).to.throw(
+        Error,
+        'Route configuration path must be specified, check /filename.js.'
+      );
     });
   });
 
@@ -98,14 +106,14 @@ describe('registratorFunction', () => {
       await magnet.stop();
     });
 
-    it('should register string module from directory that ends response', async() => { // eslint-disable-line max-len
+    it('should register string module from directory that ends response', async () => {
       await assertAsyncHttpRequest({
         path: '/fn-header-sent',
         responseBody: 'headers sent',
       });
     });
 
-    it('should register string module from directory that does not ends response', async () => { // eslint-disable-line max-len
+    it('should register string module from directory that does not ends response', async () => {
       await assertAsyncHttpRequest({
         path: '/fn-header-not-sent',
         responseBody: 'headers not sent',

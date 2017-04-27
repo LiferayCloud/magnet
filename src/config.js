@@ -51,8 +51,11 @@ function createConfig(directory, config, configDir) {
  */
 function deepMerge_(destination, source) {
   for (let property in source) {
-    if (source[property] && source[property].constructor &&
-     source[property].constructor === Object) {
+    if (
+      source[property] &&
+      source[property].constructor &&
+      source[property].constructor === Object
+    ) {
       destination[property] = destination[property] || {};
       deepMerge_(destination[property], source[property]);
     } else {

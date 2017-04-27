@@ -5,7 +5,7 @@ const fakeEngine = (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Fake Engine');
 };
-const server = new Server(fakeEngine).setPort(8888).setHost("localhost");
+const server = new Server(fakeEngine).setPort(8888).setHost('localhost');
 
 describe('Server', function() {
   before(function() {
@@ -16,10 +16,10 @@ describe('Server', function() {
     server.close();
   });
 
-  it('should validate the usage of an engine', (done) => {
+  it('should validate the usage of an engine', done => {
     http.get('http://localhost:8888', function(res) {
       let rawData = '';
-      res.on('data', (chunk) => rawData += chunk);
+      res.on('data', chunk => (rawData += chunk));
       res.on('end', () => {
         expect(200).to.equal(res.statusCode);
         expect(rawData).to.equal('Fake Engine');

@@ -16,20 +16,13 @@ module.exports = function(root) {
     root.isExpress = isExpress;
     root.assertAsyncHttpRequest = assertAsyncHttpRequest;
 
-    root.useFakeTimers = root
-      .sandbox
-      .useFakeTimers
-      .bind(root.sandbox);
+    root.useFakeTimers = root.sandbox.useFakeTimers.bind(root.sandbox);
 
-    root.useFakeServer = root
-      .sandbox
-      .useFakeServer
-      .bind(root.sandbox);
+    root.useFakeServer = root.sandbox.useFakeServer.bind(root.sandbox);
 
-    root.useFakeXMLHttpRequest = root
-      .sandbox
-      .useFakeXMLHttpRequest
-      .bind(root.sandbox);
+    root.useFakeXMLHttpRequest = root.sandbox.useFakeXMLHttpRequest.bind(
+      root.sandbox
+    );
   });
 
   afterEach(() => {
@@ -56,21 +49,27 @@ function isExpress(obj) {
  * @param {String} responseBody
  * @return {Promise}
  */
-function assertAsyncHttpRequest({port = 3000, path = '', status = 200, responseBody, contentType}) { // eslint-disable-line max-len
-  return new Promise((resolve) => {
+function assertAsyncHttpRequest({
+  port = 3000,
+  path = '',
+  status = 200,
+  responseBody,
+  contentType,
+}) {
+  return new Promise(resolve => {
     http.get(`http://localhost:${port}${path}`, function(res) {
-        let rawData = '';
-        res.on('data', (chunk) => rawData += chunk);
-        res.on('end', () => {
-          expect(res.statusCode).to.equal(status);
-          if(responseBody) {
-            expect(responseBody).to.equal(rawData);
-          }
-          if(contentType) {
-            expect(contentType).to.equal(res.headers['content-type']);
-          }
-          resolve();
-        });
+      let rawData = '';
+      res.on('data', chunk => (rawData += chunk));
+      res.on('end', () => {
+        expect(res.statusCode).to.equal(status);
+        if (responseBody) {
+          expect(responseBody).to.equal(rawData);
+        }
+        if (contentType) {
+          expect(contentType).to.equal(res.headers['content-type']);
+        }
+        resolve();
+      });
     });
   });
 }

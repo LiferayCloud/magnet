@@ -4,6 +4,6 @@ export const route = {
   type: 'json',
 };
 
-export default async (req) => {
- throw new Error('error message');
+export default async req => {
+  throw new Error('error message');
 };

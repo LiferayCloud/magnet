@@ -5,30 +5,28 @@ const eslint = require('gulp-eslint');
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 
-const testFiles = [
-  'test/setup/node.js',
-  'test/unit/**/*.js',
-];
+const testFiles = ['test/setup/node.js', 'test/unit/**/*.js'];
 
 gulp.task('build', ['clean'], () =>
-  gulp.src('src/**/*')
-    .pipe(babel())
-    .pipe(gulp.dest('build')));
+  gulp.src('src/**/*').pipe(babel()).pipe(gulp.dest('build'))
+);
 
-gulp.task('build:watch', () =>
-  gulp.watch('src/**/*', ['build']));
+gulp.task('build:watch', () => gulp.watch('src/**/*', ['build']));
 
 gulp.task('clean', () => del('build'));
 
 gulp.task('lint', () =>
-  gulp.src(['src/**/*.js', 'test/**/*.js'])
+  gulp
+    .src(['src/**/*.js', 'test/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
-    .pipe(eslint.failAfterError()));
+    .pipe(eslint.failAfterError())
+);
 
 gulp.task('test', () =>
-  gulp.src(testFiles)
-  .pipe(mocha({compilers: babelRegister})));
+  gulp.src(testFiles).pipe(mocha({compilers: babelRegister}))
+);
 
 gulp.task('test:watch', () =>
-  gulp.watch(testFiles.concat(['src/**/*.js']), ['test']));
+  gulp.watch(testFiles.concat(['src/**/*.js']), ['test'])
+);

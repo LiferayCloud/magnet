@@ -15,7 +15,7 @@ function getRoutesDefinition_(magnet) {
   let files = magnet.getFiles({directory: dist, realpath: true});
 
   let results = [];
-  files.forEach((file) => {
+  files.forEach(file => {
     switch (file) {
       case path.join(dist, Magnet.LifecyleFiles.START):
       case path.join(dist, Magnet.LifecyleFiles.STOP):

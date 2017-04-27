@@ -1,18 +1,18 @@
 import Magnet from '../../../src/magnet';
 
 describe('validationErrorMiddleware', function() {
-  it('should manage to catch an exception if an error occurs in a route function with param validator', async () => { // eslint-disable-line max-len
+  it('should manage to catch an exception if an error occurs in a route function with param validator', async () => {
     const directory = `${process.cwd()}/test/fixtures/error`;
     const magnet = new Magnet({directory});
     await magnet.build();
     await magnet.start();
     const expectedResponseBody = {
-      'status': 400,
-      'message': 'Bad Request',
-      'errors': [
+      status: 400,
+      message: 'Bad Request',
+      errors: [
         {
-          'reason': 'parameter_required',
-          'context': {'param': 'name'},
+          reason: 'parameter_required',
+          context: {param: 'name'},
         },
       ],
     };

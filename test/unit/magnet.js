@@ -8,13 +8,15 @@ describe('Magnet', () => {
   describe('config', () => {
     it('should raise an error if no options are provided', () => {
       expect(() => {
-         new Magnet();
-      }).to.throw(`Magnet options are required, try: new Magnet({directory: \'/app\'}).`); // eslint-disable-line max-len
+        new Magnet();
+      }).to.throw(
+        `Magnet options are required, try: new Magnet({directory: \'/app\'}).`
     });
     it('should raise an error if no directory is provided', () => {
       expect(() => {
-         new Magnet({});
-      }).to.throw(`Magnet directory is required, try: new Magnet({directory: \'/app\'}).`); // eslint-disable-line max-len
+        new Magnet({});
+      }).to.throw(
+        `Magnet directory is required, try: new Magnet({directory: \'/app\'}).`
     });
   });
 
@@ -34,8 +36,7 @@ describe('Magnet', () => {
       const directory = `${process.cwd()}/test/fixtures/empty`;
       const magnet = new Magnet({directory});
       await magnet.build();
-      expect(existsSync(magnet.getServerDistDirectory()))
-        .to.be.false;
+      expect(existsSync(magnet.getServerDistDirectory())).to.be.false;
     });
   });
 
@@ -47,8 +48,7 @@ describe('Magnet', () => {
       const expectedDefaultConfig = {
         magnet: {
           host: 'localhost',
-          ignore:
-          [
+          ignore: [
             'build/**',
             'magnet.config.js',
             'node_modules/**',
@@ -60,8 +60,7 @@ describe('Magnet', () => {
           src: ['**/*.js'],
         },
       };
-      expect(magnet.getConfig())
-        .to.deep.equal(expectedDefaultConfig);
+      expect(magnet.getConfig()).to.deep.equal(expectedDefaultConfig);
     });
   });
 
@@ -70,8 +69,9 @@ describe('Magnet', () => {
 
     it('should return the instance directory', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getDirectory())
-        .to.equal(`${process.cwd()}/test/fixtures/app`);
+      expect(magnet.getDirectory()).to.equal(
+        `${process.cwd()}/test/fixtures/app`
+      );
     });
   });
 
@@ -85,8 +85,7 @@ describe('Magnet', () => {
 
     it('should return current server engine', () => {
       const magnet = new Magnet({directory});
-      expect(isExpress(magnet.getServer().getEngine()))
-        .to.equal(true);
+      expect(isExpress(magnet.getServer().getEngine())).to.equal(true);
     });
   });
 
@@ -95,8 +94,9 @@ describe('Magnet', () => {
 
     it('should return server distribution directory path', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getServerDistDirectory())
-        .to.equal(`${process.cwd()}/test/fixtures/app/.magnet/server`);
+      expect(magnet.getServerDistDirectory()).to.equal(
+        `${process.cwd()}/test/fixtures/app/.magnet/server`
+      );
     });
   });
 
@@ -182,7 +182,7 @@ describe('Magnet', () => {
       await magnet.stop();
     });
 
-    it('should serve an application that just has a static folder', async () => { // eslint-disable-line max-len
+    it('should serve an application that just has a static folder', async () => {
       const directory = `${process.cwd()}/test/fixtures/static`;
       const magnet = new Magnet({directory});
       await magnet.build();
@@ -194,7 +194,7 @@ describe('Magnet', () => {
       await magnet.stop();
     });
 
-    it('should load the config using NODE_ENV environment variable without custom configuration', async () => { // eslint-disable-line max-len
+    it('should load the config using NODE_ENV environment variable without custom configuration', async () => {
       const currentNodeEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = 'staging';
       const directory = `${process.cwd()}/test/fixtures/config`;
@@ -209,7 +209,7 @@ describe('Magnet', () => {
       process.env.NODE_ENV = currentNodeEnv;
     });
 
-    it('should load the config with a different directory if configuration directory', async () => { // eslint-disable-line max-len
+    it('should load the config with a different directory if configuration directory', async () => {
       const directory = `${process.cwd()}/test/fixtures/config`;
       const configDir = 'environment';
       const magnet = new Magnet({directory, configDir});
@@ -226,7 +226,7 @@ describe('Magnet', () => {
   describe('#stop', () => {
     const directory = `${process.cwd()}/test/fixtures/app`;
 
-    it('should stop the application server', async() => {
+    it('should stop the application server', async () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();
@@ -237,7 +237,7 @@ describe('Magnet', () => {
 
   describe('lifecycle', () => {
     const directory = `${process.cwd()}/test/fixtures/lifecycle`;
-    it('should perform start and stop lifecycle when server starts and stops', async () => { // eslint-disable-line max-len
+    it('should perform start and stop lifecycle when server starts and stops', async () => {
       const magnet = new Magnet({directory});
       await magnet.build();
       await magnet.start();

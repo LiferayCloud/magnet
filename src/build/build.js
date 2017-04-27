@@ -23,7 +23,7 @@ export async function buildServer(files, directory, outputDirectory) {
   fs.removeSync(outputDirectory);
 
   return new Promise((resolve, reject) => {
-    files.forEach((file) => {
+    files.forEach(file => {
       try {
         let absoluteSrc = path.join(directory, file);
         let absoluteDist = path.join(outputDirectory, file);
@@ -34,7 +34,7 @@ export async function buildServer(files, directory, outputDirectory) {
           filenameRelative: file,
         });
         fs.outputFileSync(absoluteDist, transform.code);
-      } catch(error) {
+      } catch (error) {
         reject(error);
       }
     });
@@ -53,10 +53,13 @@ export async function buildClient(files, directory, outputDirectory) {
   fs.removeSync(outputDirectory);
 
   let entry = {};
-  files.forEach((file) => entry[file] = file);
+  files.forEach(file => (entry[file] = file));
 
   const webpackClientConfig = buildWebpackClientConfig(
-    entry, directory, outputDirectory);
+    entry,
+    directory,
+    outputDirectory
+  );
 
   return new Promise((resolve, reject) => {
     webpack(webpackClientConfig, (err, stats) => {

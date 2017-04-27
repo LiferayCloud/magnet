@@ -25,16 +25,21 @@ import ServerFactory from './server-factory';
  * @class
  */
 class Magnet {
-
   /**
    * Constructor.
    * @param {!Object} options Magnet options.
    */
   constructor(options) {
-    assertDefAndNotNull(options, `Magnet options are required, ` +
-      `try: new Magnet({directory: \'/app\'}).`);
-    assertDefAndNotNull(options.directory, `Magnet directory is required, ` +
-      `try: new Magnet({directory: \'/app\'}).`);
+    assertDefAndNotNull(
+      options,
+      `Magnet options are required, ` +
+        `try: new Magnet({directory: \'/app\'}).`
+    );
+    assertDefAndNotNull(
+      options.directory,
+      `Magnet directory is required, ` +
+        `try: new Magnet({directory: \'/app\'}).`
+    );
 
     /**
      * Configuration object.
@@ -42,7 +47,10 @@ class Magnet {
      * @protected
      */
     this.config = this.resolveConfig(
-      options.directory, options.config, options.configDir);
+      options.directory,
+      options.config,
+      options.configDir
+    );
 
     /**
      * Sync log level to the one set on this instance.
@@ -82,9 +90,15 @@ class Magnet {
     log.info(false, 'Building assets…');
 
     await buildServer(
-      files, this.getDirectory(), this.getServerDistDirectory());
+      files,
+      this.getDirectory(),
+      this.getServerDistDirectory()
+    );
     await buildClient(
-      files, this.getDirectory(), this.getClientDistDirectory());
+      files,
+      this.getDirectory(),
+      this.getClientDistDirectory()
+    );
   }
 
   /**
@@ -127,14 +141,14 @@ class Magnet {
     ignore = this.config.magnet.ignore,
   }) {
     let files = [];
-    src.forEach((pattern) => {
+    src.forEach(pattern => {
       files = files.concat(
-        glob.sync(
-          pattern, {cwd: directory, ignore: ignore, realpath: realpath}));
+        glob.sync(pattern, {cwd: directory, ignore: ignore, realpath: realpath})
+      );
     });
     if (!realpath) {
       // Normalize globs of relative paths to start with './'.
-      files = files.map((file) => {
+      files = files.map(file => {
         if (path.isAbsolute(file)) {
           return file;
         }
@@ -208,7 +222,7 @@ class Magnet {
     try {
       fs.accessSync(this.getClientDistDirectory());
       return true;
-    } catch(error) {
+    } catch (error) {
       return false;
     }
   }
@@ -221,7 +235,7 @@ class Magnet {
     try {
       fs.accessSync(this.getServerDistDirectory());
       return true;
-    } catch(error) {
+    } catch (error) {
       return false;
     }
   }
@@ -234,7 +248,7 @@ class Magnet {
     let dist = this.getServerDistDirectory();
     let files = this.getLoadFiles({directory: dist, realpath: true});
 
-    files.forEach((file) => {
+    files.forEach(file => {
       let module = require(file);
       try {
         if (registratorMetal.test(module, file, this)) {
@@ -244,7 +258,7 @@ class Magnet {
         } else if (registratorMultiple.test(module, file, this)) {
           registratorMultiple.register(module, file, this);
         }
-      } catch(error) {
+      } catch (error) {
         log.error(false, error);
       }
     });
@@ -256,8 +270,7 @@ class Magnet {
    * @private
    */
   async maybeRunLifecycleFile_(lifecycleFile) {
-    let file = path.resolve(
-      this.getServerDistDirectory(), lifecycleFile);
+    let file = path.resolve(this.getServerDistDirectory(), lifecycleFile);
     if (fs.existsSync(file)) {
       let fn = require(file);
       if (fn.default) {
@@ -302,13 +315,9 @@ class Magnet {
    * @private
    */
   setupMiddlewareBodyParser_() {
-    this.getServer()
-      .getEngine()
-      .use(bodyParser.urlencoded({extended: false}));
+    this.getServer().getEngine().use(bodyParser.urlencoded({extended: false}));
 
-    this.getServer()
-      .getEngine()
-      .use(bodyParser.json());
+    this.getServer().getEngine().use(bodyParser.json());
   }
 
   /**
@@ -316,9 +325,7 @@ class Magnet {
    * @private
    */
   setupMiddlewareCompression_() {
-    this.getServer()
-      .getEngine()
-      .use(compression());
+    this.getServer().getEngine().use(compression());
   }
 
   /**
@@ -326,12 +333,8 @@ class Magnet {
    * @private
    */
   setupMiddlewareError_() {
-    this.getServer()
-      .getEngine()
-      .use(validatorErrorMiddleware());
-    this.getServer()
-      .getEngine()
-      .use(errorMiddleware());
+    this.getServer().getEngine().use(validatorErrorMiddleware());
+    this.getServer().getEngine().use(errorMiddleware());
   }
 
   /**
@@ -343,9 +346,7 @@ class Magnet {
       case 'silent':
         return;
     }
-    this.getServer()
-      .getEngine()
-      .use(morgan('common'));
+    this.getServer().getEngine().use(morgan('common'));
   }
 
   /**
@@ -353,9 +354,7 @@ class Magnet {
    * @private
    */
   setupMiddlewareMultipart_() {
-    this.getServer()
-      .getEngine()
-      .use(multer().any());
+    this.getServer().getEngine().use(multer().any());
   }
 
   /**
@@ -363,14 +362,13 @@ class Magnet {
    * @private
    */
   setupMiddlewareValidator_() {
-    this.getServer()
-      .getEngine()
-      .use(expressValidator({
+    this.getServer().getEngine().use(
+      expressValidator({
         customValidators: {
           custom: function(value, fn) {
             return fn(value);
           },
-       },
+        },
         errorFormatter: (param, msg, value) => {
           return {
             reason: msg,
@@ -380,7 +378,8 @@ class Magnet {
             },
           };
         },
-      }));
+      })
+    );
   }
 
   /**
@@ -402,9 +401,7 @@ class Magnet {
    * @private
    */
   setupMiddlewareSecurity_() {
-    this.getServer()
-      .getEngine()
-      .use(helmet());
+    this.getServer().getEngine().use(helmet());
   }
 
   /**
@@ -431,14 +428,12 @@ class Magnet {
     this.setupMiddlewareError_();
 
     await new Promise((resolve, reject) => {
+      this.getServer().getHttpServer().on('error', reject);
       this.getServer()
-          .getHttpServer()
-          .on('error', reject);
-      this.getServer()
-          .setPort(this.config.magnet.port)
-          .setHost(this.config.magnet.host)
-          .getHttpServer()
-          .on('listening', () => resolve());
+        .setPort(this.config.magnet.port)
+        .setHost(this.config.magnet.host)
+        .getHttpServer()
+        .on('listening', () => resolve());
       this.getServer().listen();
     });
   }

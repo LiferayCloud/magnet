@@ -6,7 +6,6 @@ import log from './log';
  * Server runtime.
  */
 class Server {
-
   /**
    * Constructor.
    * @param {!Object} engine
@@ -34,7 +33,7 @@ class Server {
    * @return {Promise} Returns promise that resolves when http server is closed.
    */
   close() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.getHttpServer().close(() => resolve());
     });
   }
@@ -49,7 +48,7 @@ class Server {
 
   /**
    * Gets server port.
-   * @returns {number}
+   * @return {number}
    */
   getPort() {
     return this.port_;
@@ -57,7 +56,8 @@ class Server {
 
   /**
    * Set server port.
-   * @returns {Server}
+   * @param {number} port
+   * @return {Server}
    */
   setPort(port) {
     this.port_ = port;
@@ -66,7 +66,8 @@ class Server {
 
   /**
    * Set server host.
-   * @returns {Server}
+   * @param {string} host
+   * @return {Server}
    */
   setHost(host) {
     this.host_ = host;
@@ -94,9 +95,9 @@ class Server {
    * @return {Server} Returns server instance.
    */
   listen() {
-    this.getHttpServer()
-      .listen(this.getPort(), this.getHost(), () =>
-        log.info(false, `Ready on http://${this.getHost()}:${this.getPort()}`));
+    this.getHttpServer().listen(this.getPort(), this.getHost(), () =>
+      log.info(false, `Ready on http://${this.getHost()}:${this.getPort()}`)
+    );
     return this;
   }
 }

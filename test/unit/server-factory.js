@@ -13,9 +13,8 @@ describe('ServerFactory', function() {
   });
 
   it('should create an instance of a express by passing a param', () => {
-    const server = ServerFactory.create(
-      ServerFactory.Types.EXPRESS);
-      expect(isExpress(server.getEngine())).to.equal(true);
+    const server = ServerFactory.create(ServerFactory.Types.EXPRESS);
+    expect(isExpress(server.getEngine())).to.equal(true);
   });
 
   it('should thrown an error if the specified type is not implemented', () => {
@@ -23,6 +22,4 @@ describe('ServerFactory', function() {
       ServerFactory.create('notImplemented');
     }).to.throw('Engine not implemented');
   });
-
-  
 });

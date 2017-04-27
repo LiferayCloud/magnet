@@ -4,7 +4,7 @@ export const route = {
   type: 'json',
 };
 
-export default async (req) => {
+export default async req => {
   req.assert('name', 'parameter_required').notEmpty();
 
   let validation = await req.getValidationResult();
