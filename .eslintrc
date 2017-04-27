@@ -1,9 +1,5 @@
 {
-  "extends": ["eslint:recommended", "google"],
-  "parserOptions": {
-      "ecmaVersion": 2017,
-      "sourceType": "module"
-  },
+  "extends": ["liferay"],
   "globals": {
     "expect": false,
     "mock": false,
@@ -17,8 +13,4 @@
     "mocha": true,
     "es6": true
   },
-  "rules": {
-    "no-process-env": 0,
-    "no-console": 0
-  }
 }

@@ -10,6 +10,7 @@
     "build:watch": "gulp build:watch",
     "coverage": "nyc --reporter=lcov --include='src/**/*.js'  --reporter=text npm test",
     "lint": "gulp lint",
+    "format": "prettier --single-quote --no-bracket-spacing --trailing-comma es5 --write \"{src/**/*.js,test/**/*.js,*.js}\" && eslint --fix \"{src/**/*.js,test/**/*.js,*.js}\"",
     "prepublish": "gulp build",
     "preversion": "npm test",
     "test": "gulp test",
@@ -63,8 +64,8 @@
     "babel-register": "^6.23.0",
     "chai": "^3.5.0",
     "codecov": "^1.0.1",
-    "eslint": "^3.13.1",
-    "eslint-config-google": "^0.7.1",
+    "eslint": "^3.17.1",
+    "eslint-config-liferay": "^1.0.1",
     "eslint-loader": "^1.6.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -73,6 +74,7 @@
     "gulp-mocha": "^3.0.1",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
+    "prettier": "^1.2.2",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0"
   }
