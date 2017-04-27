@@ -1,6 +1,5 @@
 {
   "name": "config",
-  "version": "0.0.0",
   "scripts": {
     "dev": "magnet",
     "start": "magnet build && magnet start"
