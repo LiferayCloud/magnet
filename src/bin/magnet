@@ -71,20 +71,20 @@ const startProcess = () => {
 let proc = startProcess();
 
 if (cmd === 'dev') {
-    const watcher = chokidar.watch('**/*', {
-      awaitWriteFinish: true,
-      cwd: process.cwd(),
-      ignored: /node_modules|\.magnet|\.git/,
-      ignoreInitial: true,
-    });
+  const watcher = chokidar.watch('**/*', {
+    awaitWriteFinish: true,
+    cwd: process.cwd(),
+    ignored: /node_modules|\.magnet|\.git/,
+    ignoreInitial: true,
+  });
 
-    let restart = () => {
-      log.info(false, 'Found a change, restarting the server…');
-      proc.removeAllListeners('close');
-      proc.kill();
-      proc = startProcess();
-    };
+  let restart = () => {
+    log.info(false, 'Found a change, restarting the server…');
+    proc.removeAllListeners('close');
+    proc.kill();
+    proc = startProcess();
+  };
 
-    watcher.on('change', restart);
-    watcher.on('unlink', restart);
+  watcher.on('change', restart);
+  watcher.on('unlink', restart);
 }
