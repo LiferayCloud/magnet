@@ -1,11 +1,10 @@
 {
   "name": "validation",
-  "description": "",
-  "dependencies": {
-    "magnet": "latest"
-  },
   "scripts": {
     "dev": "magnet",
-    "start": "magnet start"
+    "start": "magnet build && magnet start"
+  },
+  "dependencies": {
+    "magnet": "latest"
   }
 }
