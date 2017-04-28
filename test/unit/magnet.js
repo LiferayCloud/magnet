@@ -10,13 +10,15 @@ describe('Magnet', () => {
       expect(() => {
         new Magnet();
       }).to.throw(
-        `Magnet options are required, try: new Magnet({directory: \'/app\'}).`
+        `Magnet options are required, try: ` +
+        `new Magnet({directory: \'/app\'}).`);
     });
     it('should raise an error if no directory is provided', () => {
       expect(() => {
         new Magnet({});
       }).to.throw(
-        `Magnet directory is required, try: new Magnet({directory: \'/app\'}).`
+        `Magnet directory is required, try: ` +
+        `new Magnet({directory: \'/app\'}).`);
     });
   });
 

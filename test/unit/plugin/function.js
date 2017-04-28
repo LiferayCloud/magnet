@@ -1,31 +1,31 @@
 import Magnet from '../../../src/magnet';
 import path from 'path';
-import registratorFunction from '../../../src/registrator/function';
+import pluginFunction from '../../../src/plugin/function';
 
-describe('registratorFunction', () => {
+describe('pluginFunction', () => {
   describe('.test', () => {
     it('should return true if module has a valid route', () => {
       const mod = {};
       mod.default = function() {};
       mod.route = {};
-      expect(registratorFunction.test(mod, null, null)).to.be.true;
+      expect(pluginFunction.test(mod, null, null)).to.be.true;
     });
 
     it('should return true if module has no route', () => {
       const mod = {};
       mod.default = function() {};
-      expect(registratorFunction.test(mod, null, null)).to.be.false;
+      expect(pluginFunction.test(mod, null, null)).to.be.false;
     });
 
     it('should return true if module has route undefined', () => {
       const mod = {};
       mod.default = function() {};
       mod.route = undefined;
-      expect(registratorFunction.test(mod, null, null)).to.be.false;
+      expect(pluginFunction.test(mod, null, null)).to.be.false;
     });
 
     it('should return false if module is not function', () => {
-      expect(registratorFunction.test('notFn', null, null)).to.be.false;
+      expect(pluginFunction.test('notFn', null, null)).to.be.false;
     });
   });
 
@@ -42,7 +42,7 @@ describe('registratorFunction', () => {
       };
       mod.default = function() {};
       expect(function() {
-        registratorFunction.register(
+        pluginFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet
@@ -62,7 +62,7 @@ describe('registratorFunction', () => {
       };
       mod.default = function() {};
       expect(function() {
-        registratorFunction.register(
+        pluginFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet
@@ -80,7 +80,7 @@ describe('registratorFunction', () => {
       };
       mod.default = function() {};
       expect(function() {
-        registratorFunction.register(
+        pluginFunction.register(
           mod,
           path.join(magnet.getServerDistDirectory(), 'filename.js'),
           magnet

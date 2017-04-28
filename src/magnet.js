@@ -15,9 +15,9 @@ import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
-import registratorFunction from './registrator/function';
-import registratorMultiple from './registrator/multiple';
-import registratorMetal from './registrator/metal';
+import pluginFunction from './plugin/function';
+import pluginMultiple from './plugin/multiple';
+import pluginMetal from './plugin/metal';
 import ServerFactory from './server-factory';
 
 /**
@@ -251,12 +251,12 @@ class Magnet {
     files.forEach(file => {
       let module = require(file);
       try {
-        if (registratorMetal.test(module, file, this)) {
-          registratorMetal.register(module, file, this);
-        } else if (registratorFunction.test(module, file, this)) {
-          registratorFunction.register(module, file, this);
-        } else if (registratorMultiple.test(module, file, this)) {
-          registratorMultiple.register(module, file, this);
+        if (pluginMetal.test(module, file, this)) {
+          pluginMetal.register(module, file, this);
+        } else if (pluginFunction.test(module, file, this)) {
+          pluginFunction.register(module, file, this);
+        } else if (pluginMultiple.test(module, file, this)) {
+          pluginMultiple.register(module, file, this);
         }
       } catch (error) {
         log.error(false, error);

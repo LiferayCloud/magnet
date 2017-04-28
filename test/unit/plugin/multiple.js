@@ -1,32 +1,32 @@
 import Magnet from '../../../src/magnet';
-import registratorMultiple from '../../../src/registrator/multiple';
+import pluginMultiple from '../../../src/plugin/multiple';
 
-describe('registratorMultiple', () => {
+describe('pluginMultiple', () => {
   describe('.test', () => {
     it('should return true if module has no route', () => {
       const mod = {};
       mod.default = (app, magnet) => {};
-      expect(registratorMultiple.test(mod, null, null)).to.be.true;
+      expect(pluginMultiple.test(mod, null, null)).to.be.true;
     });
 
     it('should return true if module has route undefined', () => {
       const mod = {};
       mod.default = (app, magnet) => {};
       mod.route = undefined;
-      expect(registratorMultiple.test(mod, null, null)).to.be.true;
+      expect(pluginMultiple.test(mod, null, null)).to.be.true;
     });
 
     it('should return false if module has a valid route', () => {
       const mod = {};
       mod.default = (app, magnet) => {};
       mod.route = {};
-      expect(registratorMultiple.test(mod, null, null)).to.be.false;
+      expect(pluginMultiple.test(mod, null, null)).to.be.false;
     });
 
     it('should return false if module is not function', () => {
       const mod = {};
       mod.default = 'not a function';
-      expect(registratorMultiple.test(mod, null, null)).to.be.false;
+      expect(pluginMultiple.test(mod, null, null)).to.be.false;
     });
   });
 
