@@ -81,6 +81,22 @@ class Magnet {
    * @param {boolean} logBuildOutput
    */
   async build() {
+    log.info(false, 'Building plugins…');
+
+    try {
+      if (isFunction(pluginMetal.build)) {
+        await pluginMetal.build(this);
+      }
+      if (isFunction(pluginFunction.build)) {
+        await pluginMetal.build(this);
+      }
+      if (isFunction(pluginMultiple.build)) {
+        await pluginMultiple.build(this);
+      }
+    } catch (error) {
+      log.error(false, error);
+    }
+
     let files = this.getBuildFiles({directory: this.getDirectory()});
 
     if (!files.length) {
