@@ -1,5 +1,5 @@
 import {assertDefAndNotNull, assertString} from 'metal-assertions';
-import {isObject} from 'metal';
+import {isFunction, isObject} from 'metal';
 import Component from 'metal-component';
 
 export default {
@@ -26,7 +26,10 @@ export default {
     app[method.toLowerCase()](path, async (req, res, next) => {
       try {
         if (!res.headersSent) {
-          let data = await module.default.getInitialState(req);
+          let data;
+          if (isFunction(module.default.getInitialState)) {
+            data = await module.default.getInitialState(req);
+          }
           if (isContentTypeJson(req)) {
             res.json(data);
           } else {
