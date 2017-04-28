@@ -1,0 +1,13 @@
+{
+  "name": "magnet-example",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet build && magnet start"
+  },
+  "dependencies": {
+    "magnet": "latest",
+    "metal-jsx": "latest",
+    "metal-soy": "latest"
+  }
+}
