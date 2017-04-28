@@ -16,6 +16,12 @@ const baseConfig = () => {
       logLevel: 'info',
       port: 3000,
       src: ['**/*.js'],
+      plugins: {
+        metal: {
+          soySrc: ['**/*.soy'],
+          soyDest: ['.'],
+        },
+      },
     },
   };
 };

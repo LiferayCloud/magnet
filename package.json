@@ -58,6 +58,7 @@
     "metal": "^2.6.4",
     "metal-assertions": "^2.8.0",
     "metal-component": "^2.10.0",
+    "metal-tools-soy": "^4.0.1",
     "minimist": "^1.2.0",
     "morgan": "^1.6.0",
     "multer": "^1.3.0",

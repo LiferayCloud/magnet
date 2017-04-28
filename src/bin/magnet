@@ -74,7 +74,7 @@ if (cmd === 'dev') {
   const watcher = chokidar.watch('**/*', {
     awaitWriteFinish: true,
     cwd: process.cwd(),
-    ignored: /node_modules|\.magnet|\.git/,
+    ignored: /node_modules|\.magnet|\.git|\.soy\.js/,
     ignoreInitial: true,
   });
 

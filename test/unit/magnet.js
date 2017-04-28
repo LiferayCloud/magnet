@@ -60,6 +60,12 @@ describe('Magnet', () => {
           logLevel: 'silent',
           port: 3000,
           src: ['**/*.js'],
+          plugins: {
+            metal: {
+              soySrc: ['**/*.soy'],
+              soyDest: ['.'],
+            },
+          },
         },
       };
       expect(magnet.getConfig()).to.deep.equal(expectedDefaultConfig);

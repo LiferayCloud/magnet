@@ -24,7 +24,7 @@ gulp.task('lint', () =>
 );
 
 gulp.task('test', () =>
-  gulp.src(testFiles).pipe(mocha({compilers: babelRegister}))
+  gulp.src(testFiles).pipe(mocha({compilers: babelRegister, timeout: 20000}))
 );
 
 gulp.task('test:watch', () =>

@@ -1,11 +1,32 @@
 import {assertDefAndNotNull, assertString} from 'metal-assertions';
 import {isFunction, isObject} from 'metal';
 import Component from 'metal-component';
+import soy from 'metal-tools-soy';
+
+const buildSoyFiles = (src, dest) => new Promise((resolve, reject) => {
+  const handleError = (error) => reject(error);
+  soy({src, dest, handleError}).on('end', () => resolve());
+});
 
 export default {
+  async build(magnet) {
+    const config = magnet.getConfig();
+    const soySrc = config.magnet.plugins.metal.soySrc;
+    const soyDest = config.magnet.plugins.metal.soyDest;
+
+    // Trivially excludes soy compilation when there are no matching soy files
+    // in the application directory.
+    const directory = magnet.getDirectory();
+    const isTriviallyExcluded = magnet.getFiles({directory, soySrc}) === 0;
+    if (!isTriviallyExcluded) {
+      await buildSoyFiles(soySrc, soyDest);
+    }
+  },
+
   test(module, filename, magnet) {
     return isObject(module.route) && Component.isComponentCtor(module.default);
   },
+
   register(module, filename, magnet) {
     let path = module.route.path;
     let method = module.route.method || 'get';
