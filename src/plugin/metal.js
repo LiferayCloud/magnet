@@ -3,7 +3,7 @@ import {isFunction, isObject, isString} from 'metal';
 import Component from 'metal-component';
 import soy from 'metal-tools-soy';
 
-const defaultLayout = (req, content, initialState) => `
+const defaultLayout = async (req, content, initialState) => `
 <html>
 <head>
   <meta charset="UTF-8"/>
@@ -66,7 +66,7 @@ export default {
           if (isContentTypeJson(req)) {
             res.json(data);
           } else {
-            const layout = renderLayout(
+            const layout = await renderLayout(
               req, renderToString(module.default, data), data);
 
             res.type(type).send(
