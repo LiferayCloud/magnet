@@ -56,9 +56,9 @@ const baseMagnetConfig = `module.exports = {
 `;
 
 const baseIndex = `export const route = {
- method: 'get',
- path: '/',
- type: 'html',
+  method: 'get',
+  path: '/',
+  type: 'html',
 };
 
 export default () => \`<!DOCTYPE html>
