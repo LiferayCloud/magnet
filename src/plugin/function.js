@@ -1,9 +1,15 @@
 import {assertDefAndNotNull, assertString} from 'metal-assertions';
 import {isFunction, isObject} from 'metal';
 
+const isMultiple = (module) => {
+  return isObject(module.route) && module.route.multiple;
+};
+
 export default {
   test(module, filename, magnet) {
-    return isObject(module.route) && isFunction(module.default);
+    return !isMultiple(module) &&
+      isObject(module.route) &&
+      isFunction(module.default);
   },
 
   register(module, filename, magnet) {

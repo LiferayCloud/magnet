@@ -3,28 +3,16 @@ import pluginMultiple from '../../../src/plugin/multiple';
 
 describe('pluginMultiple', () => {
   describe('.test', () => {
-    it('should return true if module has no route', () => {
+    it('should return true if module has route multiple', () => {
       const mod = {};
+      mod.route = {multiple: true};
       mod.default = (app, magnet) => {};
       expect(pluginMultiple.test(mod, null, null)).to.be.true;
-    });
-
-    it('should return true if module has route undefined', () => {
-      const mod = {};
-      mod.default = (app, magnet) => {};
-      mod.route = undefined;
-      expect(pluginMultiple.test(mod, null, null)).to.be.true;
-    });
-
-    it('should return false if module has a valid route', () => {
-      const mod = {};
-      mod.default = (app, magnet) => {};
-      mod.route = {};
-      expect(pluginMultiple.test(mod, null, null)).to.be.false;
     });
 
     it('should return false if module is not function', () => {
       const mod = {};
+      mod.route = {multiple: true};
       mod.default = 'not a function';
       expect(pluginMultiple.test(mod, null, null)).to.be.false;
     });

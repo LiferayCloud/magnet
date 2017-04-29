@@ -1,3 +1,7 @@
+export const route = {
+  multiple: true,
+};
+
 /**
  * @param {Magnet} app
  */
