@@ -1,7 +1,17 @@
 import {assertDefAndNotNull, assertString} from 'metal-assertions';
-import {isFunction, isObject} from 'metal';
+import {isFunction, isObject, isString} from 'metal';
 import Component from 'metal-component';
 import soy from 'metal-tools-soy';
+
+const defaultLayout = (req, content, initialState) => `
+<html>
+<head>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+  ${content}
+</body>
+</html>`;
 
 const buildSoyFiles = (src, dest) => new Promise((resolve, reject) => {
   const handleError = (error) => reject(error);
@@ -47,14 +57,20 @@ export default {
     app[method.toLowerCase()](path, async (req, res, next) => {
       try {
         if (!res.headersSent) {
+          const getInitialState = module.default.getInitialState;
+          const renderLayout = module.default.renderLayout || defaultLayout;
           let data;
-          if (isFunction(module.default.getInitialState)) {
-            data = await module.default.getInitialState(req);
+          if (isFunction(getInitialState)) {
+            data = await getInitialState(req);
           }
           if (isContentTypeJson(req)) {
             res.json(data);
           } else {
-            res.type(type).send(renderToString(module.default, data));
+            const layout = renderLayout(
+              req, renderToString(module.default, data), data);
+
+            res.type(type).send(
+              '<!DOCTYPE html>' + renderLayoutToString(layout));
           }
         }
       } catch (error) {
@@ -77,6 +93,27 @@ function renderToString(ctor, data) {
     throw new Error(
       `Metal.js component type defined in this route cannot be rendered ` +
         `from the server, only Soy or JSX components are supported.`
+    );
+  }
+}
+
+/**
+ * Render incremental dom based layouts to string.
+ * @param {function|string} fnOrString
+ * @return {string}
+ */
+function renderLayoutToString(fnOrString) {
+  if (isString(fnOrString)) {
+    return fnOrString;
+  }
+  try {
+    const element = {};
+    IncrementalDOM.patch(element, () => fnOrString);
+    return element.innerHTML;
+  } catch (error) {
+    throw new Error(
+      `Metal.js layout type defined in this route cannot be rendered ` +
+        `from the server, only String or JSX layouts are supported.`
     );
   }
 }

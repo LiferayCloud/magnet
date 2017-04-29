@@ -7,6 +7,19 @@ export const route = {
 };
 
 export default class Index extends JSXComponent {
+  static async renderLayout(req, content, initialState) {
+    return <html lang="en">
+      <head>
+        <meta charset="UTF-8"/>
+        <title>Index</title>
+      </head>
+      <body>
+        {content}
+        <div>Footer</div>
+      </body>
+      </html>;
+  }
+
   render() {
     return <div>
       <h1>Metal.js server side rendering</h1>

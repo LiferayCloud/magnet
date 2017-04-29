@@ -6,7 +6,8 @@
     "stub": false,
     "spy": false,
     "assertAsyncHttpRequest": false,
-    "isExpress": false
+    "isExpress": false,
+    "IncrementalDOM": true
   },
   "env": {
     "node": true,
