@@ -3,7 +3,6 @@
 
 <h5 align="center">Simple, fast and unopinionated uses the power of ES2015 and beyond into your microservices</h5>
 
-
 <div align="center">
   <a href="http://travis-ci.com/wedeploy/magnet">
     <img src="https://travis-ci.com/wedeploy/magnet.svg?token=a51FNuiJPYZtHhup9q1V&branch=master" alt="Travis CI" />
