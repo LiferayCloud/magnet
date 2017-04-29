@@ -84,4 +84,3 @@ If you need examples of magnet usage, you can access othe examples on its reposi
 ## License
 
 [BSD License](https://github.com/wedeploy/magnet/blob/master/LICENSE.md) © Liferay, Inc.
-
