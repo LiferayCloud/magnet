@@ -21,15 +21,15 @@ const buildSoyFiles = (src, dest) => new Promise((resolve, reject) => {
 export default {
   async build(magnet) {
     const config = magnet.getConfig();
-    const soySrc = config.magnet.plugins.metal.soySrc;
-    const soyDest = config.magnet.plugins.metal.soyDest;
+    const src = config.magnet.plugins.metal.soySrc;
+    const dest = config.magnet.plugins.metal.soyDest;
 
     // Trivially excludes soy compilation when there are no matching soy files
     // in the application directory.
     const directory = magnet.getDirectory();
-    const isTriviallyExcluded = magnet.getFiles({directory, soySrc}) === 0;
+    const isTriviallyExcluded = magnet.getFiles({directory, src}).length === 0;
     if (!isTriviallyExcluded) {
-      await buildSoyFiles(soySrc, soyDest);
+      await buildSoyFiles(src, dest);
     }
   },
 
