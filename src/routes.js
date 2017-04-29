@@ -25,7 +25,7 @@ function getRoutesDefinition_(magnet) {
     let module = require(file);
     let short = file.substring(dist.length);
 
-    if (pluginMultiple.test(file, module, magnet)) {
+    if (pluginMultiple.test(module, file, magnet)) {
       results.push(['―', '―', '―', short]);
     } else {
       let route = module.route;
