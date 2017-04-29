@@ -10,6 +10,9 @@ export default (entry, directory, outputDirectory) => {
       path: outputDirectory,
       filename: '[name]',
     },
+    resolve: {
+      mainFields: ['jsnext:main', 'browser', 'main'],
+    },
     resolveLoader: {
       modules: [path.join(__dirname, '../../node_modules'), 'node_modules'],
     },
