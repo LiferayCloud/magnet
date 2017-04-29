@@ -1,6 +1,6 @@
 import {isFunction, isObject} from 'metal';
 
-const isMultiple = (module) => {
+const isMultiple = module => {
   return isObject(module.route) && module.route.multiple;
 };
 

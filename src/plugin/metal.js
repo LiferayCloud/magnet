@@ -3,7 +3,8 @@ import {isFunction, isObject, isString} from 'metal';
 import Component from 'metal-component';
 import soy from 'metal-tools-soy';
 
-const defaultLayout = async (req, content, initialState) => `
+const defaultLayout = async (req, content, initialState) =>
+  `
 <html>
 <head>
   <meta charset="UTF-8"/>
@@ -13,10 +14,11 @@ const defaultLayout = async (req, content, initialState) => `
 </body>
 </html>`;
 
-const buildSoyFiles = (src, dest) => new Promise((resolve, reject) => {
-  const handleError = (error) => reject(error);
-  soy({src, dest, handleError}).on('end', () => resolve());
-});
+const buildSoyFiles = (src, dest) =>
+  new Promise((resolve, reject) => {
+    const handleError = error => reject(error);
+    soy({src, dest, handleError}).on('end', () => resolve());
+  });
 
 export default {
   async build(magnet) {
@@ -67,10 +69,14 @@ export default {
             res.json(data);
           } else {
             const layout = await renderLayout(
-              req, renderToString(module.default, data), data);
+              req,
+              renderToString(module.default, data),
+              data
+            );
 
-            res.type(type).send(
-              '<!DOCTYPE html>' + renderLayoutToString(layout));
+            res
+              .type(type)
+              .send('<!DOCTYPE html>' + renderLayoutToString(layout));
           }
         }
       } catch (error) {
