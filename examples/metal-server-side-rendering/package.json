@@ -6,7 +6,7 @@
     "start": "magnet build && magnet start"
   },
   "dependencies": {
-    "magnet": "1.0.0-alpha.1",
+    "magnet": "1.0.0-alpha.2",
     "metal-jsx": "latest",
     "metal-soy": "latest"
   }
