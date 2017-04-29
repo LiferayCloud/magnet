@@ -1,4 +1,5 @@
 import {JSXComponent} from 'metal-jsx';
+import Layout from './layout.js';
 
 export const route = {
   path: '/',
@@ -6,20 +7,7 @@ export const route = {
   type: 'html',
 };
 
-export default class Index extends JSXComponent {
-  static async renderLayout(req, content, initialState) {
-    return <html lang="en">
-      <head>
-        <meta charset="UTF-8"/>
-        <title>Index</title>
-      </head>
-      <body>
-        {content}
-        <div>Footer</div>
-      </body>
-      </html>;
-  }
-
+export default class Index extends Layout {
   render() {
     return <div>
       <h1>Metal.js server side rendering</h1>
