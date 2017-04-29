@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --trace-warnings
 
 import {Magnet} from '../';
 import parseArgs from 'minimist';
