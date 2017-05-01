@@ -19,7 +19,11 @@ global.window = dom.window;
  * @return {Promise}
  */
 export async function buildServer(
-  files, directory, outputDirectory, babelPresets) {
+  files,
+  directory,
+  outputDirectory,
+  babelPresets
+) {
   fs.removeSync(outputDirectory);
 
   return new Promise((resolve, reject) => {
@@ -51,7 +55,11 @@ export async function buildServer(
  * @return {Promise}
  */
 export async function buildClient(
-  files, directory, outputDirectory, babelPresets) {
+  files,
+  directory,
+  outputDirectory,
+  babelPresets
+) {
   fs.removeSync(outputDirectory);
 
   let entry = {};

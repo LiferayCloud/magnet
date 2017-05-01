@@ -1,7 +1,7 @@
 import resolve from 'resolve';
 import {isFunction} from 'metal';
 
-export default (magnet) => {
+export default magnet => {
   const config = magnet.getConfig();
   const pluginPrefix = 'magnet-plugin-';
   const cwd = process.cwd();
