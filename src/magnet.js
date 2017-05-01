@@ -410,6 +410,10 @@ class Magnet {
     this.setupMiddlewareHttpLogger_();
     this.setupMiddlewareValidator_();
     this.setupMiddlewareStaticFiles_();
+
+    if (process.env.NODE_ENV === 'development') {
+      this.setupMiddlewareDevelopment_();
+    }
   }
 
   /**
@@ -418,6 +422,18 @@ class Magnet {
    */
   setupMiddlewareSecurity_() {
     this.getServer().getEngine().use(helmet());
+  }
+
+  /**
+   * Setup development middleware.
+   * @private
+   */
+  setupMiddlewareDevelopment_() {
+      this.getServer()
+      .getEngine().use((req, res, next) => {
+        res.set('Connection', 'close');
+        next();
+      });
   }
 
   /**
