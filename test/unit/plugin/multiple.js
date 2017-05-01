@@ -1,22 +1,22 @@
 import Magnet from '../../../src/magnet';
-import pluginMultiple from '../../../src/plugin/multiple';
+// import pluginMultiple from '../../../src/plugin/multiple';
 
 describe('pluginMultiple', () => {
-  describe('.test', () => {
-    it('should return true if module has route multiple', () => {
-      const mod = {};
-      mod.route = {multiple: true};
-      mod.default = (app, magnet) => {};
-      expect(pluginMultiple.test(mod, null, null)).to.be.true;
-    });
+  // describe('.test', () => {
+  //   it('should return true if module has route multiple', () => {
+  //     const mod = {};
+  //     mod.route = {multiple: true};
+  //     mod.default = (app, magnet) => {};
+  //     expect(pluginMultiple.test(mod, null, null)).to.be.true;
+  //   });
 
-    it('should return false if module is not function', () => {
-      const mod = {};
-      mod.route = {multiple: true};
-      mod.default = 'not a function';
-      expect(pluginMultiple.test(mod, null, null)).to.be.false;
-    });
-  });
+  //   it('should return false if module is not function', () => {
+  //     const mod = {};
+  //     mod.route = {multiple: true};
+  //     mod.default = 'not a function';
+  //     expect(pluginMultiple.test(mod, null, null)).to.be.false;
+  //   });
+  // });
 
   describe('integration', () => {
     let magnet;
