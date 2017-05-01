@@ -1,5 +1,5 @@
 import Magnet from './magnet';
-import pluginMultiple from './plugin/multiple';
+import pluginMultiple from 'magnet-plugin-multiple';
 import Table from 'cli-table';
 import path from 'path';
 

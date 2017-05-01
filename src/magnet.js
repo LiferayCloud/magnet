@@ -6,6 +6,7 @@ import {isFunction} from 'metal';
 import {validatorErrorMiddleware} from './middleware/validator-error';
 import bodyParser from 'body-parser';
 import compression from 'compression';
+import es2015 from 'babel-preset-es2015';
 import express from 'express';
 import expressValidator from 'express-validator';
 import fs from 'fs-extra';
@@ -15,10 +16,8 @@ import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
-import pluginFunction from './plugin/function';
-import pluginMultiple from './plugin/multiple';
-import pluginMetal from './plugin/metal';
 import ServerFactory from './server-factory';
+import registerPlugins from './register-plugins';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
@@ -73,7 +72,39 @@ class Magnet {
      */
     this.server_ = ServerFactory.create();
 
+    /**
+     * Magnet plugins.
+     * @type {!Array}
+     * @private
+     */
+    this.plugins_ = [];
+
+    /**
+     * Magnet babel presets.
+     * @type {!Array}
+     * @private
+     */
+    this.babelPresets_ = [es2015];
+
     this.setupMiddlewares_();
+
+    registerPlugins(this);
+  }
+
+  /**
+   * Adds plugin.
+   * @param {Object} plugin
+   */
+  addPlugin(plugin) {
+    this.plugins_.push(plugin);
+  }
+
+  /**
+   * Adds babel pressets.
+   * @param {!Array} presets
+   */
+  addBabelPreset(presets) {
+    this.babelPresets_ = this.getBabelPresets().concat(presets);
   }
 
   /**
@@ -84,14 +115,10 @@ class Magnet {
     log.info(false, 'Building plugins…');
 
     try {
-      if (isFunction(pluginMetal.build)) {
-        await pluginMetal.build(this);
-      }
-      if (isFunction(pluginFunction.build)) {
-        await pluginMetal.build(this);
-      }
-      if (isFunction(pluginMultiple.build)) {
-        await pluginMultiple.build(this);
+      for (const plugin of this.getPlugins()) {
+        if (isFunction(plugin.build)) {
+          await plugin.build(this);
+        }
       }
     } catch (error) {
       log.error(false, error);
@@ -108,12 +135,15 @@ class Magnet {
     await buildServer(
       files,
       this.getDirectory(),
-      this.getServerDistDirectory()
+      this.getServerDistDirectory(),
+      this.getBabelPresets()
     );
+
     await buildClient(
       files,
       this.getDirectory(),
-      this.getClientDistDirectory()
+      this.getClientDistDirectory(),
+      this.getBabelPresets()
     );
   }
 
@@ -207,6 +237,22 @@ class Magnet {
   }
 
   /**
+   * Returns magnet plugins.
+   * @return {Array.<Object>}
+   */
+  getPlugins() {
+    return this.plugins_;
+  }
+
+  /**
+   * Returns babel pressets.
+   * @return {Array}
+   */
+  getBabelPresets() {
+    return this.babelPresets_;
+  }
+
+  /**
    * Gets server runtime.
    * @return {Server}
    */
@@ -267,13 +313,18 @@ class Magnet {
     files.forEach(file => {
       let module = require(file);
       try {
-        if (pluginMetal.test(module, file, this)) {
-          pluginMetal.register(module, file, this);
-        } else if (pluginFunction.test(module, file, this)) {
-          pluginFunction.register(module, file, this);
-        } else if (pluginMultiple.test(module, file, this)) {
-          pluginMultiple.register(module, file, this);
+        for (const plugin of this.getPlugins()) {
+          if (plugin.test(module, file, this)) {
+            plugin.register(module, file, this);
+          }
         }
+        // if (pluginMetal.test(module, file, this)) {
+        //   pluginMetal.register(module, file, this);
+        // } else if (pluginFunction.test(module, file, this)) {
+        //   pluginFunction.register(module, file, this);
+        // } else if (pluginMultiple.test(module, file, this)) {
+        //   pluginMultiple.register(module, file, this);
+        // }
       } catch (error) {
         log.error(false, error);
       }

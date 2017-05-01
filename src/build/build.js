@@ -1,6 +1,4 @@
 import {transformFileSync} from 'babel-core';
-import es2015 from 'babel-preset-es2015';
-import metalJsx from 'babel-preset-metal-jsx';
 import path from 'path';
 import fs from 'fs-extra';
 import webpack from 'webpack';
@@ -17,9 +15,11 @@ global.window = dom.window;
  * @param {!Array.<string>} files
  * @param {string} directory
  * @param {string} outputDirectory
+ * @param {!Array} babelPresets
  * @return {Promise}
  */
-export async function buildServer(files, directory, outputDirectory) {
+export async function buildServer(
+  files, directory, outputDirectory, babelPresets) {
   fs.removeSync(outputDirectory);
 
   return new Promise((resolve, reject) => {
@@ -28,7 +28,7 @@ export async function buildServer(files, directory, outputDirectory) {
         let absoluteSrc = path.join(directory, file);
         let absoluteDist = path.join(outputDirectory, file);
         let transform = transformFileSync(absoluteSrc, {
-          presets: [metalJsx, es2015],
+          presets: babelPresets,
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
@@ -47,9 +47,11 @@ export async function buildServer(files, directory, outputDirectory) {
  * @param {!Array.<string>} files
  * @param {string} directory
  * @param {string} outputDirectory
+ * @param {!Array} babelPresets
  * @return {Promise}
  */
-export async function buildClient(files, directory, outputDirectory) {
+export async function buildClient(
+  files, directory, outputDirectory, babelPresets) {
   fs.removeSync(outputDirectory);
 
   let entry = {};
@@ -58,7 +60,8 @@ export async function buildClient(files, directory, outputDirectory) {
   const webpackClientConfig = buildWebpackClientConfig(
     entry,
     directory,
-    outputDirectory
+    outputDirectory,
+    babelPresets
   );
 
   return new Promise((resolve, reject) => {
