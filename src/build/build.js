@@ -71,7 +71,6 @@ export async function buildClient(files, directory, outputDirectory) {
         colors: true,
         chunks: false,
       });
-      console.log(output);
       resolve(output);
     });
   });
