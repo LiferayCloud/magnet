@@ -310,25 +310,19 @@ class Magnet {
     let dist = this.getServerDistDirectory();
     let files = this.getLoadFiles({directory: dist, realpath: true});
 
-    files.forEach(file => {
+    for (const file of files) {
       let module = require(file);
       try {
         for (const plugin of this.getPlugins()) {
           if (plugin.test(module, file, this)) {
             plugin.register(module, file, this);
+            break;
           }
         }
-        // if (pluginMetal.test(module, file, this)) {
-        //   pluginMetal.register(module, file, this);
-        // } else if (pluginFunction.test(module, file, this)) {
-        //   pluginFunction.register(module, file, this);
-        // } else if (pluginMultiple.test(module, file, this)) {
-        //   pluginMultiple.register(module, file, this);
-        // }
       } catch (error) {
         log.error(false, error);
       }
-    });
+    }
   }
 
   /**
