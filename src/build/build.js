@@ -17,11 +17,11 @@ global.window = dom.window;
  * @param {Array} plugins
  * @return {Array}
  */
-const aggregatedBabelPresets = (plugins) => {
+const aggregateBabelPresets = plugins => {
   let presets = [es2015];
   for (const plugin of plugins) {
     if (isFunction(plugin.babelPresets)) {
-      presets = presets.concat(presets);
+      presets = presets.concat(plugin.babelPresets());
     }
   }
   return presets;
@@ -49,7 +49,7 @@ export async function buildServer(
         let absoluteSrc = path.join(directory, file);
         let absoluteDist = path.join(outputDirectory, file);
         let transform = transformFileSync(absoluteSrc, {
-          presets: aggregatedBabelPresets(plugins),
+          presets: aggregateBabelPresets(plugins),
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
@@ -86,7 +86,7 @@ export async function buildClient(
     entry,
     directory,
     outputDirectory,
-    aggregatedBabelPresets(plugins)
+    aggregateBabelPresets(plugins)
   );
 
   return new Promise((resolve, reject) => {
