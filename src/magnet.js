@@ -15,9 +15,6 @@ import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
-import pluginFunction from './plugin/function';
-import pluginMultiple from './plugin/multiple';
-import pluginMetal from './plugin/metal';
 import ServerFactory from './server-factory';
 
 /**
@@ -73,7 +70,24 @@ class Magnet {
      */
     this.server_ = ServerFactory.create();
 
+    /**
+     * Magnet plugins.
+     * @type {!Array}
+     * @private
+     */
+    this.plugins_ = [];
+
     this.setupMiddlewares_();
+
+    this.registerPlugins_();
+  }
+
+  /**
+   * Adds plugin.
+   * @param {Object} plugin
+   */
+  addPlugin(plugin) {
+    this.plugins_.push(plugin);
   }
 
   /**
@@ -84,14 +98,10 @@ class Magnet {
     log.info(false, 'Building plugins…');
 
     try {
-      if (isFunction(pluginMetal.build)) {
-        await pluginMetal.build(this);
-      }
-      if (isFunction(pluginFunction.build)) {
-        await pluginMetal.build(this);
-      }
-      if (isFunction(pluginMultiple.build)) {
-        await pluginMultiple.build(this);
+      for (const plugin of this.getPlugins()) {
+        if (isFunction(plugin.build)) {
+          await plugin.build(this);
+        }
       }
     } catch (error) {
       log.error(false, error);
@@ -108,12 +118,15 @@ class Magnet {
     await buildServer(
       files,
       this.getDirectory(),
-      this.getServerDistDirectory()
+      this.getServerDistDirectory(),
+      this.getPlugins()
     );
+
     await buildClient(
       files,
       this.getDirectory(),
-      this.getClientDistDirectory()
+      this.getClientDistDirectory(),
+      this.getPlugins()
     );
   }
 
@@ -207,6 +220,15 @@ class Magnet {
   }
 
   /**
+   * Returns magnet plugins.
+   * @return {Array.<Object>}
+   * @protected
+   */
+  getPlugins() {
+    return this.plugins_;
+  }
+
+  /**
    * Gets server runtime.
    * @return {Server}
    */
@@ -264,20 +286,19 @@ class Magnet {
     let dist = this.getServerDistDirectory();
     let files = this.getLoadFiles({directory: dist, realpath: true});
 
-    files.forEach(file => {
+    for (const file of files) {
       let module = require(file);
       try {
-        if (pluginMetal.test(module, file, this)) {
-          pluginMetal.register(module, file, this);
-        } else if (pluginFunction.test(module, file, this)) {
-          pluginFunction.register(module, file, this);
-        } else if (pluginMultiple.test(module, file, this)) {
-          pluginMultiple.register(module, file, this);
+        for (const plugin of this.getPlugins()) {
+          if (plugin.test(module, file, this)) {
+            plugin.register(module, file, this);
+            break;
+          }
         }
       } catch (error) {
         log.error(false, error);
       }
-    });
+    }
   }
 
   /**
@@ -296,6 +317,23 @@ class Magnet {
         let app = this.getServer().getEngine();
         fn.call(this, app, this);
       }
+    }
+  }
+
+  /**
+   * Register magnet plugins.
+   * @private
+   */
+  registerPlugins_() {
+    const config = this.getConfig();
+    const pluginPrefix = 'magnet-plugin-';
+
+    for (const pluginName of config.magnet.plugins) {
+      let plugin = require(`${pluginPrefix}${pluginName}`);
+      if (plugin.default) {
+        plugin = plugin.default;
+      }
+      this.addPlugin(plugin);
     }
   }
 
@@ -429,11 +467,10 @@ class Magnet {
    * @private
    */
   setupMiddlewareDevelopment_() {
-      this.getServer()
-      .getEngine().use((req, res, next) => {
-        res.set('Connection', 'close');
-        next();
-      });
+    this.getServer().getEngine().use((req, res, next) => {
+      res.set('Connection', 'close');
+      next();
+    });
   }
 
   /**

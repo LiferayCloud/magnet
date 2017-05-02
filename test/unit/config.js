@@ -35,12 +35,8 @@ describe('config', function() {
           logLevel: 'info',
           port: 3000,
           src: ['**/*.js'],
-          plugins: {
-            metal: {
-              soySrc: ['**/*.soy'],
-              soyDest: ['.'],
-            },
-          },
+          plugins: ['function', 'multiple'],
+          pluginsConfig: {},
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);
@@ -63,12 +59,8 @@ describe('config', function() {
           logLevel: 'silent',
           port: 3000,
           src: ['**/*.js'],
-          plugins: {
-            metal: {
-              soySrc: ['**/*.soy'],
-              soyDest: ['.'],
-            },
-          },
+          plugins: ['function', 'multiple'],
+          pluginsConfig: {},
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);
@@ -91,12 +83,8 @@ describe('config', function() {
           logLevel: 'silent',
           port: 3000,
           src: ['**/*.js'],
-          plugins: {
-            metal: {
-              soySrc: ['**/*.soy'],
-              soyDest: ['.'],
-            },
-          },
+          plugins: ['function', 'multiple'],
+          pluginsConfig: {},
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);

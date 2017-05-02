@@ -1,10 +1,10 @@
 import {transformFileSync} from 'babel-core';
-import es2015 from 'babel-preset-es2015';
-import metalJsx from 'babel-preset-metal-jsx';
 import path from 'path';
 import fs from 'fs-extra';
 import webpack from 'webpack';
 import buildWebpackClientConfig from './webpack.client.config';
+import es2015 from 'babel-preset-es2015';
+import {isFunction} from 'metal';
 
 import jsdom from 'jsdom';
 const {JSDOM} = jsdom;
@@ -13,13 +13,34 @@ global.document = dom.window.document;
 global.window = dom.window;
 
 /**
+ * Aggregate babel presets.
+ * @param {Array} plugins
+ * @return {Array}
+ */
+const aggregateBabelPresets = plugins => {
+  let presets = [es2015];
+  for (const plugin of plugins) {
+    if (isFunction(plugin.babelPresets)) {
+      presets = presets.concat(plugin.babelPresets());
+    }
+  }
+  return presets;
+};
+
+/**
  * Builds server `files` into `outputPath`.
  * @param {!Array.<string>} files
  * @param {string} directory
  * @param {string} outputDirectory
+ * @param {!Array} plugins
  * @return {Promise}
  */
-export async function buildServer(files, directory, outputDirectory) {
+export async function buildServer(
+  files,
+  directory,
+  outputDirectory,
+  plugins = []
+) {
   fs.removeSync(outputDirectory);
 
   return new Promise((resolve, reject) => {
@@ -28,7 +49,7 @@ export async function buildServer(files, directory, outputDirectory) {
         let absoluteSrc = path.join(directory, file);
         let absoluteDist = path.join(outputDirectory, file);
         let transform = transformFileSync(absoluteSrc, {
-          presets: [metalJsx, es2015],
+          presets: aggregateBabelPresets(plugins),
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
@@ -47,9 +68,15 @@ export async function buildServer(files, directory, outputDirectory) {
  * @param {!Array.<string>} files
  * @param {string} directory
  * @param {string} outputDirectory
+ * @param {!Array} plugins
  * @return {Promise}
  */
-export async function buildClient(files, directory, outputDirectory) {
+export async function buildClient(
+  files,
+  directory,
+  outputDirectory,
+  plugins = []
+) {
   fs.removeSync(outputDirectory);
 
   let entry = {};
@@ -58,7 +85,8 @@ export async function buildClient(files, directory, outputDirectory) {
   const webpackClientConfig = buildWebpackClientConfig(
     entry,
     directory,
-    outputDirectory
+    outputDirectory,
+    aggregateBabelPresets(plugins)
   );
 
   return new Promise((resolve, reject) => {

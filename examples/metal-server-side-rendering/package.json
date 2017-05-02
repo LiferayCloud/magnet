@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "magnet": "latest",
-    "metal-jsx": "latest",
-    "metal-soy": "latest"
+    "magnet-plugin-metal": "latest"
   }
 }
