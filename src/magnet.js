@@ -16,7 +16,6 @@ import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
 import ServerFactory from './server-factory';
-import registerPlugins from './register-plugins';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
@@ -80,7 +79,7 @@ class Magnet {
 
     this.setupMiddlewares_();
 
-    registerPlugins(this);
+    this.registerPlugins_();
   }
 
   /**
@@ -322,6 +321,23 @@ class Magnet {
   }
 
   /**
+   * Register magnet plugins.
+   * @private
+   */
+  registerPlugins_() {
+    const config = this.getConfig();
+    const pluginPrefix = 'magnet-plugin-';
+
+    for (const pluginName of config.magnet.plugins) {
+      let plugin = require(`${pluginPrefix}${pluginName}`);
+      if (plugin.default) {
+        plugin = plugin.default;
+      }
+      this.addPlugin(plugin);
+    }
+  }
+
+  /**
    * Resolves configuration using environment `NODE_ENV` or the specified
    * `config` filename. Note that the configuration directory can be specified
    * as `configDir`.
@@ -451,11 +467,10 @@ class Magnet {
    * @private
    */
   setupMiddlewareDevelopment_() {
-      this.getServer()
-      .getEngine().use((req, res, next) => {
-        res.set('Connection', 'close');
-        next();
-      });
+    this.getServer().getEngine().use((req, res, next) => {
+      res.set('Connection', 'close');
+      next();
+    });
   }
 
   /**
