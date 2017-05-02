@@ -55,7 +55,7 @@
     "helmet": "^3.3.0",
     "jsdom": "^10.0.0",
     "magnet-plugin-function": "^0.0.2",
-    "magnet-plugin-multiple": "^0.0.1",
+    "magnet-plugin-multiple": "^0.0.5",
     "metal": "^2.6.4",
     "metal-assertions": "^2.8.0",
     "minimist": "^1.2.0",
