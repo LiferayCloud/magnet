@@ -6,7 +6,6 @@ import {isFunction} from 'metal';
 import {validatorErrorMiddleware} from './middleware/validator-error';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import es2015 from 'babel-preset-es2015';
 import express from 'express';
 import expressValidator from 'express-validator';
 import fs from 'fs-extra';
@@ -79,13 +78,6 @@ class Magnet {
      */
     this.plugins_ = [];
 
-    /**
-     * Magnet babel presets.
-     * @type {!Array}
-     * @private
-     */
-    this.babelPresets_ = [es2015];
-
     this.setupMiddlewares_();
 
     registerPlugins(this);
@@ -97,14 +89,6 @@ class Magnet {
    */
   addPlugin(plugin) {
     this.plugins_.push(plugin);
-  }
-
-  /**
-   * Adds babel pressets.
-   * @param {!Array} presets
-   */
-  addBabelPreset(presets) {
-    this.babelPresets_ = this.getBabelPresets().concat(presets);
   }
 
   /**
@@ -136,14 +120,14 @@ class Magnet {
       files,
       this.getDirectory(),
       this.getServerDistDirectory(),
-      this.getBabelPresets()
+      this.getPlugins()
     );
 
     await buildClient(
       files,
       this.getDirectory(),
       this.getClientDistDirectory(),
-      this.getBabelPresets()
+      this.getPlugins()
     );
   }
 
@@ -239,17 +223,10 @@ class Magnet {
   /**
    * Returns magnet plugins.
    * @return {Array.<Object>}
+   * @protected
    */
   getPlugins() {
     return this.plugins_;
-  }
-
-  /**
-   * Returns babel pressets.
-   * @return {Array}
-   */
-  getBabelPresets() {
-    return this.babelPresets_;
   }
 
   /**
