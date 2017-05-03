@@ -1,5 +1,5 @@
 import {assertDefAndNotNull} from 'metal-assertions';
-import {buildClient, buildServer} from './build/build';
+import {buildServer} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction} from 'metal';
@@ -121,21 +121,6 @@ class Magnet {
       this.getServerDistDirectory(),
       this.getPlugins()
     );
-
-    await buildClient(
-      files,
-      this.getDirectory(),
-      this.getClientDistDirectory(),
-      this.getPlugins()
-    );
-  }
-
-  /**
-   * Gets client dist directory.
-   * @return {string}
-   */
-  getClientDistDirectory() {
-    return path.join(this.directory_, '.magnet', 'client');
   }
 
   /**
@@ -250,19 +235,6 @@ class Magnet {
    */
   getStaticDistDirectory() {
     return path.join(this.directory_, 'static');
-  }
-
-  /**
-   * Checks if client dist directory exists.
-   * @return {boolean}
-   */
-  hasClientDistDirectory() {
-    try {
-      fs.accessSync(this.getClientDistDirectory());
-      return true;
-    } catch (error) {
-      return false;
-    }
   }
 
   /**
@@ -481,9 +453,6 @@ class Magnet {
     this.getServer()
       .getEngine()
       .use('/static', express.static(this.getStaticDistDirectory()));
-    this.getServer()
-      .getEngine()
-      .use('/.magnet', express.static(this.getClientDistDirectory()));
   }
 
   /**
@@ -515,7 +484,6 @@ class Magnet {
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
     await this.getServer().close();
     fs.removeSync(this.getServerDistDirectory());
-    fs.removeSync(this.getClientDistDirectory());
   }
 }
 

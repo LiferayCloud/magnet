@@ -62,8 +62,7 @@
     "morgan": "^1.6.0",
     "multer": "^1.3.0",
     "npmlog": "^4.0.2",
-    "pretty-error": "^2.1.0",
-    "webpack": "^2.4.1"
+    "pretty-error": "^2.1.0"
   },
   "devDependencies": {
     "babel-register": "^6.23.0",
