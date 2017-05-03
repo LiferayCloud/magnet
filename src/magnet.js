@@ -15,6 +15,7 @@ import log from './log';
 import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
+import resolve from 'resolve';
 import ServerFactory from './server-factory';
 
 /**
@@ -301,7 +302,9 @@ class Magnet {
     const pluginPrefix = 'magnet-plugin-';
 
     for (const pluginName of config.magnet.plugins) {
-      let plugin = require(`${pluginPrefix}${pluginName}`);
+      let resolvedPath = resolve.sync(
+        `${pluginPrefix}${pluginName}`, {basedir: process.cwd()});
+      let plugin = require(resolvedPath);
       if (plugin.default) {
         plugin = plugin.default;
       }
