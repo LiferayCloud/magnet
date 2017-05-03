@@ -42,6 +42,7 @@ export async function buildServer(
   plugins = []
 ) {
   fs.removeSync(outputDirectory);
+  const presets = aggregateBabelPresets(plugins);
 
   return new Promise((resolve, reject) => {
     files.forEach(file => {
@@ -49,7 +50,7 @@ export async function buildServer(
         let absoluteSrc = path.join(directory, file);
         let absoluteDist = path.join(outputDirectory, file);
         let transform = transformFileSync(absoluteSrc, {
-          presets: aggregateBabelPresets(plugins),
+          presets,
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
