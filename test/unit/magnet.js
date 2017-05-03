@@ -75,9 +75,8 @@ describe('Magnet', () => {
 
     it('should return the instance directory', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getDirectory()).to.equal(
-        `${process.cwd()}/test/fixtures/app`
-      );
+      expect(magnet.getDirectory()).to
+        .equal(`${process.cwd()}/test/fixtures/app`);
     });
   });
 
@@ -100,9 +99,8 @@ describe('Magnet', () => {
 
     it('should return server distribution directory path', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getServerDistDirectory()).to.equal(
-        `${process.cwd()}/test/fixtures/app/.magnet/server`
-      );
+      expect(magnet.getServerDistDirectory()).to
+        .equal(`${process.cwd()}/test/fixtures/app/.magnet/server`);
     });
   });
 

@@ -9,4 +9,4 @@ export const controller = function(app) {
   app.get('/', (req, res) => {
     res.json({foo: 'bar'});
   });
-}
+};
