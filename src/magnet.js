@@ -413,6 +413,9 @@ class Magnet {
    * @private
    */
   setupMiddlewares_() {
+    if (process.env.NODE_ENV === 'development') {
+      this.setupMiddlewareDevelopment_();
+    }
     this.setupMiddlewareSecurity_();
     this.setupMiddlewareBodyParser_();
     this.setupMiddlewareMultipart_();
@@ -420,10 +423,6 @@ class Magnet {
     this.setupMiddlewareHttpLogger_();
     this.setupMiddlewareValidator_();
     this.setupMiddlewareStaticFiles_();
-
-    if (process.env.NODE_ENV === 'development') {
-      this.setupMiddlewareDevelopment_();
-    }
   }
 
   /**
