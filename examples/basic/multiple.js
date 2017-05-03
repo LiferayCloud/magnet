@@ -1,8 +1,4 @@
-export const route = {
-  multiple: true,
-};
-
-export default (app, magnet) => {
+export const controller = (app, magnet) => {
   app.get('/foo1', (req, res) => res.end('foo1'));
   app.get('/foo2', (req, res) => res.end('foo2'));
 };

@@ -1,5 +1,5 @@
 import Magnet from './magnet';
-import pluginMultiple from 'magnet-plugin-multiple';
+import pluginController from 'magnet-plugin-controller';
 import Table from 'cli-table';
 import path from 'path';
 
@@ -25,7 +25,7 @@ function getRoutesDefinition_(magnet) {
     let module = require(file);
     let short = file.substring(dist.length);
 
-    if (pluginMultiple.test(module, file, magnet)) {
+    if (pluginController.test(module, file, magnet)) {
       results.push(['―', '―', '―', short]);
     } else {
       let route = module.route;

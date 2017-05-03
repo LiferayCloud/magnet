@@ -62,7 +62,7 @@ describe('Magnet', () => {
           logLevel: 'silent',
           port: 3000,
           src: ['**/*.js'],
-          plugins: ['function', 'multiple'],
+          plugins: ['function', 'controller'],
           pluginsConfig: {},
         },
       };

@@ -1,10 +1,7 @@
-export const route = {
-  multiple: true,
-};
-
 /**
  * @param {Magnet} app
  */
-export default function(app) {
+export const controller = function(app) {
   app.get('/one', (req, res) => res.send('one'));
-}
+};
+
