@@ -5,14 +5,14 @@ import templates from './page1.soy.js';
 export const route = {
   path: '/page1',
   method: 'get',
-  type: 'html',
 };
 
-class Page1 extends Component {
+export default class Page1 extends Component {
   static async getInitialState(req) {
     return req.query;
   }
-}
+};
+
 Soy.register(Page1, templates);
 
 Page1.STATE = {
@@ -20,5 +20,3 @@ Page1.STATE = {
     value: 'Soy',
   },
 }
-
-export default Page1;

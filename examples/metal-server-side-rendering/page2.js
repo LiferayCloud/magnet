@@ -1,9 +1,9 @@
 import {JSXComponent} from 'metal-jsx';
+import {ComponentRegistry} from 'metal-component';
 
 export const route = {
   path: '/page2',
   method: 'get',
-  type: 'html',
 };
 
 export default class Page2 extends JSXComponent {
@@ -24,3 +24,5 @@ Page2.PROPS = {
     value: 'JSX',
   },
 }
+
+ComponentRegistry.register(Page2);

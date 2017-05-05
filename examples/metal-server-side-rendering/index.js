@@ -1,13 +1,12 @@
+import {ComponentRegistry} from 'metal-component';
 import {JSXComponent} from 'metal-jsx';
-import Layout from './layout.js';
 
 export const route = {
   path: '/',
   method: 'get',
-  type: 'html',
 };
 
-export default class Index extends Layout {
+export default class Index extends JSXComponent {
   render() {
     return <div>
       <h1>Metal.js server side rendering</h1>
@@ -16,3 +15,5 @@ export default class Index extends Layout {
     </div>
   }
 };
+
+ComponentRegistry.register(Index);

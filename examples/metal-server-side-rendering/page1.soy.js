@@ -46,20 +46,18 @@ var print = soyIdom.print;
  * @suppress {checkTypes}
  */
 function $render(opt_data, opt_ignored, opt_ijData) {
-  ie_open('span');
-    ie_open('div');
-      ie_open('h1');
-        itext('Hello ');
-        print(opt_data.attr);
-        itext('!');
-      ie_close('h1');
-      ie_open_start('a');
-          iattr('href', '/page2');
-      ie_open_end();
-        itext('Navigate');
-      ie_close('a');
-    ie_close('div');
-  ie_close('span');
+  ie_open('div');
+    ie_open('h1');
+      itext('Hello ');
+      print(opt_data.attr);
+      itext('!');
+    ie_close('h1');
+    ie_open_start('a');
+        iattr('href', '/page2');
+    ie_open_end();
+      itext('Navigate');
+    ie_close('a');
+  ie_close('div');
 }
 exports.render = $render;
 if (goog.DEBUG) {
