@@ -250,4 +250,20 @@ describe('Magnet', () => {
       expect(magnet.getServer().getEngine().bootstrapValue).to.eq('finished');
     });
   });
+
+  describe('plugins', () => {
+    it('should call plugin\'s start method', async () => {
+      const directory = `${process.cwd()}/test/fixtures/plugin`;
+
+      const magnet = new Magnet({directory});
+      await magnet.build();
+
+      expect(magnet.__START_WAS_CALLED__).to.eq(undefined);
+
+      await magnet.start();
+      await magnet.stop();
+
+      expect(magnet.__START_WAS_CALLED__).to.eq(true);
+    });
+  });
 });

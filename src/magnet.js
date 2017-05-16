@@ -2,7 +2,7 @@ import {assertDefAndNotNull} from 'metal-assertions';
 import {buildServer} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
-import {isFunction} from 'metal';
+import {isFunction, isString} from 'metal';
 import {validatorErrorMiddleware} from './middleware/validator-error';
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -301,10 +301,13 @@ class Magnet {
     const config = this.getConfig();
     const pluginPrefix = 'magnet-plugin-';
 
-    for (const pluginName of config.magnet.plugins) {
-      let resolvedPath = resolve.sync(
-        `${pluginPrefix}${pluginName}`, {basedir: process.cwd()});
-      let plugin = require(resolvedPath);
+    for (let plugin of config.magnet.plugins) {
+      if (isString(plugin)) {
+        const resolvedPath = resolve.sync(
+          `${pluginPrefix}${plugin}`, {basedir: process.cwd()});
+        plugin = require(resolvedPath);
+      }
+
       if (plugin.default) {
         plugin = plugin.default;
       }
@@ -458,12 +461,31 @@ class Magnet {
   }
 
   /**
+   * Starts plugins by calling their `start` method.
+   * @private
+   */
+  async startPlugins_() {
+    log.info(false, 'Starting plugins…');
+
+    try {
+      for (const plugin of this.getPlugins()) {
+        if (isFunction(plugin.start)) {
+          await plugin.start(this);
+        }
+      }
+    } catch (error) {
+      log.error(false, error);
+    }
+  }
+
+  /**
    * Starts application.
    */
   async start() {
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
 
     await this.load();
+    await this.startPlugins_();
 
     this.setupMiddlewareError_();
 
