@@ -465,7 +465,7 @@ class Magnet {
    * Starts plugins by calling their `start` method.
    * @private
    */
-  async startPlugins_() {
+  async startPlugins() {
     log.info(false, 'Starting plugins…');
 
     try {
@@ -485,8 +485,8 @@ class Magnet {
   async start() {
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
 
+    await this.startPlugins();
     await this.load();
-    await this.startPlugins_();
 
     this.setupMiddlewareError_();
 
