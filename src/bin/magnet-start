@@ -3,8 +3,6 @@
 import {Magnet} from '../';
 import parseArgs from 'minimist';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     h: 'help',
