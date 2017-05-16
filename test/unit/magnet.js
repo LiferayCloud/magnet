@@ -75,8 +75,9 @@ describe('Magnet', () => {
 
     it('should return the instance directory', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getDirectory()).to
-        .equal(`${process.cwd()}/test/fixtures/app`);
+      expect(magnet.getDirectory()).to.equal(
+        `${process.cwd()}/test/fixtures/app`
+      );
     });
   });
 
@@ -99,8 +100,9 @@ describe('Magnet', () => {
 
     it('should return server distribution directory path', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getServerDistDirectory()).to
-        .equal(`${process.cwd()}/test/fixtures/app/.magnet/server`);
+      expect(magnet.getServerDistDirectory()).to.equal(
+        `${process.cwd()}/test/fixtures/app/.magnet/server`
+      );
     });
   });
 
@@ -236,6 +238,14 @@ describe('Magnet', () => {
       await magnet.start();
       await magnet.stop();
       expect(magnet.getServer().getHttpServer().address()).to.be.null;
+    });
+
+    it('should not delete build folder after stop the application server', async () => {
+      const magnet = new Magnet({directory});
+      await magnet.build();
+      await magnet.start();
+      await magnet.stop();
+      expect(fs.existsSync(magnet.getServerDistDirectory())).to.be.true;
     });
   });
 

@@ -303,8 +303,9 @@ class Magnet {
 
     for (let plugin of config.magnet.plugins) {
       if (isString(plugin)) {
-        const resolvedPath = resolve.sync(
-          `${pluginPrefix}${plugin}`, {basedir: process.cwd()});
+        const resolvedPath = resolve.sync(`${pluginPrefix}${plugin}`, {
+          basedir: process.cwd(),
+        });
         plugin = require(resolvedPath);
       }
 
@@ -507,7 +508,6 @@ class Magnet {
     log.info(false, 'Shutting down gracefully…');
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
     await this.getServer().close();
-    fs.removeSync(this.getServerDistDirectory());
   }
 }
 
