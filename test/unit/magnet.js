@@ -262,9 +262,9 @@ describe('Magnet', () => {
   });
 
   describe('plugins', () => {
-    it('should call plugin\'s start method', async () => {
-      const directory = `${process.cwd()}/test/fixtures/plugin`;
+    const directory = `${process.cwd()}/test/fixtures/plugin`;
 
+    it('should call plugin\'s start method', async () => {
       const magnet = new Magnet({directory});
       await magnet.build();
 
@@ -274,6 +274,18 @@ describe('Magnet', () => {
       await magnet.stop();
 
       expect(magnet.__START_WAS_CALLED__).to.eq(true);
+    });
+
+    it('should start plugins before load', async () => {
+      const magnet = new Magnet({directory});
+      await magnet.build();
+
+      expect(magnet.__LAST_PLUGIN_METHOD__).to.eq(undefined);
+
+      await magnet.start();
+      await magnet.stop();
+
+      expect(magnet.__LAST_PLUGIN_METHOD__).to.eq('register');
     });
   });
 });
