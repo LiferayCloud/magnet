@@ -379,7 +379,7 @@ class Magnet {
       case 'silent':
         return;
     }
-    this.getServer().getEngine().use(morgan('common'));
+    this.getServer().getEngine().use(morgan('tiny'));
   }
 
   /**
