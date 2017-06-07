@@ -79,6 +79,7 @@ class Magnet {
     this.plugins_ = [];
 
     this.setupMiddlewares_();
+    this.setupApplicationSettings_();
 
     this.registerPlugins_();
   }
@@ -413,6 +414,14 @@ class Magnet {
         },
       })
     );
+  }
+
+  /**
+   * Setup engine application settings.
+   * @private
+   */
+  setupApplicationSettings_() {
+    this.getServer().getEngine().set('trusted proxy', true);
   }
 
   /**
