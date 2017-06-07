@@ -421,7 +421,7 @@ class Magnet {
    * @private
    */
   setupApplicationSettings_() {
-    this.getServer().getEngine().set('trusted proxy', true);
+    this.getServer().getEngine().set('trust proxy', true);
   }
 
   /**
