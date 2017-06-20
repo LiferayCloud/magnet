@@ -21,7 +21,7 @@ Please update the tests to reflect your code changes. Pull requests will not be 
 
 ### Documentation
 
-Please update the docs accordingly so that there are no discrepencies between the code and the documentation.
+Please update the docs accordingly so that there are no discrepancies between the code and the documentation.
 
 ### Developing
 
