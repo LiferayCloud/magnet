@@ -3,6 +3,8 @@ import path from 'path';
 import fs from 'fs-extra';
 import es2015 from 'babel-preset-es2015';
 import {isFunction} from 'metal';
+import log from '../log';
+import mv from 'mv';
 
 import jsdom from 'jsdom';
 const {JSDOM} = jsdom;
@@ -27,37 +29,79 @@ const aggregateBabelPresets = plugins => {
 
 /**
  * Builds server `files` into `outputPath`.
- * @param {!Array.<string>} files
- * @param {string} directory
- * @param {string} outputDirectory
- * @param {!Array} plugins
+ * @param {!Object} magnet
  * @return {Promise}
  */
-export async function buildServer(
-  files,
-  directory,
-  outputDirectory,
-  plugins = []
-) {
-  fs.removeSync(outputDirectory);
-  const presets = aggregateBabelPresets(plugins);
+export async function buildServer(magnet) {
+  const files = magnet.getBuildFiles({directory: magnet.getDirectory()});
+
+  if (!files.length) {
+    return;
+  }
+
+  log.info(false, 'Building assets…');
+
+  fs.removeSync(magnet.getServerDistDirectory());
+  const presets = aggregateBabelPresets(magnet.getPlugins());
 
   return new Promise((resolve, reject) => {
     files.forEach(file => {
       try {
-        let absoluteSrc = path.join(directory, file);
-        let absoluteDist = path.join(outputDirectory, file);
-        let transform = transformFileSync(absoluteSrc, {
+        const absoluteSrc = path.join(magnet.getDirectory(), file);
+        const absoluteBuildDist = path.join(
+          magnet.getServerBuildDirectory(), file);
+        const transform = transformFileSync(absoluteSrc, {
           presets,
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
         });
-        fs.outputFileSync(absoluteDist, transform.code);
+        fs.mkdirpSync(magnet.getServerBuildDirectory());
+        fs.outputFileSync(absoluteBuildDist, transform.code);
       } catch (error) {
         reject(error);
       }
     });
     resolve();
+  });
+}
+
+/**
+ * Replaces current build.
+ * @param {Object} magnet
+ * @return {Promise}
+ */
+export async function replaceCurrentBuild(magnet) {
+  const appDistDirectory = magnet.getDistDirectory();
+  const buildDirectory = path.join(magnet.getBuildDirectory(), '.magnet');
+  const oldBuildDirectory = path.join(
+    magnet.getBuildDirectory(), '.magnet.old');
+
+  try {
+    await move(appDistDirectory, oldBuildDirectory);
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  console.log(buildDirectory);
+  console.log(appDistDirectory);
+  await move(buildDirectory, appDistDirectory);
+  return oldBuildDirectory;
+}
+
+/**
+ * Promise wrapper for mv function.
+ * @param {string} from
+ * @param {string} to
+ * @return {Promise}
+ */
+function move(from, to) {
+  return new Promise((resolve, reject) => {
+    mv(from, to, error => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
   });
 }

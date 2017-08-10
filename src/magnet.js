@@ -1,5 +1,5 @@
 import {assertDefAndNotNull} from 'metal-assertions';
-import {buildServer} from './build/build';
+import {buildServer, replaceCurrentBuild} from './build/build';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction, isString} from 'metal';
@@ -17,6 +17,8 @@ import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
 import ServerFactory from './server-factory';
+import {tmpdir} from 'os';
+import uuid from 'uuid';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
@@ -99,6 +101,8 @@ class Magnet {
   async build() {
     log.info(false, 'Building plugins…');
 
+    this.buildDirectory_ = path.join(tmpdir(), uuid.v4());
+
     try {
       for (const plugin of this.getPlugins()) {
         if (isFunction(plugin.build)) {
@@ -109,20 +113,25 @@ class Magnet {
       log.error(false, error);
     }
 
-    let files = this.getBuildFiles({directory: this.getDirectory()});
+    await buildServer(this);
 
-    if (!files.length) {
-      return;
-    }
+    await replaceCurrentBuild(this);
+  }
 
-    log.info(false, 'Building assets…');
+  /**
+   * Gest build directory.
+   * @return {string}
+   */
+  getBuildDirectory() {
+    return this.buildDirectory_;
+  }
 
-    await buildServer(
-      files,
-      this.getDirectory(),
-      this.getServerDistDirectory(),
-      this.getPlugins()
-    );
+  /**
+   * Gets build distribution directory.
+   * @return {string}
+   */
+  getBuildDistDirectory() {
+    return path.join(this.getBuildDirectory(), '.magnet');
   }
 
   /**
@@ -139,6 +148,14 @@ class Magnet {
    */
   getDirectory() {
     return this.directory_;
+  }
+
+  /**
+   * Gets dist directory.
+   * @return {string}
+   */
+  getDistDirectory() {
+    return path.join(this.directory_, '.magnet');
   }
 
   /**
@@ -227,8 +244,16 @@ class Magnet {
    * Gets server dist directory.
    * @return {string}
    */
+  getServerBuildDirectory() {
+    return path.join(this.getBuildDistDirectory(), 'server');
+  }
+
+  /**
+   * Gets server dist directory.
+   * @return {string}
+   */
   getServerDistDirectory() {
-    return path.join(this.directory_, '.magnet', 'server');
+    return path.join(this.getDistDirectory(), 'server');
   }
 
   /**
@@ -516,7 +541,7 @@ class Magnet {
   async stop() {
     log.info(false, 'Shutting down gracefully…');
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.STOP);
-    await this.getServer().close();
+    await this.getServer().stop();
   }
 }
 

@@ -1,5 +1,6 @@
 import {assertDefAndNotNull} from 'metal-assertions';
 import http from 'http';
+import stoppable from 'stoppable';
 import log from './log';
 
 /**
@@ -25,16 +26,16 @@ class Server {
      * @type {Http.net.Server}
      * @private
      */
-    this.httpServer_ = http.createServer(engine);
+    this.httpServer_ = stoppable(http.createServer(engine), 0);
   }
 
   /**
    * Closes http server.
    * @return {Promise} Returns promise that resolves when http server is closed.
    */
-  close() {
+  stop() {
     return new Promise(resolve => {
-      this.getHttpServer().close(() => resolve());
+      this.getHttpServer().stop(() => resolve());
     });
   }
 
