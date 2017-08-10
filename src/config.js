@@ -5,6 +5,7 @@ import path from 'path';
 const baseConfig = () => {
   return {
     magnet: {
+      dev: false,
       host: '0.0.0.0',
       ignore: [
         'build/**',
