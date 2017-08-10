@@ -51,6 +51,7 @@ describe('Magnet', () => {
       const magnet = new Magnet({directory});
       const expectedDefaultConfig = {
         magnet: {
+          dev: false,
           host: 'localhost',
           ignore: [
             'build/**',

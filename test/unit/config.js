@@ -24,6 +24,7 @@ describe('config', function() {
       const config = createConfig('./', 'magnet.config.js', '');
       const expectedDefaultConfig = {
         magnet: {
+          dev: false,
           host: '0.0.0.0',
           ignore: [
             'build/**',
@@ -48,6 +49,7 @@ describe('config', function() {
       const expectedDefaultConfig = {
         environment: 'default',
         magnet: {
+          dev: false,
           host: 'localhost',
           ignore: [
             'build/**',
@@ -72,6 +74,7 @@ describe('config', function() {
       const expectedDefaultConfig = {
         environment: 'default_on_subfolder',
         magnet: {
+          dev: false,
           host: 'localhost',
           ignore: [
             'build/**',
