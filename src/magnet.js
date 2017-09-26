@@ -429,7 +429,7 @@ class Magnet {
    * @private
    */
   setupMiddlewares_() {
-    if (process.env.NODE_ENV === 'development') {
+    if (this.getConfig().magnet.dev) {
       this.setupMiddlewareDevelopment_();
     }
     this.setupMiddlewareSecurity_();
