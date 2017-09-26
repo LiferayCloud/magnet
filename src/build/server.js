@@ -40,7 +40,7 @@ export async function buildServer(
   outputDirectory,
   plugins = []
 ) {
-  log.info(false, 'Building server assets…');
+  log.info(false, 'Building server…');
   fs.removeSync(outputDirectory);
   const presets = aggregateBabelPresets(plugins);
 

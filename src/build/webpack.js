@@ -1,7 +1,11 @@
 import path from 'path';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 
-export default magnet => {
+/**
+ * @param {Magnet} magnet
+ * @return {Object}
+ */
+export function getDefaultWebpackConfig(magnet) {
   return {
     output: {
       path: path.join(magnet.getDirectory(), '.magnet'),
@@ -20,4 +24,4 @@ export default magnet => {
       loaders: [],
     },
   };
-};
+}

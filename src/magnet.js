@@ -18,7 +18,7 @@ import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
 import ServerFactory from './server-factory';
-import webpackConfig from './build/webpack.config';
+import {getDefaultWebpackConfig} from './build/webpack';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
@@ -98,6 +98,7 @@ class Magnet {
    * Builds application.
    */
   async build() {
+    await this.maybeBuildPlugins_();
     await buildClient(this);
 
     const files = this.getBuildFiles({directory: this.getDirectory()});
@@ -264,6 +265,23 @@ class Magnet {
   }
 
   /**
+   * Maybe build plugins.
+   * @param {Magnet} magnet
+   * @private
+   */
+  async maybeBuildPlugins_() {
+    try {
+      for (const plugin of this.getPlugins()) {
+        if (isFunction(plugin.build)) {
+          await plugin.build(this);
+        }
+      }
+    } catch (error) {
+      log.error(false, error);
+    }
+  }
+
+  /**
    * Maybe run lifecycle file.
    * @param {!string} lifecycleFile
    * @private
@@ -328,7 +346,7 @@ class Magnet {
     if (!lookupConfig) {
       lookupConfig = 'magnet.config.js';
     }
-    log.info(false, 'Config ' + lookupConfig);
+    log.info(false, 'Using ' + lookupConfig);
     return createConfig(directory, lookupConfig, configDir);
   }
 
@@ -462,7 +480,7 @@ class Magnet {
    * Register default webpack config.
    */
   registerWebpackConfig_() {
-    this.webpackConfig = webpackConfig(this);
+    this.webpackConfig = getDefaultWebpackConfig(this);
   }
 
   /**
