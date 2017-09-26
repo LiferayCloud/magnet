@@ -1,5 +1,6 @@
 import {assertDefAndNotNull} from 'metal-assertions';
-import {buildServer} from './build/build';
+import {buildClient} from './build/client';
+import {buildServer} from './build/server';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction, isString} from 'metal';
@@ -17,8 +18,8 @@ import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
 import ServerFactory from './server-factory';
-import webpack from 'webpack';
 import webpackConfig from './build/webpack.config';
+
 /**
  * Magnet class that handle configuration, directory injection, and server.
  * @class
@@ -81,9 +82,8 @@ class Magnet {
 
     this.setupMiddlewares_();
     this.setupApplicationSettings_();
-
+    this.registerWebpackConfig_();
     this.registerPlugins_();
-    this.setupWebpackConfig_();
   }
 
   /**
@@ -98,13 +98,12 @@ class Magnet {
    * Builds application.
    */
   async build() {
-    await this.buildPlugins_();
-    await this.setupPluginsWebpack_();
-    await this.maybeApplyMagnetWebpackConfig_();
-    await this.runWebpack_();
+    await buildClient(this);
 
     const files = this.getBuildFiles({directory: this.getDirectory()});
-    if (!files.length) return;
+    if (!files.length) {
+      return;
+    }
 
     await buildServer(
       files,
@@ -112,35 +111,6 @@ class Magnet {
       this.getServerDistDirectory(),
       this.getPlugins()
     );
-  }
-
-  /**
-   * Builds plugins.
-   * @private
-   */
-  async buildPlugins_() {
-    log.info(false, 'Building plugins…');
-    try {
-      for (const plugin of this.getPlugins()) {
-        if (isFunction(plugin.build)) {
-          await plugin.build(this);
-        }
-      }
-    } catch (error) {
-      log.error(false, error);
-    }
-  }
-
-  /**
-   * Maybe applies magnet webpack config.
-   * @private
-   */
-  async maybeApplyMagnetWebpackConfig_() {
-    const magnetConfig = this.getConfig().magnet;
-
-    if (isFunction(magnetConfig.webpack)) {
-      this.webpackConfig = await magnetConfig.webpack(this.webpackConfig, this);
-    }
   }
 
   /**
@@ -363,31 +333,6 @@ class Magnet {
   }
 
   /**
-   * Run webpack.
-   * @return {Promise}
-   * @private
-   */
-  runWebpack_() {
-    return new Promise((resolve, reject) => {
-      if (!Object.keys(this.webpackConfig.entry).length) {
-        resolve(false);
-        return;
-      }
-      webpack(this.webpackConfig, (err, stats) => {
-        if (err) {
-          log.error(false, err);
-          reject(err);
-        }
-        const output = stats.toString({
-          colors: true,
-          chunks: false,
-        });
-        resolve(output);
-      });
-    });
-  }
-
-  /**
    * Setup body parser middleware.
    * @private
    */
@@ -514,28 +459,9 @@ class Magnet {
   }
 
   /**
-   * Setup Plugins webpack configuration.
-   * @private
+   * Register default webpack config.
    */
-  async setupPluginsWebpack_() {
-    try {
-      for (const plugin of this.getPlugins()) {
-        if (isFunction(plugin.webpackConfig)) {
-          this.webpackConfig = await plugin.webpackConfig(
-            this.webpackConfig,
-            this
-          );
-        }
-      }
-    } catch (error) {
-      log.error(false, error);
-    }
-  }
-
-  /**
-   * Setup webpack config.
-   */
-  setupWebpackConfig_() {
+  registerWebpackConfig_() {
     this.webpackConfig = webpackConfig(this);
   }
 
