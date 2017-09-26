@@ -13,7 +13,7 @@ export async function buildClient(magnet) {
   await maybeRunWebpack_(magnet);
 }
 /**
- * Maybe runs webpack if it has entries.
+ * Maybe run webpack if it has entries.
  * @param {Magnet} magnet
  * @return {Promise}
  * @private
