@@ -38,6 +38,7 @@ describe('config', function() {
           src: ['**/*.js'],
           plugins: ['function', 'controller'],
           pluginsConfig: {},
+          webpack: null,
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);
@@ -63,6 +64,7 @@ describe('config', function() {
           src: ['**/*.js'],
           plugins: ['function', 'controller'],
           pluginsConfig: {},
+          webpack: null,
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);
@@ -88,6 +90,7 @@ describe('config', function() {
           src: ['**/*.js'],
           plugins: ['function', 'controller'],
           pluginsConfig: {},
+          webpack: null,
         },
       };
       expect(config).to.deep.equal(expectedDefaultConfig);

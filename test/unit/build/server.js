@@ -1,4 +1,4 @@
-import {buildServer} from '../../../src/build/build';
+import {buildServer} from '../../../src/build/server';
 import fs from 'fs-extra';
 import Magnet from '../../../src/magnet';
 import path from 'path';

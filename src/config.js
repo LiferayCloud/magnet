@@ -19,6 +19,7 @@ const baseConfig = () => {
       src: ['**/*.js'],
       plugins: ['function', 'controller'],
       pluginsConfig: {},
+      webpack: null,
     },
   };
 };

@@ -1,5 +1,6 @@
 import {assertDefAndNotNull} from 'metal-assertions';
-import {buildServer} from './build/build';
+import {buildClient} from './build/client';
+import {buildServer} from './build/server';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
 import {isFunction, isString} from 'metal';
@@ -17,6 +18,7 @@ import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
 import ServerFactory from './server-factory';
+import webpackConfig from './build/webpack.config';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
@@ -80,7 +82,7 @@ class Magnet {
 
     this.setupMiddlewares_();
     this.setupApplicationSettings_();
-
+    this.registerWebpackConfig_();
     this.registerPlugins_();
   }
 
@@ -94,28 +96,14 @@ class Magnet {
 
   /**
    * Builds application.
-   * @param {boolean} logBuildOutput
    */
   async build() {
-    log.info(false, 'Building plugins…');
+    await buildClient(this);
 
-    try {
-      for (const plugin of this.getPlugins()) {
-        if (isFunction(plugin.build)) {
-          await plugin.build(this);
-        }
-      }
-    } catch (error) {
-      log.error(false, error);
-    }
-
-    let files = this.getBuildFiles({directory: this.getDirectory()});
-
+    const files = this.getBuildFiles({directory: this.getDirectory()});
     if (!files.length) {
       return;
     }
-
-    log.info(false, 'Building assets…');
 
     await buildServer(
       files,
@@ -429,7 +417,7 @@ class Magnet {
    * @private
    */
   setupMiddlewares_() {
-    if (process.env.NODE_ENV === 'development') {
+    if (this.getConfig().magnet.dev) {
       this.setupMiddlewareDevelopment_();
     }
     this.setupMiddlewareSecurity_();
@@ -468,6 +456,13 @@ class Magnet {
     this.getServer()
       .getEngine()
       .use('/static', express.static(this.getStaticDistDirectory()));
+  }
+
+  /**
+   * Register default webpack config.
+   */
+  registerWebpackConfig_() {
+    this.webpackConfig = webpackConfig(this);
   }
 
   /**
