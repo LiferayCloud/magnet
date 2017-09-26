@@ -10,15 +10,15 @@ export async function buildClient(magnet) {
   await maybeBuildPlugins_(magnet);
   await maybeSetupPluginsWebpack_(magnet);
   await maybeSetupMagnetWebpack_(magnet);
-  await runWebpack_(magnet);
+  await maybeRunWebpack_(magnet);
 }
 /**
- * Run webpack if it has entries.
+ * Maybe runs webpack if it has entries.
  * @param {Magnet} magnet
  * @return {Promise}
  * @private
  */
-function runWebpack_(magnet) {
+function maybeRunWebpack_(magnet) {
   return new Promise((resolve, reject) => {
     if (!Object.keys(magnet.webpackConfig.entry).length) {
       resolve(false);
