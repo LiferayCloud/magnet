@@ -17,7 +17,8 @@ import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
 import ServerFactory from './server-factory';
-
+import webpack from 'webpack';
+import webpackConfig from './build/webpack.config';
 /**
  * Magnet class that handle configuration, directory injection, and server.
  * @class
@@ -82,6 +83,7 @@ class Magnet {
     this.setupApplicationSettings_();
 
     this.registerPlugins_();
+    this.setupWebpackConfig_();
   }
 
   /**
@@ -94,11 +96,30 @@ class Magnet {
 
   /**
    * Builds application.
-   * @param {boolean} logBuildOutput
    */
   async build() {
-    log.info(false, 'Building plugins…');
+    await this.buildPlugins_();
+    await this.setupPluginsWebpack_();
+    await this.maybeApplyMagnetWebpackConfig_();
+    await this.runWebpack_();
 
+    const files = this.getBuildFiles({directory: this.getDirectory()});
+    if (!files.length) return;
+
+    await buildServer(
+      files,
+      this.getDirectory(),
+      this.getServerDistDirectory(),
+      this.getPlugins()
+    );
+  }
+
+  /**
+   * Builds plugins.
+   * @private
+   */
+  async buildPlugins_() {
+    log.info(false, 'Building plugins…');
     try {
       for (const plugin of this.getPlugins()) {
         if (isFunction(plugin.build)) {
@@ -108,21 +129,18 @@ class Magnet {
     } catch (error) {
       log.error(false, error);
     }
+  }
 
-    let files = this.getBuildFiles({directory: this.getDirectory()});
+  /**
+   * Maybe applies magnet webpack config.
+   * @private
+   */
+  async maybeApplyMagnetWebpackConfig_() {
+    const magnetConfig = this.getConfig().magnet;
 
-    if (!files.length) {
-      return;
+    if (isFunction(magnetConfig.webpack)) {
+      this.webpackConfig = await magnetConfig.webpack(this.webpackConfig, this);
     }
-
-    log.info(false, 'Building assets…');
-
-    await buildServer(
-      files,
-      this.getDirectory(),
-      this.getServerDistDirectory(),
-      this.getPlugins()
-    );
   }
 
   /**
@@ -345,6 +363,31 @@ class Magnet {
   }
 
   /**
+   * Run webpack.
+   * @return {Promise}
+   * @private
+   */
+  runWebpack_() {
+    return new Promise((resolve, reject) => {
+      if (!Object.keys(this.webpackConfig.entry).length) {
+        resolve(false);
+        return;
+      }
+      webpack(this.webpackConfig, (err, stats) => {
+        if (err) {
+          log.error(false, err);
+          reject(err);
+        }
+        const output = stats.toString({
+          colors: true,
+          chunks: false,
+        });
+        resolve(output);
+      });
+    });
+  }
+
+  /**
    * Setup body parser middleware.
    * @private
    */
@@ -468,6 +511,32 @@ class Magnet {
     this.getServer()
       .getEngine()
       .use('/static', express.static(this.getStaticDistDirectory()));
+  }
+
+  /**
+   * Setup Plugins webpack configuration.
+   * @private
+   */
+  async setupPluginsWebpack_() {
+    try {
+      for (const plugin of this.getPlugins()) {
+        if (isFunction(plugin.webpackConfig)) {
+          this.webpackConfig = await plugin.webpackConfig(
+            this.webpackConfig,
+            this
+          );
+        }
+      }
+    } catch (error) {
+      log.error(false, error);
+    }
+  }
+
+  /**
+   * Setup webpack config.
+   */
+  setupWebpackConfig_() {
+    this.webpackConfig = webpackConfig(this);
   }
 
   /**

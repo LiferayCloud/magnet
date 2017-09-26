@@ -65,6 +65,7 @@ describe('Magnet', () => {
           src: ['**/*.js'],
           plugins: ['function', 'controller'],
           pluginsConfig: {},
+          webpack: null,
         },
       };
       expect(magnet.getConfig()).to.deep.equal(expectedDefaultConfig);

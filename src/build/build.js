@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import es2015 from 'babel-preset-es2015';
 import {isFunction} from 'metal';
+import log from '../log';
 
 import jsdom from 'jsdom';
 const {JSDOM} = jsdom;
@@ -39,6 +40,7 @@ export async function buildServer(
   outputDirectory,
   plugins = []
 ) {
+  log.info(false, 'Building server assets…');
   fs.removeSync(outputDirectory);
   const presets = aggregateBabelPresets(plugins);
 
