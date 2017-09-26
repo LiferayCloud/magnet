@@ -12,6 +12,7 @@ export async function buildClient(magnet) {
   await maybeSetupMagnetWebpack_(magnet);
   await maybeRunWebpack_(magnet);
 }
+
 /**
  * Maybe run webpack if it has entries.
  * @param {Magnet} magnet
