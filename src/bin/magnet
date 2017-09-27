@@ -45,8 +45,9 @@ if (commands.has(cmd)) {
 }
 
 const bin = join(__dirname, 'magnet-' + cmd);
-let isWatcherInitialized = false;
+
 let childApp;
+let isWatcherInitialized = false;
 
 if (cmd === 'dev') {
   const watcher = chokidar.watch('**/*', {
@@ -56,14 +57,14 @@ if (cmd === 'dev') {
     ignoreInitial: true,
   });
 
-  watcher.on('change', restartApp);
   watcher.on('add', restartApp);
+  watcher.on('change', restartApp);
   watcher.on('unlink', restartApp);
 
   watcher.on('ready', () => {
     if (!isWatcherInitialized) {
+      startChildApp();
       isWatcherInitialized = true;
-      restartApp();
     }
   });
 
@@ -72,28 +73,19 @@ if (cmd === 'dev') {
     process.exit(1);
   });
 } else {
-  killApp();
-  spawnChildApp();
+  startChildApp();
 }
 
 /**
  * Restart current cli app.
  */
 function restartApp() {
-  if (!isWatcherInitialized) return;
-  prepareRestart();
-}
-
-/**
- * Prepares to restart.
- */
-function prepareRestart() {
-  if (isWatcherInitialized && childApp) {
-    // kill app early as `compile` may take a while
+  if (childApp) {
     log.info(false, 'Found a change, restarting the server…');
+    childApp.on('exit', () => startChildApp());
     killApp();
   } else {
-    spawnChildApp();
+    startChildApp();
   }
 }
 
@@ -101,24 +93,19 @@ function prepareRestart() {
  * Kills app.
  */
 function killApp() {
-  if (childApp) {
-    childApp.on('exit', () => {
-      spawnChildApp();
-    });
-    childApp.removeAllListeners('close');
-    try {
-      childApp.kill('SIGHUP');
-    } catch (error) {
-      childApp.kill('SIGKILL');
-    }
-    childApp = undefined;
+  childApp.removeAllListeners('close');
+  try {
+    childApp.kill('SIGHUP');
+  } catch (error) {
+    childApp.kill('SIGKILL');
   }
+  childApp = undefined;
 }
 
 /**
  * Spawns new child app.
  */
-function spawnChildApp() {
+function startChildApp() {
   childApp = spawn(
     bin, args,
     {stdio: 'inherit', customFds: [0, 1, 2]}
