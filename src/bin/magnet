@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {join} from 'path';
-import childProcess from 'child_process';
+import {spawn} from 'cross-spawn';
 import chokidar from 'chokidar';
 import log from '../log';
 import pkg from '../../package.json';
@@ -119,7 +119,7 @@ function killApp() {
  * Spawns new child app.
  */
 function spawnChildApp() {
-  childApp = childProcess.fork(
+  childApp = spawn(
     bin, args,
     {stdio: 'inherit', customFds: [0, 1, 2]}
   );
