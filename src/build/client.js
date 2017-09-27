@@ -7,10 +7,12 @@ import {isFunction} from 'metal';
  * @param {Magnet} magnet
  */
 export async function buildClient(magnet) {
-  await maybeBuildPlugins_(magnet);
+  log.info(false, 'Building client…');
   await maybeSetupPluginsWebpack_(magnet);
   await maybeSetupMagnetWebpack_(magnet);
-  await maybeRunWebpack_(magnet);
+  if (Object.keys(magnet.webpackConfig.entry).length) {
+    await runWebpack_(magnet);
+  }
 }
 
 /**
@@ -19,12 +21,8 @@ export async function buildClient(magnet) {
  * @return {Promise}
  * @private
  */
-function maybeRunWebpack_(magnet) {
+function runWebpack_(magnet) {
   return new Promise((resolve, reject) => {
-    if (!Object.keys(magnet.webpackConfig.entry).length) {
-      resolve(false);
-      return;
-    }
     webpack(magnet.webpackConfig, (err, stats) => {
       if (err) {
         log.error(false, err);
@@ -37,24 +35,6 @@ function maybeRunWebpack_(magnet) {
       resolve(output);
     });
   });
-}
-
-/**
- * Maybe build plugins.
- * @param {Magnet} magnet
- * @private
- */
-async function maybeBuildPlugins_(magnet) {
-  log.info(false, 'Building plugins…');
-  try {
-    for (const plugin of magnet.getPlugins()) {
-      if (isFunction(plugin.build)) {
-        await plugin.build(magnet);
-      }
-    }
-  } catch (error) {
-    log.error(false, error);
-  }
 }
 
 /**
