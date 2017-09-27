@@ -7,6 +7,8 @@ import parseArgs from 'minimist';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+process.stdin.pause();
+
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     h: 'help',
@@ -42,12 +44,22 @@ magnet.build()
       log.infoNoPrefix(false, `\n${routes}\n`);
     }
   })
-  .then(() => magnet.start());
+  .then(() => magnet.start())
+  .catch((error) => {
+    if (error.code === 'EADDRINUSE') {
+      const errorMessage = `Port ${argv.port} is already in use.`;
+      log.error(false, errorMessage);
+    } else {
+      log.error(false, error);
+    }
+    process.nextTick(() => process.exit(1));
+  });
 
-process.on('SIGTERM', (err) => {
-  magnet.stop();
+process.on('SIGTERM', (error) => {
+  if (magnet) magnet.stop();
 });
 
-process.on('SIGINT', (err) => {
-  magnet.stop();
+process.on('SIGINT', (error) => {
+  if (magnet) magnet.stop();
+  process.nextTick(() => process.exit(1));
 });

@@ -28,6 +28,9 @@ const dir = resolve(argv._[0] || '.');
 
 const basePackage = `{
   "name": "my-app",
+  "engines": {
+    "node": ">=7.6.0"
+  },
   "dependencies": {
     "magnet": "latest"
   },

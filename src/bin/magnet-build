@@ -2,6 +2,7 @@
 
 import {Magnet} from '../';
 import parseArgs from 'minimist';
+import log from '../log';
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -31,4 +32,8 @@ const configDir = argv['config-dir'];
 const directory = process.cwd();
 const magnet = new Magnet({config, configDir, directory});
 
-magnet.build();
+magnet.build()
+  .catch((error) => {
+    log.error(null, error);
+    process.exit(1);
+  });
