@@ -239,7 +239,12 @@ describe('Magnet', () => {
       await magnet.build();
       await magnet.start();
       await magnet.stop();
-      expect(magnet.getServer().getHttpServer().address()).to.be.null;
+      expect(
+        magnet
+          .getServer()
+          .getHttpServer()
+          .address()
+      ).to.be.null;
     });
 
     it('should not delete build folder after stop the application server', async () => {

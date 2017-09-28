@@ -8,7 +8,10 @@ const mocha = require('gulp-mocha');
 const testFiles = ['test/setup/node.js', 'test/unit/**/*.js'];
 
 gulp.task('build', ['clean'], () =>
-  gulp.src('src/**/*').pipe(babel()).pipe(gulp.dest('build'))
+  gulp
+    .src('src/**/*')
+    .pipe(babel())
+    .pipe(gulp.dest('build'))
 );
 
 gulp.task('build:watch', () => gulp.watch('src/**/*', ['build']));

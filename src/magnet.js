@@ -358,9 +358,13 @@ class Magnet {
    * @private
    */
   setupMiddlewareBodyParser_() {
-    this.getServer().getEngine().use(bodyParser.urlencoded({extended: false}));
+    this.getServer()
+      .getEngine()
+      .use(bodyParser.urlencoded({extended: false}));
 
-    this.getServer().getEngine().use(bodyParser.json());
+    this.getServer()
+      .getEngine()
+      .use(bodyParser.json());
   }
 
   /**
@@ -368,7 +372,9 @@ class Magnet {
    * @private
    */
   setupMiddlewareCompression_() {
-    this.getServer().getEngine().use(compression());
+    this.getServer()
+      .getEngine()
+      .use(compression());
   }
 
   /**
@@ -376,8 +382,12 @@ class Magnet {
    * @private
    */
   setupMiddlewareError_() {
-    this.getServer().getEngine().use(validatorErrorMiddleware());
-    this.getServer().getEngine().use(errorMiddleware());
+    this.getServer()
+      .getEngine()
+      .use(validatorErrorMiddleware());
+    this.getServer()
+      .getEngine()
+      .use(errorMiddleware());
   }
 
   /**
@@ -389,7 +399,9 @@ class Magnet {
       case 'silent':
         return;
     }
-    this.getServer().getEngine().use(morgan('tiny'));
+    this.getServer()
+      .getEngine()
+      .use(morgan('tiny'));
   }
 
   /**
@@ -397,7 +409,9 @@ class Magnet {
    * @private
    */
   setupMiddlewareMultipart_() {
-    this.getServer().getEngine().use(multer().any());
+    this.getServer()
+      .getEngine()
+      .use(multer().any());
   }
 
   /**
@@ -405,24 +419,26 @@ class Magnet {
    * @private
    */
   setupMiddlewareValidator_() {
-    this.getServer().getEngine().use(
-      expressValidator({
-        customValidators: {
-          custom: function(value, fn) {
-            return fn(value);
-          },
-        },
-        errorFormatter: (param, msg, value) => {
-          return {
-            reason: msg,
-            context: {
-              param: param,
-              value: value,
+    this.getServer()
+      .getEngine()
+      .use(
+        expressValidator({
+          customValidators: {
+            custom: function(value, fn) {
+              return fn(value);
             },
-          };
-        },
-      })
-    );
+          },
+          errorFormatter: (param, msg, value) => {
+            return {
+              reason: msg,
+              context: {
+                param: param,
+                value: value,
+              },
+            };
+          },
+        })
+      );
   }
 
   /**
@@ -430,7 +446,9 @@ class Magnet {
    * @private
    */
   setupApplicationSettings_() {
-    this.getServer().getEngine().set('trust proxy', true);
+    this.getServer()
+      .getEngine()
+      .set('trust proxy', true);
   }
 
   /**
@@ -455,7 +473,9 @@ class Magnet {
    * @private
    */
   setupMiddlewareSecurity_() {
-    this.getServer().getEngine().use(helmet());
+    this.getServer()
+      .getEngine()
+      .use(helmet());
   }
 
   /**
@@ -463,10 +483,12 @@ class Magnet {
    * @private
    */
   setupMiddlewareDevelopment_() {
-    this.getServer().getEngine().use((req, res, next) => {
-      res.set('Connection', 'close');
-      next();
-    });
+    this.getServer()
+      .getEngine()
+      .use((req, res, next) => {
+        res.set('Connection', 'close');
+        next();
+      });
   }
 
   /**
@@ -516,7 +538,9 @@ class Magnet {
     this.setupMiddlewareError_();
 
     await new Promise((resolve, reject) => {
-      this.getServer().getHttpServer().on('error', reject);
+      this.getServer()
+        .getHttpServer()
+        .on('error', reject);
       this.getServer()
         .setPort(this.config.magnet.port)
         .setHost(this.config.magnet.host)
