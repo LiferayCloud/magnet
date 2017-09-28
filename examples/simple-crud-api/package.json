@@ -1,0 +1,15 @@
+{
+  "name": "magnet-sample",
+  "dependencies": {
+    "magnet": "latest"
+  },
+  "scripts": {
+    "dev": "magnet",
+    "start": "magnet build && magnet start",
+    "test": "ava --verbose"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "mysql": "^2.14.1"
+  }
+}
