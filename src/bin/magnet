@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import {join} from 'path';
+import {Magnet} from '../';
 import {spawn} from 'cross-spawn';
 import chokidar from 'chokidar';
 import log from '../log';
 import pkg from '../../package.json';
+import parseArgs from 'minimist';
 
 const defaultCommand = 'dev';
 const commands = new Set([
@@ -50,12 +52,25 @@ let childApp;
 let isWatcherInitialized = false;
 
 if (cmd === 'dev') {
+  const aliasArgs = parseArgs(args, {
+    alias: {
+      c: 'config',
+      C: 'config-dir',
+    },
+  });
+  const argConfig = aliasArgs['config'];
+  const argConfigDir = aliasArgs['config-dir'];
+  const directory = process.cwd();
+  const magnetConfig = Magnet.resolveConfig(directory, argConfig, argConfigDir);
+
   const watcher = chokidar.watch('**/*', {
     awaitWriteFinish: true,
     cwd: process.cwd(),
     ignored: /node_modules|\.magnet|\.git|\.soy\.js/,
     ignoreInitial: true,
   });
+
+  watcher.unwatch(magnetConfig.magnet.ignore);
 
   watcher.on('add', restartApp);
   watcher.on('change', restartApp);
