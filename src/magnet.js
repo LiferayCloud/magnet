@@ -46,7 +46,7 @@ class Magnet {
      * @type {!object}
      * @protected
      */
-    this.config = this.resolveConfig(
+    this.config = Magnet.resolveConfig(
       options.directory,
       options.config,
       options.configDir
@@ -331,9 +331,9 @@ class Magnet {
    * @param {?string=} config Optional config filename.
    * @param {?string=} configDir Optional config directory.
    * @return {Object} Configuration object.
-   * @protected
+   * @static
    */
-  resolveConfig(directory, config, configDir = '') {
+  static resolveConfig(directory, config, configDir = '') {
     let lookupConfig = config;
     // Try loading config from environment...
     if (!lookupConfig) {
