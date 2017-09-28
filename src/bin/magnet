@@ -58,10 +58,10 @@ if (cmd === 'dev') {
       C: 'config-dir',
     },
   });
-  const argConfig = aliasArgs['config'];
-  const argConfigDir = aliasArgs['config-dir'];
+  const config = aliasArgs['config'];
+  const configDir = aliasArgs['config-dir'];
   const directory = process.cwd();
-  const magnetConfig = Magnet.resolveConfig(directory, argConfig, argConfigDir);
+  const magnetConfig = Magnet.resolveConfig(directory, config, configDir);
 
   const watcher = chokidar.watch('**/*', {
     awaitWriteFinish: true,
