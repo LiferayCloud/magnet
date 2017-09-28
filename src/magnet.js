@@ -330,10 +330,11 @@ class Magnet {
    * @param {!string} directory
    * @param {?string=} config Optional config filename.
    * @param {?string=} configDir Optional config directory.
+   * @param {?boolean=} showLog Display log of loaded config filename.
    * @return {Object} Configuration object.
    * @static
    */
-  static resolveConfig(directory, config, configDir = '') {
+  static resolveConfig(directory, config, configDir = '', showLog = true) {
     let lookupConfig = config;
     // Try loading config from environment...
     if (!lookupConfig) {
@@ -346,7 +347,9 @@ class Magnet {
     if (!lookupConfig) {
       lookupConfig = 'magnet.config.js';
     }
-    log.info(false, 'Using ' + lookupConfig);
+    if (showLog) {
+      log.info(false, 'Using ' + lookupConfig);
+    }
     return createConfig(directory, lookupConfig, configDir);
   }
 

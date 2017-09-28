@@ -52,6 +52,8 @@ let childApp;
 let isWatcherInitialized = false;
 
 if (cmd === 'dev') {
+  process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
   const aliasArgs = parseArgs(args, {
     alias: {
       c: 'config',
@@ -61,7 +63,7 @@ if (cmd === 'dev') {
   const config = aliasArgs['config'];
   const configDir = aliasArgs['config-dir'];
   const directory = process.cwd();
-  const magnetConfig = Magnet.resolveConfig(directory, config, configDir);
+  const magnetConfig = Magnet.resolveConfig(directory, config, configDir, false);
 
   const watcher = chokidar.watch('**/*', {
     awaitWriteFinish: true,

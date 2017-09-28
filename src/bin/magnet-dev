@@ -5,8 +5,6 @@ import {Magnet} from '../';
 import log from '../log';
 import parseArgs from 'minimist';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 process.stdin.pause();
 
 const argv = parseArgs(process.argv.slice(2), {
