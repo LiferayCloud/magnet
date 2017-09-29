@@ -1,8 +1,21 @@
 # magnet-sample
-simple crud with mysql
+This is an example of RESTful CRUD in Magnet with mySQL.
 
 # Before
+```
+npm install
+```
 create databases and tables, verify the file `migrations.sql`
+
+### Configuration (database)
+
+```
+web/repository/connection.js
+```
+    host: 'localhost',
+    user: 'root',
+    password : 'root',
+    database: 'test'	
 
 # Resource categories
 
@@ -41,8 +54,8 @@ response:
         "category": {
             "name": "edit category",
             "id": 1
-        },
-        "affectedRows": 1
+        }
+       
     }
  ```
 
@@ -84,4 +97,3 @@ response:
 
 ## Tests
 npm run test
-

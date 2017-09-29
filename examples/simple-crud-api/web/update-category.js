@@ -1,4 +1,4 @@
-import db from './repository'
+import category from './repository/categories'
 
 export const route = {
   method: 'put',
@@ -8,7 +8,7 @@ export const route = {
 
 export default async (req) => {
   const categoryRequest = req.body.category
-  const categoryResponse = await db.categories().update(categoryRequest.id, categoryRequest.name)
+  const categoryResponse = await category.update(categoryRequest.id, categoryRequest.name)
   return categoryResponse;
 };
 

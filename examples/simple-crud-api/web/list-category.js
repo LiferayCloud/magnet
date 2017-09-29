@@ -1,4 +1,4 @@
-import db from './repository'
+import category from './repository/categories'
 
 export const route = {
   method: 'get',
@@ -7,7 +7,7 @@ export const route = {
 };
 
 export default async (req) => {
-  const category = await db.categories().all()
-  return category;
+  const categories = await category.all()
+  return categories;
 };
 
