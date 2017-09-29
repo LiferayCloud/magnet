@@ -94,6 +94,3 @@ response:
         "affectedRows": 1
     }
 ```
-
-## Tests
-npm run test
