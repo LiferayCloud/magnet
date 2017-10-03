@@ -1,7 +1,7 @@
 <h1 align="center">✨ Magnet</h1>
 
 
-<h5 align="center">Simple, fast and unopinionated uses the power of ES2015 and beyond into your microservices</h5>
+<h5 align="center">Simple, fast and unopinionated uses the power of Babel and beyond into your microservices</h5>
 
 <div align="center">
   <a href="http://travis-ci.com/wedeploy/magnet">

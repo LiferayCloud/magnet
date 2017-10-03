@@ -1,7 +1,7 @@
 import {transformFileSync} from 'babel-core';
 import path from 'path';
 import fs from 'fs-extra';
-import es2015 from 'babel-preset-es2015';
+import esEnv from 'babel-preset-env';
 import {isFunction} from 'metal';
 import log from '../log';
 
@@ -17,7 +17,7 @@ global.window = dom.window;
  * @return {Array}
  */
 const aggregateBabelPresets = plugins => {
-  let presets = [es2015];
+  let presets = [esEnv];
   for (const plugin of plugins) {
     if (isFunction(plugin.babelPresets)) {
       presets = presets.concat(plugin.babelPresets());
