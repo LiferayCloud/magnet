@@ -4,6 +4,7 @@ import {basename, join, resolve} from 'path';
 import {existsSync, mkdirSync, writeFileSync} from 'fs';
 import log from '../log';
 import parseArgs from 'minimist';
+import pkg from '../../package.json';
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -29,10 +30,10 @@ const dir = resolve(argv._[0] || '.');
 const basePackage = `{
   "name": "my-app",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.9.0"
   },
   "dependencies": {
-    "magnet": "latest"
+    "magnet": "^${pkg.version}"
   },
   "scripts": {
     "dev": "magnet",
