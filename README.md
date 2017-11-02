@@ -16,6 +16,10 @@
     <img alt="codebeat badge" src="https://codebeat.co/badges/05e27c84-b714-4d51-aa74-287707fb8a15" />
   </a>
 
+  <a href="https://ebertapp.io/github/wedeploy/magnet">
+    <img alt="ebertapp badge" src="https://ebertapp.io/github/wedeploy/magnet.svg" />
+  </a>
+
   <a href="https://www.npmjs.com/package/magnet">
     <img src="https://img.shields.io/npm/v/magnet.svg" alt="Npm" />
   </a>
