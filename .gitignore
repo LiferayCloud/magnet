@@ -6,4 +6,3 @@ node_modules
 .env
 coverage
 .magnet
-.nyc_output

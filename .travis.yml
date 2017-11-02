@@ -2,9 +2,9 @@ language: node_js
 node_js:
 - '7.6'
 script:
-- 'npm run coverage'
+- 'npm run test:cov'
 after_success:
-- npm run test:coverage:travis
+- npm run test:cov:travis
 deploy:
   provider: npm
   email: pragmaticivan@gmail.com

@@ -6,16 +6,31 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "build": "gulp build",
-    "build:watch": "gulp build:watch",
-    "coverage": "nyc --reporter=lcov --include='src/**/*.js'  --reporter=text npm test",
-    "lint": "gulp lint",
+    "build": "babel --presets env --ignore '**/*.test.js' -d build/ src/",
+    "lint": "eslint \"{src/**/*.js,test/**/*.js,*.js}\"",
     "format": "prettier --single-quote --no-bracket-spacing --trailing-comma es5 --write \"{src/**/*.js,test/**/*.js,*.js}\" && eslint --fix \"{src/**/*.js,test/**/*.js,*.js}\"",
-    "prepublish": "gulp build",
+    "prepublish": "npm run build",
     "preversion": "npm test",
-    "test": "gulp test",
-    "test:watch": "gulp test:watch",
-    "test:coverage:travis": "codecov"
+    "test": "jest",
+    "test:cov:int": "jest int --coverage",
+    "test:cov:unit": "jest unit --coverage",
+    "test:cov": "jest --coverage",
+    "test:cov:travis": "codecov",
+    "test:int": "jest int",
+    "test:unit": "jest unit",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/build/",
+      "!<rootDir>/coverage/",
+      "!<rootDir>/examples/"
+    ],
+    "setupFiles": [
+      "<rootDir>/test/setup/node.js"
+    ]
   },
   "contributors": [
     "Ivan Santos <ivan.santos@liferay.com>",
@@ -68,22 +83,15 @@
     "webpack": "^3.6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^21.2.0",
     "babel-register": "^6.23.0",
-    "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "eslint": "^3.17.1",
     "eslint-config-liferay": "^1.0.1",
     "eslint-loader": "^1.6.1",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-codecov": "^2.0.2",
-    "gulp-eslint": "^3.0.1",
-    "gulp-mocha": "^3.0.1",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
+    "jest": "^21.2.1",
     "prettier": "^1.2.2",
-    "regenerator-runtime": "^0.11.0",
-    "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0"
+    "regenerator-runtime": "^0.11.0"
   }
 }

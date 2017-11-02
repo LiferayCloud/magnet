@@ -17,18 +17,18 @@ describe('.build', function() {
     fs.removeSync(serverDist);
   });
 
-  it('should build the specified app directory', async () => {
+  test('builds the specified app directory', async () => {
     await buildServer(magnet.getFiles({directory}), directory, serverDist);
-    expect(fs.existsSync(serverDist)).to.be.true;
+    expect(fs.existsSync(serverDist)).toBeTruthy();
   });
 
-  it('should build the files inside the specified app directory', async () => {
+  test('builds the files inside the specified app directory', async () => {
     await buildServer(magnet.getFiles({directory}), directory, serverDist);
-    expect(fs.existsSync(path.join(serverDist, 'one.js'))).to.be.true;
-    expect(fs.existsSync(path.join(serverDist, 'two.js'))).to.be.true;
+    expect(fs.existsSync(path.join(serverDist, 'one.js'))).toBeTruthy();
+    expect(fs.existsSync(path.join(serverDist, 'two.js'))).toBeTruthy();
   });
 
-  it('should clean dist directory before build', async () => {
+  test('cleans dist directory before build', async () => {
     if (!fs.existsSync(serverDist)) {
       fs.mkdirpSync(serverDist);
     }
@@ -36,8 +36,8 @@ describe('.build', function() {
     if (!fs.existsSync(mockedFile)) {
       fs.outputFileSync(mockedFile, 'testfile content');
     }
-    expect(fs.existsSync(mockedFile)).to.be.true;
+    expect(fs.existsSync(mockedFile)).toBeTruthy();
     await buildServer(magnet.getFiles({directory}), directory, serverDist);
-    expect(fs.existsSync(mockedFile)).to.be.false;
+    expect(fs.existsSync(mockedFile)).toBeFalsy();
   });
 });

@@ -8,27 +8,27 @@ const fakeEngine = (req, res) => {
 const server = new Server(fakeEngine).setPort(8888).setHost('localhost');
 
 describe('Server', function() {
-  before(function() {
+  beforeAll(function() {
     server.listen(() => {});
   });
 
-  after(function() {
+  afterAll(function() {
     server.close();
   });
 
-  it('should validate the usage of an engine', done => {
+  test('validates the usage of an engine', done => {
     http.get('http://localhost:8888', function(res) {
       let rawData = '';
       res.on('data', chunk => (rawData += chunk));
       res.on('end', () => {
-        expect(200).to.equal(res.statusCode);
-        expect(rawData).to.equal('Fake Engine');
+        expect(200).toBe(res.statusCode);
+        expect(rawData).toBe('Fake Engine');
         done();
       });
     });
   });
 
-  it('should return the current engine used in the server', function() {
-    expect(server.getEngine()).to.equal(fakeEngine);
+  test('returns the current engine used in the server', function() {
+    expect(server.getEngine()).toEqual(fakeEngine);
   });
 });

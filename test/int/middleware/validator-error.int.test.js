@@ -1,7 +1,7 @@
 import Magnet from '../../../src/magnet';
 
 describe('validationErrorMiddleware', function() {
-  it('should manage to catch an exception if an error occurs in a route function with param validator', async () => {
+  test('manages to catch an exception if an error occurs in a route function with param validator', async () => {
     const directory = `${process.cwd()}/test/fixtures/error`;
     const magnet = new Magnet({directory});
     await magnet.build();
