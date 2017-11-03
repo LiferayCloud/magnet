@@ -25,6 +25,8 @@
 
 ## Getting started
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/wedeploy/magnet.svg)](https://greenkeeper.io/)
+
 ```sh
 npm install -g magnet
 ```
