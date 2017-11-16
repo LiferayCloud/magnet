@@ -1,5 +1,4 @@
 const babel = require('gulp-babel');
-const babelRegister = require('babel-register');
 const del = require('del');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
@@ -10,7 +9,9 @@ const testFiles = ['test/setup/node.js', 'test/unit/**/*.js'];
 gulp.task('build', ['clean'], () =>
   gulp
     .src('src/**/*')
-    .pipe(babel())
+    .pipe(babel({
+      plugins: ['transform-runtime'],
+    }))
     .pipe(gulp.dest('build'))
 );
 
@@ -27,9 +28,9 @@ gulp.task('lint', () =>
 );
 
 gulp.task('test', () =>
-  gulp.src(testFiles).pipe(mocha({compilers: babelRegister, timeout: 20000}))
+  gulp.src(testFiles).pipe(mocha({require: 'babel-core/register', timeout: 20000}))
 );
 
-gulp.task('test:watch', () =>
-  gulp.watch(testFiles.concat(['src/**/*.js']), ['test'])
-);
+gulp.task('test:watch', () => {
+  gulp.watch(testFiles.concat(['src/**/*.js']), ['test']);
+});
