@@ -5,12 +5,6 @@ import esEnv from 'babel-preset-env';
 import {isFunction} from 'metal';
 import log from '../log';
 
-import jsdom from 'jsdom';
-const {JSDOM} = jsdom;
-const dom = new JSDOM();
-global.document = dom.window.document;
-global.window = dom.window;
-
 /**
  * Aggregate babel presets.
  * @param {Array} plugins
@@ -52,6 +46,7 @@ export async function buildServer(
         let transform = transformFileSync(absoluteSrc, {
           presets,
           babelrc: false,
+          plugins: ['transform-runtime'],
           filename: absoluteSrc,
           filenameRelative: file,
         });
