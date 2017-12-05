@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "A modern approach for async microservices in node.js",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.9.0"
   },
   "scripts": {
     "build": "gulp build",
