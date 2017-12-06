@@ -1,7 +1,7 @@
 import Magnet from '../../../src/magnet';
 
 describe('errorMiddleware', function() {
-  it('should manage to catch an exception if an error occurs in a route function', async () => {
+  test('manages to catch an exception if an error occurs in a route function', async () => {
     const directory = `${process.cwd()}/test/fixtures/error`;
     const magnet = new Magnet({directory});
     await magnet.build();

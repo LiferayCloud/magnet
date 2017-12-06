@@ -1,26 +1,26 @@
-import {createConfig} from '../../src/config';
+import {createConfig} from './config';
 
-describe('config', function() {
-  describe('createConfig', function() {
-    it('should thrown an error when directory parameter is not defined', () => {
-      expect(function() {
+describe('config', () => {
+  describe('createConfig', () => {
+    test('throws an error when directory parameter is not defined', () => {
+      expect(() => {
         createConfig(undefined, '', '');
-      }).to.throw('Directory must be specified.');
+      }).toThrow('Directory must be specified.');
     });
 
-    it('should thrown an error when config parameter is not defined', () => {
-      expect(function() {
+    test('throws an error when config parameter is not defined', () => {
+      expect(() => {
         createConfig('', undefined, '');
-      }).to.throw('Config filename must be specified.');
+      }).toThrow('Config filename must be specified.');
     });
 
-    it('should thrown an error when config directory parameter is not defined', () => {
-      expect(function() {
+    test('throws an error when config directory parameter is not defined', () => {
+      expect(() => {
         createConfig('', '', undefined);
-      }).to.throw('Config directory must be specified.');
+      }).toThrow('Config directory must be specified.');
     });
 
-    it('should return the default config when config file doesn\'t exist', () => {
+    test('returns the default config when config file doesn\'t exist', () => {
       const config = createConfig('./', 'magnet.config.js', '');
       const expectedDefaultConfig = {
         magnet: {
@@ -41,10 +41,10 @@ describe('config', function() {
           webpack: null,
         },
       };
-      expect(config).to.deep.equal(expectedDefaultConfig);
+      expect(config).toEqual(expectedDefaultConfig);
     });
 
-    it('should merge attributes from a configuration file with Magnet\'s default config', () => {
+    test('merges attributes from a configuration file with Magnet\'s default config', () => {
       const directory = `${process.cwd()}/test/fixtures/config`;
       const config = createConfig(directory, 'magnet.config.js', '');
       const expectedDefaultConfig = {
@@ -67,10 +67,10 @@ describe('config', function() {
           webpack: null,
         },
       };
-      expect(config).to.deep.equal(expectedDefaultConfig);
+      expect(config).toEqual(expectedDefaultConfig);
     });
 
-    it('should merge attributes from a configuration file located in a different location other than the root directory', () => {
+    test('merges attributes from a configuration file located in a different location other than the root directory', () => {
       const directory = `${process.cwd()}/test/fixtures/config`;
       const config = createConfig(directory, 'magnet.config.js', 'environment');
       const expectedDefaultConfig = {
@@ -93,7 +93,7 @@ describe('config', function() {
           webpack: null,
         },
       };
-      expect(config).to.deep.equal(expectedDefaultConfig);
+      expect(config).toEqual(expectedDefaultConfig);
     });
   });
 });
