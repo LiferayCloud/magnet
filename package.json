@@ -57,7 +57,10 @@
   "dependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "babel-runtime": "^6.26.0",
     "body-parser": "^1.13.1",
     "chokidar": "^1.6.1",
     "cli-table": "^0.3.1",
@@ -91,7 +94,6 @@
     "eslint-config-liferay": "^1.0.1",
     "eslint-loader": "^1.6.1",
     "jest": "^21.2.1",
-    "prettier": "^1.2.2",
-    "regenerator-runtime": "^0.11.0"
+    "prettier": "^1.2.2"
   }
 }

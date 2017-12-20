@@ -54,6 +54,14 @@ export async function buildServer(
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
+          plugins: [
+            ['transform-runtime', {
+              'helpers': false,
+              'polyfill': false,
+              'regenerator': true,
+              'moduleName': 'babel-runtime',
+            }],
+          ],
         });
         fs.outputFileSync(absoluteDist, transform.code);
       } catch (error) {
