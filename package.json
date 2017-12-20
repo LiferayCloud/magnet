@@ -8,7 +8,8 @@
   "scripts": {
     "build": "babel --presets env --ignore '**/*.test.js' -d build/ src/",
     "lint": "eslint \"{src/**/*.js,test/**/*.js,*.js}\"",
-    "format": "prettier --single-quote --no-bracket-spacing --trailing-comma es5 --write \"{src/**/*.js,test/**/*.js,*.js}\" && eslint --fix \"{src/**/*.js,test/**/*.js,*.js}\"",
+    "format": "prettier-eslint --write \"{src/**/*.js,test/**/*.js,*.js}\" && npm run format-imports && npm run lint",
+    "format-imports": "import-sort -o src",
     "prepublish": "npm run build",
     "preversion": "npm test",
     "test": "npm run test:unit && npm run test:int",
@@ -94,6 +95,9 @@
     "eslint-config-liferay": "^1.0.1",
     "eslint-loader": "^1.6.1",
     "jest": "^21.2.1",
-    "prettier": "^1.2.2"
+    "import-sort-cli": "^3.3.0",
+    "import-sort-parser-babylon": "^3.2.0",
+    "import-sort-style-eslint": "^3.0.0",
+    "prettier-eslint-cli": "^4.4.0"
   }
 }

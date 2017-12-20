@@ -10,10 +10,12 @@ describe('Magnet', () => {
       const directory = `${process.cwd()}/test/fixtures/build`;
       const magnet = new Magnet({directory});
       await magnet.build();
-      expect(existsSync(path.join(magnet.getServerDistDirectory(), 'one.js')))
-        .toBeTruthy();
-      expect(existsSync(path.join(magnet.getServerDistDirectory(), 'two.js')))
-        .toBeTruthy();
+      expect(
+        existsSync(path.join(magnet.getServerDistDirectory(), 'one.js'))
+      ).toBeTruthy();
+      expect(
+        existsSync(path.join(magnet.getServerDistDirectory(), 'two.js'))
+      ).toBeTruthy();
       fs.removeSync(magnet.getServerDistDirectory());
     });
 
@@ -58,9 +60,7 @@ describe('Magnet', () => {
 
     test('returns the instance directory', () => {
       const magnet = new Magnet({directory});
-      expect(magnet.getDirectory()).toBe(
-        `${process.cwd()}/test/fixtures/app`
-      );
+      expect(magnet.getDirectory()).toBe(`${process.cwd()}/test/fixtures/app`);
     });
   });
 
@@ -252,7 +252,7 @@ describe('Magnet', () => {
   describe('plugins', () => {
     const directory = `${process.cwd()}/test/fixtures/plugin`;
 
-    test('calls plugin\'s start method', async () => {
+    test("calls plugin's start method", async () => {
       const magnet = new Magnet({directory});
       await magnet.build();
 

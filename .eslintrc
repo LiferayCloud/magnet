@@ -13,5 +13,9 @@
     "node": true,
     "mocha": true,
     "es6": true
+  },
+  "rules": {
+    "indent": 0,
+    "no-unused-vars": [2, {"args": "none"}]
   }
 }

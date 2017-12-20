@@ -1,5 +1,5 @@
-import log from '../log';
 import PrettyError from 'pretty-error';
+import log from '../log';
 
 /**
  * Error middleware.

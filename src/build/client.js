@@ -1,6 +1,6 @@
-import webpack from 'webpack';
-import log from '../log';
 import {isFunction} from 'metal';
+import log from '../log';
+import webpack from 'webpack';
 
 /**
  * Builds client using webpack config.

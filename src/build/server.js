@@ -1,11 +1,11 @@
-import {transformFileSync} from 'babel-core';
-import path from 'path';
-import fs from 'fs-extra';
 import esEnv from 'babel-preset-env';
+import fs from 'fs-extra';
 import {isFunction} from 'metal';
-import log from '../log';
-
 import jsdom from 'jsdom';
+import log from '../log';
+import path from 'path';
+import {transformFileSync} from 'babel-core';
+
 const {JSDOM} = jsdom;
 const dom = new JSDOM();
 global.document = dom.window.document;
@@ -54,13 +54,17 @@ export async function buildServer(
           babelrc: false,
           filename: absoluteSrc,
           filenameRelative: file,
+          sourceMaps: 'inline',
           plugins: [
-            ['transform-runtime', {
-              'helpers': false,
-              'polyfill': false,
-              'regenerator': true,
-              'moduleName': 'babel-runtime',
-            }],
+            [
+              'transform-runtime',
+              {
+                helpers: false,
+                polyfill: false,
+                regenerator: true,
+                moduleName: 'babel-runtime',
+              },
+            ],
           ],
         });
         fs.outputFileSync(absoluteDist, transform.code);

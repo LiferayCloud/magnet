@@ -1,5 +1,5 @@
-import path from 'path';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
+import path from 'path';
 
 /**
  * @param {Magnet} magnet
@@ -17,8 +17,20 @@ export function getDefaultWebpackConfig(magnet) {
       }),
     ],
     entry: {},
+    resolve: {
+      extensions: ['.js', '.json'],
+      modules: [
+        path.join(magnet.getDirectory(), 'node_modules'),
+        path.join(__dirname, '../../node_modules'),
+        'node_modules',
+      ],
+    },
     resolveLoader: {
-      modules: [path.join(__dirname, '../../node_modules'), 'node_modules'],
+      modules: [
+        path.join(magnet.getDirectory(), 'node_modules'),
+        path.join(__dirname, '../../node_modules'),
+        'node_modules',
+      ],
     },
     module: {
       loaders: [],

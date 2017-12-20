@@ -1,5 +1,5 @@
-import express from 'express';
 import Server from './server';
+import express from 'express';
 
 /**
  * Server factory

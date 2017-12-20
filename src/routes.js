@@ -1,7 +1,7 @@
 import Magnet from './magnet';
-import pluginController from 'magnet-plugin-controller';
 import Table from 'cli-table';
 import path from 'path';
+import pluginController from 'magnet-plugin-controller';
 
 /**
  * Scans build files collecting routes metadata into an array consumed

@@ -20,7 +20,7 @@ describe('config', () => {
       }).toThrow('Config directory must be specified.');
     });
 
-    test('returns the default config when config file doesn\'t exist', () => {
+    test("returns the default config when config file doesn't exist", () => {
       const config = createConfig('./', 'magnet.config.js', '');
       const expectedDefaultConfig = {
         magnet: {
@@ -44,7 +44,7 @@ describe('config', () => {
       expect(config).toEqual(expectedDefaultConfig);
     });
 
-    test('merges attributes from a configuration file with Magnet\'s default config', () => {
+    test("merges attributes from a configuration file with Magnet's default config", () => {
       const directory = `${process.cwd()}/test/fixtures/config`;
       const config = createConfig(directory, 'magnet.config.js', '');
       const expectedDefaultConfig = {

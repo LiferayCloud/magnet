@@ -1,15 +1,17 @@
+import {isFunction, isString} from 'metal';
+
+import ServerFactory from './server-factory';
 import {assertDefAndNotNull} from 'metal-assertions';
+import bodyParser from 'body-parser';
 import {buildClient} from './build/client';
 import {buildServer} from './build/server';
+import compression from 'compression';
 import {createConfig} from './config';
 import {errorMiddleware} from './middleware/error';
-import {isFunction, isString} from 'metal';
-import {validatorErrorMiddleware} from './middleware/validator-error';
-import bodyParser from 'body-parser';
-import compression from 'compression';
 import express from 'express';
 import expressValidator from 'express-validator';
 import fs from 'fs-extra';
+import {getDefaultWebpackConfig} from './build/webpack';
 import glob from 'glob';
 import helmet from 'helmet';
 import log from './log';
@@ -17,8 +19,7 @@ import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
-import ServerFactory from './server-factory';
-import {getDefaultWebpackConfig} from './build/webpack';
+import {validatorErrorMiddleware} from './middleware/validator-error';
 
 /**
  * Magnet class that handle configuration, directory injection, and server.
