@@ -17,7 +17,11 @@ global.window = dom.window;
  * @return {Array}
  */
 const aggregateBabelPresets = plugins => {
-  let presets = [esEnv];
+  let presets = [[esEnv, {
+    targets: {
+      node: 'current',
+    },
+  }]];
   for (const plugin of plugins) {
     if (isFunction(plugin.babelPresets)) {
       presets = presets.concat(plugin.babelPresets());
