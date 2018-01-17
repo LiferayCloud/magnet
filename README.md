@@ -10,6 +10,7 @@
   <a href="https://codecov.io/gh/wedeploy/magnet">
     <img src="https://codecov.io/gh/wedeploy/magnet/branch/master/graph/badge.svg" alt="Coverage" />
   </a>
+<a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fwedeploy%2Fmagnet?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwedeploy%2Fmagnet.svg?type=shield"/></a>
 
   <a href="https://codebeat.co/projects/github-com-wedeploy-magnet">
     <img alt="codebeat badge" src="https://codebeat.co/badges/05e27c84-b714-4d51-aa74-287707fb8a15" />
@@ -25,6 +26,9 @@
 
   <img src="https://img.shields.io/npm/l/magnet.svg" alt="License">
 </div>
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwedeploy%2Fmagnet.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwedeploy%2Fmagnet?ref=badge_large)
 
 ## Getting started
 
