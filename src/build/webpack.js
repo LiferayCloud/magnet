@@ -34,6 +34,7 @@ export function getDefaultWebpackConfig(magnet) {
     },
     module: {
       loaders: [],
+      rules: [],
     },
     node: {
       console: true,
