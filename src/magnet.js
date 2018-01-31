@@ -400,9 +400,11 @@ class Magnet {
       case 'silent':
         return;
     }
-    this.getServer()
-      .getEngine()
-      .use(morgan('tiny'));
+    if (this.config.magnet.requestLogger) {
+      this.getServer()
+        .getEngine()
+        .use(this.config.magnet.requestLogger);
+    }
   }
 
   /**
