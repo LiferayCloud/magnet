@@ -15,7 +15,6 @@ import {getDefaultWebpackConfig} from './build/webpack';
 import glob from 'glob';
 import helmet from 'helmet';
 import log from './log';
-import morgan from 'morgan';
 import multer from 'multer';
 import path from 'path';
 import resolve from 'resolve';
