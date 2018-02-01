@@ -1,6 +1,7 @@
 import {assertDefAndNotNull} from 'metal-assertions';
 import fs from 'fs';
 import path from 'path';
+import morgan from 'morgan';
 
 const baseConfig = () => {
   return {
@@ -15,6 +16,7 @@ const baseConfig = () => {
         'test/**',
       ],
       logLevel: 'info',
+      requestLogger: morgan('tiny'),
       port: 3000,
       src: ['**/*.js'],
       plugins: ['function', 'controller'],

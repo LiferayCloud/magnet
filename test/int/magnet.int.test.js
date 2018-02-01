@@ -32,26 +32,23 @@ describe('Magnet', () => {
 
     test('returns the instance configuration', () => {
       const magnet = new Magnet({directory});
-      const expectedDefaultConfig = {
-        magnet: {
-          dev: false,
-          host: 'localhost',
-          ignore: [
-            'build/**',
-            'magnet.config.js',
-            'node_modules/**',
-            'static/**',
-            'test/**',
-          ],
-          logLevel: 'silent',
-          port: 3000,
-          src: ['**/*.js'],
-          plugins: ['function', 'controller'],
-          pluginsConfig: {},
-          webpack: null,
-        },
-      };
-      expect(magnet.getConfig()).toEqual(expectedDefaultConfig);
+      const config = magnet.getConfig();
+      expect(config.magnet.dev).toBeFalsy();
+      expect(config.magnet.host).toBe('localhost');
+      expect(config.magnet.ignore).toEqual([
+        'build/**',
+        'magnet.config.js',
+        'node_modules/**',
+        'static/**',
+        'test/**',
+      ]);
+      expect(config.magnet.logLevel).toBe('silent');
+      expect(config.magnet.port).toBe(3000);
+      expect(config.magnet.src).toEqual(['**/*.js']);
+      expect(config.magnet.plugins).toEqual(['function', 'controller']);
+      expect(config.magnet.requestLogger).toBeInstanceOf(Function);
+      expect(config.magnet.pluginsConfig).toEqual({});
+      expect(config.magnet.webpack).toBeNull();
     });
   });
 
