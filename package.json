@@ -6,7 +6,7 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "build": "babel --ignore '**/*.test.js' -d build/ src/",
+    "build": "gulp build",
     "lint": "eslint \"{src/**/*.js,test/**/*.js,*.js}\"",
     "format": "prettier-eslint --write \"{src/**/*.js,test/**/*.js,*.js}\" && npm run format-imports && npm run lint",
     "format-imports": "import-sort -o src",
@@ -91,13 +91,16 @@
     "babel-jest": "^21.2.0",
     "babel-register": "^6.23.0",
     "codecov": "^1.0.1",
+    "del": "^3.0.0",
     "eslint": "^3.17.1",
     "eslint-config-liferay": "^1.0.1",
     "eslint-loader": "^1.6.1",
-    "jest": "^21.2.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
     "import-sort-cli": "^3.3.0",
     "import-sort-parser-babylon": "^3.2.0",
     "import-sort-style-eslint": "^3.0.0",
+    "jest": "^21.2.1",
     "prettier-eslint-cli": "^4.4.0"
   }
 }
