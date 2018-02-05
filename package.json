@@ -72,7 +72,7 @@
     "fs-extra": "^2.0.0",
     "glob": "^7.1.1",
     "helmet": "^3.3.0",
-    "jsdom": "^10.0.0",
+    "jsdom": "^11.6.2",
     "magnet-plugin-controller": "^0.0.4",
     "magnet-plugin-function": "^0.0.8",
     "metal": "^2.16.0",
@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-jest": "^21.2.0",
+    "babel-jest": "^22.1.0",
     "babel-register": "^6.23.0",
     "codecov": "^1.0.1",
     "del": "^3.0.0",
@@ -100,7 +100,7 @@
     "import-sort-cli": "^3.3.0",
     "import-sort-parser-babylon": "^3.2.0",
     "import-sort-style-eslint": "^3.0.0",
-    "jest": "^21.2.1",
+    "jest": "^22.1.4",
     "prettier-eslint-cli": "^4.4.0"
   }
 }
