@@ -537,8 +537,10 @@ class Magnet {
    */
   async start() {
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.BEFORE_START);
+
     this.setupMiddlewares_();
     this.setupApplicationSettings_();
+
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
 
     await this.startPlugins();
