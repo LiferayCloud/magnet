@@ -80,8 +80,8 @@ class Magnet {
      */
     this.plugins_ = [];
 
-    this.registerPlugins_();
     this.registerWebpackConfig_();
+    this.registerPlugins_();
   }
 
   /**
