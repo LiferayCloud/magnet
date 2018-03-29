@@ -80,8 +80,6 @@ class Magnet {
      */
     this.plugins_ = [];
 
-    this.setupMiddlewares_();
-    this.setupApplicationSettings_();
     this.registerWebpackConfig_();
     this.registerPlugins_();
   }
@@ -165,14 +163,17 @@ class Magnet {
 
   /**
    * Scans files that matches with `config.magnet.src` globs.
-   * excluding `config.magnet.ignore`, start.js and stop.js.
+   * excluding `config.magnet.ignore`, beforeStart.js,
+   * start.js, afterStart.js and stop.js.
    * @return {Array.<string>} Array of file paths.
    */
   getLoadFiles() {
     const directory = this.getServerDistDirectory();
     return this.getFiles({directory, realpath: true}).filter(function(item) {
       switch (item) {
+        case path.join(directory, Magnet.LifecyleFiles.BEFORE_START):
         case path.join(directory, Magnet.LifecyleFiles.START):
+        case path.join(directory, Magnet.LifecyleFiles.AFTER_START):
         case path.join(directory, Magnet.LifecyleFiles.STOP):
           return false;
         default:
@@ -183,13 +184,16 @@ class Magnet {
 
   /**
    * Scans files that matches with `config.magnet.src` globs.
-   * excluding `config.magnet.ignore`, adding start.js and stop.js.
+   * excluding `config.magnet.ignore`, adding beforeStart.js,
+   * start.js, afterStart.js and stop.js.
    * @return {Array.<string>} Array of file paths.
    */
   getBuildFiles() {
     const directory = this.getDirectory();
     const src = this.config.magnet.src.concat([
+      Magnet.LifecyleFiles.BEFORE_START,
       Magnet.LifecyleFiles.START,
+      Magnet.LifecyleFiles.AFTER_START,
       Magnet.LifecyleFiles.STOP,
     ]);
     return this.getFiles({directory, src});
@@ -532,12 +536,19 @@ class Magnet {
    * Starts application.
    */
   async start() {
+    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.BEFORE_START);
+
+    this.setupMiddlewares_();
+    this.setupApplicationSettings_();
+
     this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.START);
 
     await this.startPlugins();
     await this.load();
 
     this.setupMiddlewareError_();
+
+    this.maybeRunLifecycleFile_(Magnet.LifecyleFiles.AFTER_START);
 
     await new Promise((resolve, reject) => {
       this.getServer()
@@ -568,7 +579,9 @@ class Magnet {
  * @enum {string}
  */
 Magnet.LifecyleFiles = {
+  BEFORE_START: 'beforeStart.js',
   START: 'start.js',
+  AFTER_START: 'afterStart.js',
   STOP: 'stop.js',
 };
 
