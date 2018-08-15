@@ -72,7 +72,7 @@
     "fs-extra": "^2.0.0",
     "glob": "^7.1.1",
     "helmet": "^3.3.0",
-    "jsdom": "^11.6.2",
+    "jsdom": "11.6.2",
     "magnet-plugin-controller": "^0.0.4",
     "magnet-plugin-function": "^0.0.8",
     "metal": "^2.16.0",
