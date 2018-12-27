@@ -76,6 +76,16 @@ Results in
 
 Your microservice is ready for development on [http://localhost:3000](http://localhost:3000)!
 
+## Debugging options
+
+For better debugging you can use [NDB](https://github.com/GoogleChromeLabs/ndb)
+
+After installing NDB, just run:
+
+```sh
+ndb npm run dev
+```
+
 ## Running in production
 
 To run your application in production use `npm start` instead and Magnet will serve your application optimized for production.
