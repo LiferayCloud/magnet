@@ -22,6 +22,7 @@ const baseConfig = () => {
       plugins: ['function', 'controller'],
       pluginsConfig: {},
       webpack: null,
+      apiOnly: false
     },
   };
 };
