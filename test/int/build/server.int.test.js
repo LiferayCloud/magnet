@@ -1,4 +1,5 @@
 import {buildServer} from '../../../src/build/server';
+import {createConfig} from '../../../src/config';
 import fs from 'fs-extra';
 import Magnet from '../../../src/magnet';
 import path from 'path';
@@ -39,5 +40,24 @@ describe('.build', function() {
     expect(fs.existsSync(mockedFile)).toBeTruthy();
     await buildServer(magnet.getFiles({directory}), directory, serverDist);
     expect(fs.existsSync(mockedFile)).toBeFalsy();
+  });
+
+  test('set envrionment variable API_ONLY to true', async() => {
+    expect(process.env.API_ONLY).toBeUndefined();
+    const directory = `${process.cwd()}/test/fixtures/config`;
+    const config = 'magnet.api.only.config.js';
+    const magnet = new Magnet({config, directory});
+    await magnet.build();
+    expect(process.env.API_ONLY).toBeDefined();
+    expect(process.env.API_ONLY).toBeTruthy();
+  });
+  
+  test('do not set envrionment variable API_ONLY if is not on conifg', async() => {
+    expect(process.env.API_ONLY).toBeUndefined();
+    const directory = `${process.cwd()}/test/fixtures/config`;
+    const config = 'magnet.config.js';
+    const magnet = new Magnet({config, directory});
+    await magnet.build();
+    expect(process.env.API_ONLY).toBeUndefined();
   });
 });
