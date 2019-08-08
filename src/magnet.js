@@ -82,7 +82,6 @@ class Magnet {
 
     this.registerWebpackConfig_();
     this.registerPlugins_();
-    this.registerProcessEvnVariables_(this.config);
   }
 
   /**
@@ -109,7 +108,8 @@ class Magnet {
       files,
       this.getDirectory(),
       this.getServerDistDirectory(),
-      this.getPlugins()
+      this.getPlugins(),
+      this.getConfig()
     );
   }
 
@@ -303,14 +303,6 @@ class Magnet {
         fn.call(this, app, this);
       }
     }
-  }
-
-  /**
-   * Register environment variables
-   * @param {Object} config 
-   */
-  registerProcessEvnVariables_(config) {
-    process.env.API_ONLY = config.magnet.apiOnly      
   }
 
   /**

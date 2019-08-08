@@ -1,7 +1,7 @@
 import {assertDefAndNotNull} from 'metal-assertions';
 import fs from 'fs';
-import path from 'path';
 import morgan from 'morgan';
+import path from 'path';
 
 const baseConfig = () => {
   return {
@@ -22,7 +22,7 @@ const baseConfig = () => {
       plugins: ['function', 'controller'],
       pluginsConfig: {},
       webpack: null,
-      apiOnly: false
+      apiOnly: false,
     },
   };
 };
