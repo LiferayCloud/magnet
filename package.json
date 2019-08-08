@@ -78,7 +78,7 @@
     "metal": "^2.16.0",
     "metal-assertions": "^2.16.0",
     "minimist": "^1.2.0",
-    "morgan": "^1.6.0",
+    "morgan": "^1.9.1",
     "multer": "^1.3.0",
     "npmlog": "^4.0.2",
     "pretty-error": "^2.1.0",
