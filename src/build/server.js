@@ -8,8 +8,6 @@ import {transformFileSync} from 'babel-core';
 
 const {JSDOM} = jsdom;
 const dom = new JSDOM();
-global.document = dom.window.document;
-global.window = dom.window;
 
 /**
  * Aggregate babel presets.
@@ -45,6 +43,12 @@ export async function buildServer(
   plugins = []
 ) {
   log.info(false, 'Building server…');
+
+  if (process.env.API_ONLY) {
+    global.document = dom.window.document;
+    global.window = dom.window;
+  }
+
   fs.removeSync(outputDirectory);
   const presets = aggregateBabelPresets(plugins);
 
