@@ -42,21 +42,20 @@ describe('.build', function() {
     expect(fs.existsSync(mockedFile)).toBeFalsy();
   });
 
-  test('set environment variable API_ONLY to true', async() => {
-    expect(process.env.API_ONLY).toBeFalsy();
+  test('do not set global if apiOnly config is true', async() => {
     const directory = `${process.cwd()}/test/fixtures/config`;
     const config = 'magnet.api.only.config.js';
     const magnet = new Magnet({config, directory});
     await magnet.build();
-    expect(process.env.API_ONLY).toBeTruthy();
+    
+    expect(magnet.getConfig().magnet.apiOnly).toBeTruthy();
   });
   
-  test('do not set environment variable API_ONLY if is not on conifg', async() => {
-    expect(process.env.API_ONLY).toBeFalsy();
+  test('set global if apiOnly is false or not declared', async() => {
     const directory = `${process.cwd()}/test/fixtures/config`;
     const config = 'magnet.config.js';
     const magnet = new Magnet({config, directory});
     await magnet.build();
-    expect(process.env.API_ONLY).toBeFalsy();
+    expect(magnet.getConfig().magnet.apiOnly).toBeFalsy();
   });
 });

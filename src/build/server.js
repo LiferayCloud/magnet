@@ -15,11 +15,16 @@ const dom = new JSDOM();
  * @return {Array}
  */
 const aggregateBabelPresets = plugins => {
-  let presets = [[esEnv, {
-    targets: {
-      node: 'current',
-    },
-  }]];
+  let presets = [
+    [
+      esEnv,
+      {
+        targets: {
+          node: 'current',
+        },
+      },
+    ],
+  ];
   for (const plugin of plugins) {
     if (isFunction(plugin.babelPresets)) {
       presets = presets.concat(plugin.babelPresets());
@@ -34,17 +39,19 @@ const aggregateBabelPresets = plugins => {
  * @param {string} directory
  * @param {string} outputDirectory
  * @param {!Array} plugins
+ * @param {?Array} config
  * @return {Promise}
  */
 export async function buildServer(
   files,
   directory,
   outputDirectory,
-  plugins = []
+  plugins = [],
+  config = {}
 ) {
   log.info(false, 'Building server…');
 
-  if (process.env.API_ONLY) {
+  if (config.magnet && !config.magnet.apiOnly) {
     global.document = dom.window.document;
     global.window = dom.window;
   }
