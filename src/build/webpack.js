@@ -1,12 +1,15 @@
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 /**
  * @param {Magnet} magnet
  * @return {Object}
  */
 export function getDefaultWebpackConfig(magnet) {
   return {
+    mode: isProduction ? 'production' : 'development',
     output: {
       path: path.join(magnet.getDirectory(), '.magnet'),
       filename: '[name]',
