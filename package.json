@@ -1,12 +1,12 @@
 {
   "name": "magnet",
-  "version": "2.7.2",
+  "version": "2.7.3-alpha.1",
   "description": "A modern approach for async microservices in node.js",
   "engines": {
     "node": ">=8.9.0"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp",
     "lint": "eslint \"{src/**/*.js,test/**/*.js,*.js}\"",
     "format": "prettier-eslint --write \"{src/**/*.js,test/**/*.js,*.js}\" && npm run format-imports && npm run lint",
     "format-imports": "import-sort -o src",
@@ -63,7 +63,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-runtime": "^6.26.0",
     "body-parser": "^1.13.1",
-    "chokidar": "^1.6.1",
+    "chokidar": "^3.4.0",
     "cli-table": "^0.3.1",
     "compression": "^1.6.2",
     "cross-spawn": "^5.0.1",
@@ -71,36 +71,37 @@
     "express-validator": "^3.1.2",
     "fs-extra": "^2.0.0",
     "glob": "^7.1.1",
-    "helmet": "^3.3.0",
+    "helmet": "^3.22.0",
     "jsdom": "11.6.2",
     "magnet-plugin-controller": "^0.0.4",
     "magnet-plugin-function": "^0.0.8",
+    "magnet-plugin-metal": "^1.3.3-alpha.8",
     "metal": "^2.16.0",
     "metal-assertions": "^2.16.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.5",
     "morgan": "^1.9.1",
-    "multer": "^1.3.0",
+    "multer": "^1.4.2",
     "npmlog": "^4.0.2",
     "pretty-error": "^2.1.0",
     "progress-bar-webpack-plugin": "^1.10.0",
     "resolve": "^1.3.3",
-    "webpack": "^3.6.0"
+    "webpack": "^4.43.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-jest": "^22.1.0",
+    "babel-jest": "^26.0.1",
     "babel-register": "^6.23.0",
     "codecov": "^1.0.1",
     "del": "^3.0.0",
     "eslint": "^3.17.1",
     "eslint-config-liferay": "^1.0.1",
-    "eslint-loader": "^1.6.1",
-    "gulp": "^3.9.1",
+    "eslint-loader": "^1.9.0",
+    "gulp": "^4.0.2",
     "gulp-babel": "^7.0.1",
-    "import-sort-cli": "^3.3.0",
+    "import-sort-cli": "^6.0.0",
     "import-sort-parser-babylon": "^3.2.0",
     "import-sort-style-eslint": "^3.0.0",
-    "jest": "^22.1.4",
-    "prettier-eslint-cli": "^4.4.0"
+    "jest": "^25.5.4",
+    "prettier-eslint-cli": "^5.0.0"
   }
 }
